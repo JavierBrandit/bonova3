@@ -37,6 +37,7 @@ class _InicioPageState extends State<InicioPage> {
     final Size pantalla = MediaQuery.of(context).size;
 
     return Scaffold(
+        backgroundColor: Colors.grey[50],
         extendBodyBehindAppBar: true,
         //floatingActionButton: FloatingActionButton(child: Icon(FluentSystemIcons.ic_fluent_video_filled), onPressed: () => Navigator.pushNamed(context, 'upload'),),
         body: SafeArea(
@@ -68,7 +69,7 @@ class _InicioPageState extends State<InicioPage> {
   Widget _crearAppbar() {
     return SliverAppBar(
       brightness: Brightness.light,
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey[50],
       //expandedHeight: 75.0,
       collapsedHeight: 60.0,
       elevation: 0.0,

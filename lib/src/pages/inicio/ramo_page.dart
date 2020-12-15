@@ -43,6 +43,7 @@ class _RamoPageState extends State<RamoPage> {
       this.cursoService = Provider.of<CursoService>(context, listen: false);
       this.ramo = cursoService.ramo;
     return Scaffold(
+      backgroundColor: Colors.grey[50],
       body: CustomScrollView(
         controller: _scrollController,
         slivers: <Widget>[

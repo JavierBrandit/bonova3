@@ -24,10 +24,10 @@ class HeaderTitulo extends StatelessWidget {
             children: <Widget>[
               Row(
                 children: [
-                  SizedBox(width: 28 ),
-                  Text(titulo, style: TextStyle(fontSize: 18.0,
-                      fontWeight: FontWeight.w300,
-                      color: Colors.black),),
+                  SizedBox(width: 30 ),
+                  Text(titulo, style: TextStyle(fontSize: 19.5,
+                      fontWeight: FontWeight.w400, letterSpacing: 0.8,
+                      color: Colors.grey[600]),),
                 ],
               ),
               Row(

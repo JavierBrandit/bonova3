@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
       title: 'bonova',
       theme: ThemeData(
         fontFamily: 'MontserratAlternates',
-        scaffoldBackgroundColor: Colors.grey[50],
+        scaffoldBackgroundColor: Colors.white,
         //primarySwatch: Colors.teal,
         primaryColor: Colors.teal,
         primaryColorBrightness: Brightness.light,
