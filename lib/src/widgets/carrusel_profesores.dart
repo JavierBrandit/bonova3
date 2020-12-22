@@ -18,15 +18,14 @@ class CarruselProfesores extends StatelessWidget {
     return Column(
       children: [
         HeaderTitulo(titulo: 'profesores', paginaDestino: '',),
-        AvatarPerfil(imgUrl: 'https://marketing4ecommerce.net/wp-content/uploads/2018/01/Depositphotos_3667865_m-2015-compressor.jpg',),
+        //AvatarPerfil(imgUrl: 'https://marketing4ecommerce.net/wp-content/uploads/2018/01/Depositphotos_3667865_m-2015-compressor.jpg',),
         ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: 1 + usuarios.length,
             itemBuilder: (BuildContext context, int index) {
-                return Container(
-                  height: 10.0,
-                  width: 10.0,
-                  color: Colors.red,
+                return CircleAvatar(
+                  radius: 10,
+                  backgroundColor: Colors.teal,
                 );
             }
         ),

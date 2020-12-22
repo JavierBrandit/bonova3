@@ -4,10 +4,13 @@ import 'package:provider/provider.dart';
 import 'src/services/auth_services.dart';
 import 'src/services/chat_service.dart';
 import 'src/services/socket_service.dart';
+import 'src/services/theme.dart';
 import 'src/routes/routes.dart';
 import 'src/services/videos_service.dart';
+import 'package:bonova0002/theme.dart';
 
 void main() {
+  
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle( statusBarColor: Colors.transparent ));
   runApp(MyApp());
 }
@@ -15,7 +18,25 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
+    //final themeChanger = Provider.of<ThemeChanger>(context);
     
+    return ChangeNotifierProvider<ThemeChanger>(
+      create: (_) => ThemeChanger(ThemeMode.light),
+      child: AppWithTheme(),
+    );
+
+    
+  }
+}
+
+class AppWithTheme extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+
+    final tema = Provider.of<ThemeChanger>(context);
+
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthService() ),
@@ -27,15 +48,18 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'bonova',
-      theme: ThemeData(
-        fontFamily: 'MontserratAlternates',
-        scaffoldBackgroundColor: Colors.white,
-        //primarySwatch: Colors.teal,
-        primaryColor: Colors.teal,
-        primaryColorBrightness: Brightness.light,
-        brightness: Brightness.light
-        //visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
+      theme: AppTheme().lightTheme,
+      darkTheme: AppTheme().darkTheme,
+      themeMode: tema.getTheme(),
+      // theme: ThemeData(
+      //   fontFamily: 'MontserratAlternates',
+      //   scaffoldBackgroundColor: Colors.white,
+      //   //primarySwatch: Colors.teal,
+      //   primaryColor: Colors.teal,
+      //   primaryColorBrightness: Brightness.light,
+      //   brightness: Brightness.light
+      //   //visualDensity: VisualDensity.adaptivePlatformDensity,
+      // ),
       initialRoute: 'loading',
       routes: appRoutes,
       ),

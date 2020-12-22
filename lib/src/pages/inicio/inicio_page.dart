@@ -1,12 +1,14 @@
-import 'package:flutter/material.dart';
 import 'dart:ui';
-import 'package:fluentui_icons/fluentui_icons.dart';
-import 'package:flutter/rendering.dart';
+import 'package:bonova0002/src/models/usuario.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-
-import 'package:bonova0002/src/models/video_modelo.dart';
+import 'package:flutter/rendering.dart';
+import 'package:fluentui_icons/fluentui_icons.dart';
+import 'package:bonova0002/src/widgets/carrusel_profesores.dart';
 import 'package:bonova0002/src/widgets/portadas_categorias.dart';
-import 'package:bonova0002/src/widgets/post_feed.dart';
+import 'package:bonova0002/src/services/usuarios_service.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+
 
 class InicioPage extends StatefulWidget {
   @override
@@ -15,19 +17,18 @@ class InicioPage extends StatefulWidget {
 
 class _InicioPageState extends State<InicioPage> {
 
-  //VideoPlayerController _videoPlayerController;
-  //ChewieController _chewieController;
   ScrollController _scrollController;
-  //final VideosProvider videosProvider = new VideosProvider();
-  //final VideoModelo videoModelo = new VideoModelo();
-  //final  fire = new FirebaseServicios();
-  //final scaffoldKey = GlobalKey<ScaffoldState>();
+  List<Usuario> usuarios = [];
+  final RefreshController _refreshController = RefreshController(initialRefresh: false);
+  final usuarioService = new UsuarioService();
+  Color grisfondo = Colors.grey[850];
+
+
 
   @override
   void initState() {
-    _scrollController = ScrollController()
-      ..addListener(() {
-      });
+    _cargarUsuarios();
+    _scrollController = ScrollController();
     super.initState();
   }
 
@@ -35,11 +36,12 @@ class _InicioPageState extends State<InicioPage> {
   Widget build(BuildContext context) {
 
     final Size pantalla = MediaQuery.of(context).size;
+    var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-        backgroundColor: Colors.grey[50],
+        //backgroundColor: Colors.grey[50],
         extendBodyBehindAppBar: true,
-        //floatingActionButton: FloatingActionButton(child: Icon(FluentSystemIcons.ic_fluent_video_filled), onPressed: () => Navigator.pushNamed(context, 'upload'),),
+        appBar: AppBar( toolbarHeight: 0, elevation: 0,),
         body: SafeArea(
           child: CustomScrollView(
             controller: _scrollController,
@@ -49,8 +51,9 @@ class _InicioPageState extends State<InicioPage> {
               SliverToBoxAdapter(
                 child: Column(
                   children: <Widget>[
-                    SizedBox(height: 30.0,),
-                    //CarruselProfesores(),
+                    //SizedBox(height: 80),
+                    //CarruselProfesores( usuarios: usuarios ),
+                    //_listUsuarios(),
                     CrearPortadas(pantalla:pantalla),
                     //_listadoCarrusel(),
                     SizedBox(height: 60.0,),
@@ -67,12 +70,15 @@ class _InicioPageState extends State<InicioPage> {
   }
 
   Widget _crearAppbar() {
+
+    var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
+
     return SliverAppBar(
-      brightness: Brightness.light,
-      backgroundColor: Colors.grey[50],
+      //brightness: Brightness.light,
+      //backgroundColor: Colors.white,
       //expandedHeight: 75.0,
-      collapsedHeight: 60.0,
-      elevation: 0.0,
+      collapsedHeight: 75,
+      elevation: 0,
       floating: true,
       pinned: true,
       snap: false,
@@ -90,7 +96,7 @@ class _InicioPageState extends State<InicioPage> {
                 child: Padding(
                   padding: const EdgeInsets.only(top:0.0),
                   child: SvgPicture.asset('assets/bv_ic.svg',
-                    color: Colors.teal,
+                    color: isDarkTheme? Colors.tealAccent[400] : Colors.teal,
                     alignment: Alignment.bottomCenter,
                     height: 27.0,
                     fit: BoxFit.cover,),
@@ -101,18 +107,48 @@ class _InicioPageState extends State<InicioPage> {
                 children: <Widget>[
                 IconButton(
                   icon: Icon(FluentSystemIcons.ic_fluent_upload_filled),
-                  color: Colors.teal,
+                  //color: Colors.teal,
                   onPressed: () => Navigator.pushNamed(context, 'upload'),
                 ),
                 IconButton(
-                  icon: SvgPicture.asset('assets/send.svg', height: 20.0, width: 20.0, color: Colors.teal,),
-                  color: Colors.teal,
+                  icon: SvgPicture.asset('assets/send.svg', height: 20.0, width: 20.0, color: isDarkTheme? Colors.white : Colors.teal,),
+                  //color:  Colors.teal,
                   onPressed: () => Navigator.pushNamed(context, 'usuarios-chat'),
                 ),
                 SizedBox(width: 12.0,)
               ],)
             ] ),
       ),
+    );
+  }
+
+  _cargarUsuarios() async {
+    
+    this.usuarios = await usuarioService.getUsuarios();
+    setState(() {});
+
+    //await Future.delayed(Duration(milliseconds: 1000));
+    // if failed,use refreshFailed()
+    //_refreshController.refreshCompleted();
+  }
+  _listUsuarios() {
+    return ListView.builder(
+      shrinkWrap: true,
+      controller: ScrollController(),
+      scrollDirection: Axis.horizontal,
+      itemCount: usuarios.length,
+      itemBuilder: ( _ , i ) => _itemUsuario( usuarios[i] )
+    );
+  }
+  _itemUsuario( Usuario u ) {
+    return Column(
+      children: [
+        Text(u.nombre),
+        CircleAvatar(
+          radius: 10,
+          backgroundColor: Colors.teal,
+        ),
+      ],
     );
   }
 

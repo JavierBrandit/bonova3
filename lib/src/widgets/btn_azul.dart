@@ -13,9 +13,9 @@ class BtnAzul extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RaisedButton(
-       elevation: 2,
+       elevation: 1.5,
        highlightElevation: 5,
-       color: Colors.blue,
+       color: Colors.tealAccent[700],
        shape: StadiumBorder(),
        onPressed: 
           this.callBack
@@ -24,7 +24,7 @@ class BtnAzul extends StatelessWidget {
          width: double.infinity,
          height: 55,
          child: Center( 
-           child: Text( this.txt , style: TextStyle( color:  Colors.white, fontSize: 17),))),
+           child: Text( this.txt , style: TextStyle( color:  Colors.white, fontSize: 15, letterSpacing: 0.5, fontWeight: FontWeight.w700 ),))),
        
      );
   }

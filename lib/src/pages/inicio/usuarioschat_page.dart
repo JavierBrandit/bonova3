@@ -17,10 +17,7 @@ class _UsuariosChatPageState extends State<UsuariosChatPage> {
   
     final usuarioService = new UsuarioService();    
     final RefreshController _refreshController = RefreshController(initialRefresh: false);
-    
     List<Usuario> usuarios = [];
-
-  
 
     @override
     void initState() { 
@@ -53,8 +50,8 @@ class _UsuariosChatPageState extends State<UsuariosChatPage> {
           Container(
             margin: EdgeInsets.only( right: 10 ),
             child: ( socketService.serverStatus == ServerStatus.Online )
-            ? Icon(Icons.check_circle, color: Colors.blue[400],)
-            : Icon(Icons.offline_bolt, color: Colors.red,)
+            ? Icon(Icons.check_circle, color: Colors.tealAccent[400],)
+            : Icon(Icons.offline_bolt, color: Colors.red[300],)
           ),
         ],
       ),
@@ -64,7 +61,7 @@ class _UsuariosChatPageState extends State<UsuariosChatPage> {
         onRefresh: _cargarUsuarios,
         header: WaterDropHeader(
           complete: Icon(Icons.check, color: Colors.blue[400] ),
-          waterDropColor: Colors.blue[400],
+          waterDropColor: Colors.tealAccent[100],
         ),
         child: _listViewUsuarios(), 
       )
@@ -95,17 +92,17 @@ class _UsuariosChatPageState extends State<UsuariosChatPage> {
 
   ListTile _usuarioListTile(Usuario usuario) {
     return ListTile(
-        title: Text( usuario.nombre ),
-        subtitle: Text( usuario.email ),
+        title: Text( usuario.nombre, style: TextStyle( fontSize: 18, fontWeight: FontWeight.w500, color: Colors.grey[600]),),
+        subtitle: Text( usuario.email, style: TextStyle( fontSize: 12, fontWeight: FontWeight.w400, color: Colors.grey[600])),
         leading: CircleAvatar(
-          child: Text( usuario.nombre.substring(0,2) ),
-          backgroundColor: Colors.blue[100],
+          child: Text( usuario.nombre.substring(0,2), style: TextStyle( color: Colors.teal[800] ), ),
+          backgroundColor: Colors.teal[100],
         ),
         trailing: Container(
           width: 10,
           height: 10,
           decoration: BoxDecoration(
-            color: usuario.online? Colors.green[300] : Colors.red,
+            color: usuario.online? Colors.tealAccent[400] : Colors.red[200],
             borderRadius: BorderRadius.circular(100)
           ),
         ),

@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 Widget carruselHorizontal(BuildContext context, Curso curso) {
 
   //final pantalla = MediaQuery.of(context).size;
+  var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
 
   return Container(
     margin: EdgeInsets.all(14.0),
@@ -18,9 +19,9 @@ Widget carruselHorizontal(BuildContext context, Curso curso) {
 
       Container(
         decoration: BoxDecoration( boxShadow: [BoxShadow(
-          color: Colors.black12,
+          color: isDarkTheme? Colors.black.withOpacity(0.05) : Colors.grey[100],
           offset: Offset.fromDirection(60),
-          blurRadius: 23.0
+          blurRadius: 10
         )]),
         child: ClipRRect(
         borderRadius: BorderRadius.circular(20.0),
@@ -34,7 +35,7 @@ Widget carruselHorizontal(BuildContext context, Curso curso) {
                   width: double.infinity
                 ),
                 Container(
-                  color: Colors.white, 
+                  color: isDarkTheme? Colors.grey[850] : Colors.white, 
                   height: 135,
                   width: double.infinity,
                 ),

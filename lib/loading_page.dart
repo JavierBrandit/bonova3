@@ -9,11 +9,12 @@ class LoadingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: FutureBuilder(
           future: checkLoginState(context),
           builder: (context, AsyncSnapshot<dynamic> snapshot) {
             return Center(
-                child: Text('Espere...'),
+                child: Image.asset('assets/bv_login.png', height: 130),
             );
           },
       )

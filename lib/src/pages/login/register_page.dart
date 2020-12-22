@@ -11,23 +11,26 @@ class RegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffF2F2F2),
+      backgroundColor: Colors.grey[50],
       body: SafeArea( 
         child: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
           child: Container(
             height: MediaQuery.of(context).size.height * 0.9,
+            padding: EdgeInsets.symmetric( vertical: 20 ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
 
                 //Logo(titulo: 'Registro',),
+                SizedBox( height: 10),
+                Image.asset('assets/bv_login.png', height: 160,),
 
                 Form(),
 
                 Labels(titulo: '¿Ya tienes una cuenta?', subtitulo: 'Ingresa Ahora', ruta: 'login' ),
 
-                Text('Terminos y condiciones de uso', style: TextStyle( fontWeight: FontWeight.w600) ),
+                Text('Terminos y condiciones de uso', style: TextStyle( fontWeight: FontWeight.w500, fontFamily: 'Montserrat', fontSize: 11, color: Colors.grey[700]) ),
                 
               ],
             ),

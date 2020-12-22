@@ -16,6 +16,7 @@ class _HomePageState extends State<HomePage> {
       @override
       Widget build(BuildContext context) {
         return Scaffold(
+          extendBody: true,
           body: _callPage(currentIndex),
           bottomNavigationBar: _crearBNBar(),
         );
@@ -34,40 +35,54 @@ class _HomePageState extends State<HomePage> {
 
 
       Widget _crearBNBar() {
-        return BottomNavigationBar(
-          currentIndex: currentIndex,
-          onTap: (index) {
-            setState(() {
-              currentIndex = index;
-            });
-          },
+        return Padding(
+          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 52 ),
+          child: Container(
+            decoration: BoxDecoration( boxShadow: [BoxShadow(
+              color: Colors.black.withOpacity(0.013),
+              blurRadius: 20
+            )]),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(30),
+              child: BottomNavigationBar(
+                elevation: 0,
+                //backgroundColor: Colors.white,
+                currentIndex: currentIndex,
+                onTap: (index) {
+                  setState(() {
+                    currentIndex = index;
+                  });
+                },
 
-          items: [
-            BottomNavigationBarItem(
-                icon: (currentIndex == 0)
-                    ? Icon(FluentSystemIcons.ic_fluent_home_filled, size: 30)
-                    : Icon(FluentSystemIcons.ic_fluent_home_regular, size: 30),
-                title: Container()
-            ),
-            BottomNavigationBarItem(
-                icon: (currentIndex == 1)
-                    ? Icon(FluentSystemIcons.ic_fluent_search_filled, size: 30)
-                    : Icon(FluentSystemIcons.ic_fluent_search_regular, size: 30),
-                title: Container()
-            ),
-            BottomNavigationBarItem(
-                icon: (currentIndex == 2)
-                    ? Icon(FluentSystemIcons.ic_fluent_person_filled, size: 30,)
-                    : Icon(FluentSystemIcons.ic_fluent_person_regular, size: 30,),
-                title: Container()
-            ),
+                items: [
+                  BottomNavigationBarItem(
+                      icon: (currentIndex == 0)
+                          ? Icon(FluentSystemIcons.ic_fluent_home_filled, size: 25, )
+                          : Icon(FluentSystemIcons.ic_fluent_home_regular, size: 25, color: Colors.grey,),
+                      title: Container()
+                  ),
+                  BottomNavigationBarItem(
+                      icon: (currentIndex == 1)
+                          ? Icon(FluentSystemIcons.ic_fluent_search_filled, size: 25,)
+                          : Icon(FluentSystemIcons.ic_fluent_search_regular, size: 25, color: Colors.grey),
+                      title: Container()
+                  ),
+                  BottomNavigationBarItem(
+                      icon: (currentIndex == 2)
+                          ? Icon(FluentSystemIcons.ic_fluent_person_filled, size: 25,)
+                          : Icon(FluentSystemIcons.ic_fluent_person_regular, size: 25, color: Colors.grey),
+                      title: Container()
+                  ),
 
 
 
 
 
 
-          ],
+                  ],
+                ),
+              ),
+          ),
         );
       }
 }

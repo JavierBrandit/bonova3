@@ -22,14 +22,26 @@ class CrearPortadas extends StatelessWidget {
       children: <Widget>[
 
         HeaderTitulo(titulo: 'Categorias', paginaDestino: '',),
-        SizedBox( height: 10 ),
+        SizedBox( height: 25 ),
 
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            portada( context, 'assets/portadaMatematica.png', 'matematica'),
-            portada( context, 'assets/portadaFisica.png', 'fisica'),
-          ],),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              portada( context, 'assets/portadaMatematica.png', 'matematica'),
+              portada( context, 'assets/portadaFisica.png', 'fisica'),
+            ],),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              portada( context, 'assets/portadaFisica.png', 'fisica'),
+              portada( context, 'assets/portadaMatematica.png', 'matematica'),
+            ],),
+        ),
       ],
     );
   }
@@ -38,13 +50,13 @@ class CrearPortadas extends StatelessWidget {
 
     CursoService cursoService = Provider.of<CursoService>(context, listen: false );
     return Container(
-      margin: EdgeInsets.symmetric(vertical:10.0),
-      width: pantalla.width * 0.38,
-      decoration: BoxDecoration( boxShadow: [BoxShadow(
-          color: Color.fromRGBO(220, 220, 220, 1.0),
-          offset: Offset.fromDirection(-10.0),
-          blurRadius: 20.0
-      )]),
+      margin: EdgeInsets.symmetric( vertical:10.0 ),
+      width: pantalla.width * 0.37,
+      // decoration: BoxDecoration( boxShadow: [BoxShadow(
+      //     color: Colors.grey[100],
+      //     offset: Offset.fromDirection(-10.0),
+      //     blurRadius: 10
+      // )]),
       child: GestureDetector(
           onTap: (){
             CursoService cursoService = Provider.of<CursoService>(context, listen: false );

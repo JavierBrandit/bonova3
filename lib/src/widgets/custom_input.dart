@@ -21,7 +21,7 @@ class CustomInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 30,),
+     margin: EdgeInsets.only(bottom: 30,),
      padding: EdgeInsets.only( top: 5, left: 5 ,bottom: 5, right: 20 ),
      decoration: BoxDecoration(
        color: Colors.white, 
@@ -39,11 +39,12 @@ class CustomInput extends StatelessWidget {
        autocorrect: false,
        keyboardType: this.keyboardType,
        obscureText: this.isPassword,
+       textAlignVertical: TextAlignVertical.center,
        decoration: InputDecoration(
-         prefixIcon: Icon( this.icon ),
+         prefixIcon: Icon( this.icon, size: 17, ),
          focusedBorder: InputBorder.none,
          border: InputBorder.none,
-         hintText: this.placeholder
+         hintText: this.placeholder,
        ),
         
      ));

@@ -43,7 +43,7 @@ class _RamoPageState extends State<RamoPage> {
       this.cursoService = Provider.of<CursoService>(context, listen: false);
       this.ramo = cursoService.ramo;
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      //backgroundColor: Colors.grey[50],
       body: CustomScrollView(
         controller: _scrollController,
         slivers: <Widget>[
@@ -52,13 +52,13 @@ class _RamoPageState extends State<RamoPage> {
             children: <Widget>[
               //SizedBox(height: 20),
               HeaderTitulo(titulo: 'Primero Medio', paginaDestino: '',),
-              _listaPrimero(),
+              _listaNivel(cursos1),
               HeaderTitulo(titulo: 'Segundo Medio', paginaDestino: '',),
-              _listaSegundo(),
+              _listaNivel(cursos2),
               HeaderTitulo(titulo: 'Tercero Medio', paginaDestino: '',),
-              _listaTercero(),
+              _listaNivel(cursos3),
               HeaderTitulo(titulo: 'Cuarto Medio', paginaDestino: '',),
-              _listaCuarto(),
+              _listaNivel(cursos4),
 
             ],
           )),
@@ -112,58 +112,20 @@ class _RamoPageState extends State<RamoPage> {
     setState((){});
   }
 
-  Widget _listaPrimero() {
+  Widget _listaNivel( List<Curso> cursosx ) {
     return Container(
-      height: 312,
+      height: 330,
       child: PageView.builder(
         physics: BouncingScrollPhysics(),
         pageSnapping: false,
-        itemBuilder: (_, i) => carruselHorizontal(context, cursos1[i]),
-        itemCount: cursos1.length,
+        itemBuilder: (_, i) => carruselHorizontal(context, cursosx[i]),
+        itemCount: cursosx.length,
         controller: PageController(
           viewportFraction: 0.65 ), 
       ),
     );
   }
-  Widget _listaSegundo() {
-    return Container(
-      height: 312,
-      child: PageView.builder(
-        physics: BouncingScrollPhysics(),
-        pageSnapping: false,
-        itemBuilder: (_, i) => carruselHorizontal(context, cursos2[i]),
-        itemCount: cursos2.length,
-        controller: PageController(
-          viewportFraction: 0.65 ), 
-      ),
-    );
-  }
-  Widget _listaTercero() {
-    return Container(
-      height: 312,
-      child: PageView.builder(
-        physics: BouncingScrollPhysics(),
-        pageSnapping: false,
-        itemBuilder: (_, i) => carruselHorizontal(context, cursos3[i]),
-        itemCount: cursos3.length,
-        controller: PageController(
-          viewportFraction: 0.65 ), 
-      ),
-    );
-  }
-  Widget _listaCuarto() {
-    return Container(
-      height: 312,
-      child: PageView.builder(
-        physics: BouncingScrollPhysics(),
-        pageSnapping: false,
-        itemBuilder: (_, i) => carruselHorizontal(context, cursos4[i]),
-        itemCount: cursos4.length,
-        controller: PageController(
-          viewportFraction: 0.65 ), 
-      ),
-    );
-  }
+
 
 
 }
