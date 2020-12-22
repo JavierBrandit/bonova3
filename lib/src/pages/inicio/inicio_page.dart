@@ -107,11 +107,11 @@ class _InicioPageState extends State<InicioPage> {
                 children: <Widget>[
                 IconButton(
                   icon: Icon(FluentSystemIcons.ic_fluent_upload_filled),
-                  //color: Colors.teal,
+                  color: isDarkTheme? Colors.grey[100] : Colors.grey[600],
                   onPressed: () => Navigator.pushNamed(context, 'upload'),
                 ),
                 IconButton(
-                  icon: SvgPicture.asset('assets/send.svg', height: 20.0, width: 20.0, color: isDarkTheme? Colors.white : Colors.teal,),
+                  icon: SvgPicture.asset('assets/send.svg', height: 20.0, width: 20.0, color: isDarkTheme? Colors.white : Colors.grey[600],),
                   //color:  Colors.teal,
                   onPressed: () => Navigator.pushNamed(context, 'usuarios-chat'),
                 ),

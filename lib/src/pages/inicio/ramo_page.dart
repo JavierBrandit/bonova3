@@ -40,6 +40,9 @@ class _RamoPageState extends State<RamoPage> {
     
   @override
   Widget build(BuildContext context) {
+
+    var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
+
       this.cursoService = Provider.of<CursoService>(context, listen: false);
       this.ramo = cursoService.ramo;
     return Scaffold(
@@ -68,10 +71,18 @@ class _RamoPageState extends State<RamoPage> {
   }
 
   SliverAppBar _switchAppBar( String ramo ) {
+
+    var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
+
     switch( ramo ) {
-          case 'matematica': return _appBarItem('assets/portadaMatematicaRamo.png', 'assets/logoMatematica.png');
-          case 'fisica': return _appBarItem('assets/portadaFisicaRamo.png', 'assets/logoFisica.png');
-          default: return _appBarItem('','');
+      case 'matematica':
+        return _appBarItem( isDarkTheme? 'assets/portadaMatematicaRamoNoche.png' : 'assets/portadaMatematicaRamo.png',
+                            isDarkTheme? 'assets/logoMatematicaNoche.png' : 'assets/logoMatematica.png');
+      case 'fisica':
+        return _appBarItem( isDarkTheme? 'assets/portadaFisicaRamoNoche.png' : 'assets/portadaFisicaRamo.png',
+                            isDarkTheme? 'assets/logoFisicaNoche.png' : 'assets/logoFisica.png');
+      
+      default: return _appBarItem('','');
         }
   }
   
@@ -81,7 +92,7 @@ class _RamoPageState extends State<RamoPage> {
         title: Container( child: Image.asset(titulo), height: 24,),
         elevation: 0.0,
         collapsedHeight: 57,
-        backgroundColor: Colors.white,
+        //backgroundColor: Colors.white,
         expandedHeight: 65,
         //snap: true,
         floating: true,

@@ -16,7 +16,7 @@ class CrearPortadas extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-
+    var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
 
     return Column(
       children: <Widget>[
@@ -29,8 +29,8 @@ class CrearPortadas extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              portada( context, 'assets/portadaMatematica.png', 'matematica'),
-              portada( context, 'assets/portadaFisica.png', 'fisica'),
+              portada( context, isDarkTheme? 'assets/portadaMatematicaNoche.png' : 'assets/portadaMatematica.png', 'matematica'),
+              portada( context, isDarkTheme? 'assets/portadaFisicaNoche.png' : 'assets/portadaFisica.png', 'fisica'),
             ],),
         ),
         Padding(
@@ -38,8 +38,8 @@ class CrearPortadas extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              portada( context, 'assets/portadaFisica.png', 'fisica'),
-              portada( context, 'assets/portadaMatematica.png', 'matematica'),
+              portada( context, isDarkTheme? 'assets/portadaMatematicaNoche.png' : 'assets/portadaMatematica.png', 'matematica'),
+              portada( context, isDarkTheme? 'assets/portadaFisicaNoche.png' : 'assets/portadaFisica.png', 'fisica'),
             ],),
         ),
       ],

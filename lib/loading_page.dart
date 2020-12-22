@@ -9,7 +9,7 @@ class LoadingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      //backgroundColor: Colors.white,
       body: FutureBuilder(
           future: checkLoginState(context),
           builder: (context, AsyncSnapshot<dynamic> snapshot) {

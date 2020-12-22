@@ -3,6 +3,9 @@ import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
+import 'package:lite_rolling_switch/lite_rolling_switch.dart';
+import 'package:flutter_switch/flutter_switch.dart';
+
 
  
 class UserPage extends StatefulWidget {
@@ -49,16 +52,44 @@ class _UserPageState extends State<UserPage> {
 
           SizedBox( height: 50 ),
 
-          tira( 'Modo Noche', Icon( FluentSystemIcons.ic_fluent_weather_moon_filled, color: Colors.teal[300] ) ),
-          Divider( color: Colors.transparent, height: 8),
-          tira( 'Biblioteca', Icon( FluentSystemIcons.ic_fluent_folder_filled, color: Colors.yellow[400] )),
-          Divider( color: Colors.transparent, height: 8),
-          tira( 'Actividad', Icon( FluentSystemIcons.ic_fluent_heart_filled, color: Colors.redAccent[100] )),
-          Divider( color: Colors.transparent, height: 8),
-          tira( 'Configuracion', Icon( FluentSystemIcons.ic_fluent_settings_filled, color: Colors.blue[100] )),
-          Divider( color: Colors.transparent, height: 8),
-          tira( 'Ayuda', Icon( FluentSystemIcons.ic_fluent_help_circle_filled, color: Colors.grey[400] )),
-          Divider( color: Colors.transparent, height: 8),
+          tira(  isDarkTheme? 'Modo Noche' : 'Modo Día', FlutterSwitch(
+                                  width: 65,
+                                  height: 33,
+                                  valueFontSize: 25.0,
+                                  toggleSize: 25.0,
+                                  value: isDarkTheme,
+                                  borderRadius: 30.0,
+                                  padding: 4,
+                                  
+                                  activeIcon: Icon(FluentSystemIcons.ic_fluent_weather_moon_filled, color: Colors.teal[50]),
+                                  activeColor: Colors.black26,
+                                  activeToggleColor: Colors.transparent,
+
+                                  inactiveIcon: Icon(Icons.brightness_7, color: Colors.tealAccent[700]),
+                                  inactiveColor: Colors.grey[100],
+                                  inactiveToggleColor: Colors.transparent,
+
+                                  onToggle: (val) {
+                                    setState(() {
+                                      isDarkTheme = val;
+                                      final tema = Provider.of<ThemeChanger>(context, listen: false);
+                                        isDarkTheme ?
+                                        tema.setTheme(ThemeMode.light) : tema.setTheme(ThemeMode.dark);
+                                        setState(() {});
+                                    });
+                                  },
+                                ),
+          ),  //Icon( FluentSystemIcons.ic_fluent_weather_moon_filled, color: isDarkTheme? Colors.teal[700] : Colors.teal[300] ) ),
+          
+          // Divider( color: Colors.transparent, height: 8),
+          // tira( 'Biblioteca', Icon( FluentSystemIcons.ic_fluent_folder_filled, color: isDarkTheme? Colors.yellow[700] : Colors.yellow[400] )),
+          // Divider( color: Colors.transparent, height: 8),
+          // tira( 'Actividad', Icon( FluentSystemIcons.ic_fluent_heart_filled, color: isDarkTheme? Colors.red[700] : Colors.redAccent[100] )),
+          // Divider( color: Colors.transparent, height: 8),
+          // tira( 'Configuracion', Icon( FluentSystemIcons.ic_fluent_settings_filled, color: isDarkTheme? Colors.blue[700] : Colors.blue[100] )),
+          // Divider( color: Colors.transparent, height: 8),
+          // tira( 'Ayuda', Icon( FluentSystemIcons.ic_fluent_help_circle_filled, color: isDarkTheme? Colors.grey[700] : Colors.grey[400] )),
+          // Divider( color: Colors.transparent, height: 8),
           
 
         ],
@@ -82,7 +113,7 @@ class _UserPageState extends State<UserPage> {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(15),
           child: Container(
-            color: isDarkTheme? grisfondo : Colors.white,
+            color: isDarkTheme? grisfondo.withOpacity(0.6) : Colors.white,
             width: size.width * 0.54,
             height: 160,
             padding: EdgeInsets.all(18),
@@ -115,17 +146,18 @@ class _UserPageState extends State<UserPage> {
     );
   }
 
-  Widget tira( String text, Icon icon) {
+  Widget tira( String text, Widget icon) {
 
     var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
 
     return GestureDetector(
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 33),
-        color: isDarkTheme? grisfondo : Colors.white,
+        color: isDarkTheme? grisfondo.withOpacity(0.1) : Colors.white,
         height: 60,
         child: Row(
           children: [
+            SizedBox( width: 7 ),
             icon,
             //SvgPicture.asset( svg, height: 19 ),
             SizedBox( width: 20 ),
@@ -135,7 +167,8 @@ class _UserPageState extends State<UserPage> {
       ),
       onTap: (){
         final tema = Provider.of<ThemeChanger>(context, listen: false);
-        tema.setTheme(ThemeMode.dark);
+        isDarkTheme ?
+        tema.setTheme(ThemeMode.light) : tema.setTheme(ThemeMode.dark);
         setState(() {});
       },
     );
