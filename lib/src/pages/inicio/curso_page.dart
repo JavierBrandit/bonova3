@@ -2,17 +2,15 @@ import 'package:bonova0002/home_page.dart';
 import 'package:bonova0002/src/widgets/reproductor_video.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:kidd_video_player/kidd_video_player.dart';
-import 'package:kidd_video_player/models/layout_configs.dart';
 import 'package:provider/provider.dart';
-import 'package:video_player/video_player.dart';
 import 'package:fluentui_icons/fluentui_icons.dart';
-//import 'package:kidd_video_player/models/layout_configs.dart';
 import 'dart:ui';
-//import 'package:kidd_video_player/kidd_video_player.dart';
+// import 'package:kidd_video_player/models/layout_configs.dart';
+// import 'package:kidd_video_player/kidd_video_player.dart';
 import 'package:bonova0002/src/services/videos_service.dart';
 import 'package:bonova0002/src/models/video_modelo.dart';
 import 'package:bonova0002/src/models/curso_modelo.dart';
+import 'package:video_player/video_player.dart';
 
 class CursoPage extends StatefulWidget {
 
@@ -47,7 +45,7 @@ class _CursoPageState extends State<CursoPage> {
 
   @override
   void dispose() {
-    _controller.dispose();
+    // _controller.dispose();
     super.dispose();
   }
     
@@ -80,24 +78,21 @@ class _CursoPageState extends State<CursoPage> {
             // ),
             SliverToBoxAdapter( child: Column(
               children: <Widget>[
-                Container( 
-                  width: double.infinity,
-                  height: pantalla.width * 9/16,
-                  child: KiddVideoPlayer(
-                    fromUrl: true, 
-                    videoUrl: '${curso.videos[0].path}',
-                    layoutConfigs: KiddLayoutConfigs(
-                      showVolumeControl: false,
-                      backgroundSliderColor: Colors.white24,
-                      // playIcon: FluentSystemIcons.ic_fluent_play_filled
-                    ),
-                  )),
-                //BonovaPlayer(),
-                //SizedBox(height: 60),
-                // Container(
+
+                // Container( 
+                //   width: double.infinity,
                 //   height: pantalla.width * 9/16,
-                //   width: pantalla.width,
-                //   child: crearPlayer(videos[0])),
+                //   child: KiddVideoPlayer(
+                //     fromUrl: true, 
+                //     videoUrl: '${curso.videos[0].path}',
+                //     layoutConfigs: KiddLayoutConfigs(
+                //       showVolumeControl: false,
+                //       backgroundSliderColor: Colors.white24,
+                //       // playIcon: FluentSystemIcons.ic_fluent_play_filled
+                //     ),
+                //   )),
+
+                BonovaPlayer(),
                 _listVideos(),
 
 

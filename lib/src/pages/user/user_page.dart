@@ -1,10 +1,12 @@
 import 'package:bonova0002/src/services/theme.dart';
+import 'package:bonova0002/src/services/prefs.dart';
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 import 'package:flutter_switch/flutter_switch.dart';
+
 
 
  
@@ -17,11 +19,13 @@ class UserPage extends StatefulWidget {
 class _UserPageState extends State<UserPage> {
 
   Color grisfondo = Colors.grey[850];
+  final prefs = new PreferenciasUsuario();
 
   @override
   Widget build(BuildContext context) {
 
     var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
+    //prefs.colorSecundario();
     final Size pantalla = MediaQuery.of(context).size;
     final tema = Provider.of<ThemeChanger>(context);
     
@@ -52,44 +56,17 @@ class _UserPageState extends State<UserPage> {
 
           SizedBox( height: 50 ),
 
-          tira(  isDarkTheme? 'Modo Noche' : 'Modo Día', FlutterSwitch(
-                                  width: 65,
-                                  height: 33,
-                                  valueFontSize: 25.0,
-                                  toggleSize: 25.0,
-                                  value: isDarkTheme,
-                                  borderRadius: 30.0,
-                                  padding: 4,
-                                  
-                                  activeIcon: Icon(FluentSystemIcons.ic_fluent_weather_moon_filled, color: Colors.teal[50]),
-                                  activeColor: Colors.black26,
-                                  activeToggleColor: Colors.transparent,
-
-                                  inactiveIcon: Icon(Icons.brightness_7, color: Colors.tealAccent[700]),
-                                  inactiveColor: Colors.grey[100],
-                                  inactiveToggleColor: Colors.transparent,
-
-                                  onToggle: (val) {
-                                    setState(() {
-                                      isDarkTheme = val;
-                                      final tema = Provider.of<ThemeChanger>(context, listen: false);
-                                        isDarkTheme ?
-                                        tema.setTheme(ThemeMode.light) : tema.setTheme(ThemeMode.dark);
-                                        setState(() {});
-                                    });
-                                  },
-                                ),
-          ),  //Icon( FluentSystemIcons.ic_fluent_weather_moon_filled, color: isDarkTheme? Colors.teal[700] : Colors.teal[300] ) ),
+          tiraDiaNoche(),
           
-          // Divider( color: Colors.transparent, height: 8),
-          // tira( 'Biblioteca', Icon( FluentSystemIcons.ic_fluent_folder_filled, color: isDarkTheme? Colors.yellow[700] : Colors.yellow[400] )),
-          // Divider( color: Colors.transparent, height: 8),
-          // tira( 'Actividad', Icon( FluentSystemIcons.ic_fluent_heart_filled, color: isDarkTheme? Colors.red[700] : Colors.redAccent[100] )),
-          // Divider( color: Colors.transparent, height: 8),
-          // tira( 'Configuracion', Icon( FluentSystemIcons.ic_fluent_settings_filled, color: isDarkTheme? Colors.blue[700] : Colors.blue[100] )),
-          // Divider( color: Colors.transparent, height: 8),
-          // tira( 'Ayuda', Icon( FluentSystemIcons.ic_fluent_help_circle_filled, color: isDarkTheme? Colors.grey[700] : Colors.grey[400] )),
-          // Divider( color: Colors.transparent, height: 8),
+          Divider( color: Colors.transparent, height: 8),
+          tira( 'Biblioteca', Icon( FluentSystemIcons.ic_fluent_folder_filled, color: isDarkTheme? Colors.yellow[700] : Colors.yellow[400] )),
+          Divider( color: Colors.transparent, height: 8),
+          tira( 'Actividad', Icon( FluentSystemIcons.ic_fluent_heart_filled, color: isDarkTheme? Colors.red[700] : Colors.redAccent[100] )),
+          Divider( color: Colors.transparent, height: 8),
+          tira( 'Configuracion', Icon( FluentSystemIcons.ic_fluent_settings_filled, color: isDarkTheme? Colors.blue[700] : Colors.blue[100] )),
+          Divider( color: Colors.transparent, height: 8),
+          tira( 'Ayuda', Icon( FluentSystemIcons.ic_fluent_help_circle_filled, color: isDarkTheme? Colors.grey[700] : Colors.grey[400] )),
+          Divider( color: Colors.transparent, height: 8),
           
 
         ],
@@ -146,30 +123,85 @@ class _UserPageState extends State<UserPage> {
     );
   }
 
+  Widget tiraDiaNoche() {
+
+    var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
+
+    return GestureDetector(
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 29),
+        color: isDarkTheme? grisfondo.withOpacity(0.1) : Colors.white,
+        height: 60,
+        child: Row(
+          children: [
+
+            FlutterSwitch(        
+              width: 45,
+              height: 33,
+              valueFontSize: 25.0,
+              toggleSize: 25.0,
+              value: isDarkTheme,
+              borderRadius: 30.0,
+              padding: 4,
+              
+              activeIcon: Icon(FluentSystemIcons.ic_fluent_weather_moon_filled, color: Colors.teal[50]),
+              activeColor: Colors.black26,
+              activeToggleColor: Colors.transparent,
+
+              inactiveIcon: Icon(Icons.brightness_7, color: Colors.tealAccent[700]),
+              inactiveColor: Colors.grey[100],
+              inactiveToggleColor: Colors.transparent,
+
+              onToggle: (val) {
+                  // prefs.colorSecundario = val;
+                  isDarkTheme = val;
+                final tema = Provider.of<ThemeChanger>(context, listen: false);
+                isDarkTheme 
+                  ? tema.setTheme(ThemeMode.light) 
+                  : tema.setTheme(ThemeMode.dark);
+                setState(() {});  
+              },
+            ),
+            //SvgPicture.asset( svg, height: 19 ),
+            
+            SizedBox( width: 15 ),
+            Text( isDarkTheme? 'Modo Noche' : 'Modo Día' , 
+              style: TextStyle( fontSize: 17, fontWeight: FontWeight.w400, color: isDarkTheme? Colors.grey[50] : Colors.grey[850] ) ),
+          ],
+        ),
+      ),
+      onTap: (){
+        final tema = Provider.of<ThemeChanger>(context, listen: false);
+        // prefs.colorSecundario = isDarkTheme;
+        isDarkTheme 
+          ? tema.setTheme(ThemeMode.light) 
+          : tema.setTheme(ThemeMode.dark);
+        setState(() {});
+      },
+    );
+  }
+  
   Widget tira( String text, Widget icon) {
 
     var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
 
     return GestureDetector(
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 33),
+        padding: EdgeInsets.symmetric(horizontal: 25),
         color: isDarkTheme? grisfondo.withOpacity(0.1) : Colors.white,
         height: 60,
         child: Row(
           children: [
-            SizedBox( width: 7 ),
+            SizedBox( width: 10 ),
             icon,
             //SvgPicture.asset( svg, height: 19 ),
-            SizedBox( width: 20 ),
+            SizedBox( width: 29 ),
             Text( text , style: TextStyle( fontSize: 17, fontWeight: FontWeight.w400, color: isDarkTheme? Colors.grey[50] : Colors.grey[850] ) ),
           ],
         ),
       ),
       onTap: (){
-        final tema = Provider.of<ThemeChanger>(context, listen: false);
-        isDarkTheme ?
-        tema.setTheme(ThemeMode.light) : tema.setTheme(ThemeMode.dark);
-        setState(() {});
+        
       },
     );
   }

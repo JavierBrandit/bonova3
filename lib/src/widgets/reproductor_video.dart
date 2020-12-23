@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
-import 'package:video_player/video_player.dart';
+
 import 'package:bonova0002/src/models/video_modelo.dart';
 import 'package:bonova0002/src/services/videos_service.dart';
+import 'package:video_player/video_player.dart';
 
 class BonovaPlayer extends StatefulWidget {
   //BonovaPlayer({Key key}) : super(key: key);
@@ -48,8 +49,8 @@ class _BonovaPlayerState extends State<BonovaPlayer> {
          fit: StackFit.passthrough,
          children : [
            crearPlayer(),
-           controles(pantalla),
-           VideoProgressIndicator(_controller, colors: VideoProgressColors(), allowScrubbing: true,)
+           //controles(pantalla),
+           //VideoProgressIndicator(_controller, colors: VideoProgressColors(), allowScrubbing: true,)
 
 
            //_ControlsOverlay( controller: _controller )
@@ -206,35 +207,35 @@ class _ControlsOverlay extends StatelessWidget {
             controller.value.isPlaying ? controller.pause() : controller.play();
           },
         ),
-        // Align(
-        //   alignment: Alignment.topRight,
-        //   child: PopupMenuButton<double>(
-        //     initialValue: controller.value.playbackSpeed,
-        //     tooltip: 'Playback speed',
-        //     onSelected: (speed) {
-        //       controller.setPlaybackSpeed(speed);
-        //     },
-        //     itemBuilder: (context) {
-        //       return [
-        //         for (final speed in _examplePlaybackRates)
-        //           PopupMenuItem(
-        //             value: speed,
-        //             child: Text('${speed}x'),
-        //           )
-        //       ];
-        //     },
-        //     child: Padding(
-        //       padding: const EdgeInsets.symmetric(
-        //         // Using less vertical padding as the text is also longer
-        //         // horizontally, so it feels like it would need more spacing
-        //         // horizontally (matching the aspect ratio of the video).
-        //         vertical: 12,
-        //         horizontal: 16,
-        //       ),
-        //       child: Text('${controller.value.playbackSpeed}x'),
-        //     ),
-        //   ),
-        // ),
+        Align(
+          alignment: Alignment.topRight,
+          child: PopupMenuButton<double>(
+            initialValue: controller.value.playbackSpeed,
+            tooltip: 'Playback speed',
+            onSelected: (speed) {
+              controller.setPlaybackSpeed(speed);
+            },
+            itemBuilder: (context) {
+              return [
+                for (final speed in _examplePlaybackRates)
+                  PopupMenuItem(
+                    value: speed,
+                    child: Text('${speed}x'),
+                  )
+              ];
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                // Using less vertical padding as the text is also longer
+                // horizontally, so it feels like it would need more spacing
+                // horizontally (matching the aspect ratio of the video).
+                vertical: 12,
+                horizontal: 16,
+              ),
+              child: Text('${controller.value.playbackSpeed}x'),
+            ),
+          ),
+        ),
       ],
     );
   }

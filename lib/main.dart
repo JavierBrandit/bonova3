@@ -7,11 +7,15 @@ import 'src/services/socket_service.dart';
 import 'src/services/theme.dart';
 import 'src/routes/routes.dart';
 import 'src/services/videos_service.dart';
+import 'src/services/prefs.dart';
 import 'package:bonova0002/theme.dart';
 
-void main() {
-  
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle( statusBarColor: Colors.transparent ));
+  // final prefs = new PreferenciasUsuario();
+  // await prefs.initPrefs();
   runApp(MyApp());
 }
 
@@ -20,6 +24,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
 
     //final themeChanger = Provider.of<ThemeChanger>(context);
+    // final prefs = new PreferenciasUsuario();
+    // bool isDarkTheme = prefs.colorSecundario;
     
     return ChangeNotifierProvider<ThemeChanger>(
       create: (_) => ThemeChanger(ThemeMode.light),
