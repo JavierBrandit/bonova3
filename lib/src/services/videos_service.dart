@@ -14,22 +14,29 @@ class VideoService with ChangeNotifier {
 
   Curso _curso;
   Video _video;
-  int _indexVideo = 0;
+  int _indexVideo = 0; 
 
-    Curso get curso => _curso;
-    set curso(Curso curso) {
-      _curso = curso;
-    }
-    Video get video => _video;
-    set video(Video video) {
-      _video = video;
-      notifyListeners();
-    }
-    int get indexVideo => _indexVideo;
-    set indexVideo(int indexVideo) {
-      _indexVideo = indexVideo;
-      notifyListeners();
-    }
+  int getIndex() => _indexVideo;
+  
+  int setIndex( int i ) {
+    this._indexVideo = i;
+    notifyListeners();
+  }
+  
+  Video getVideo() => _video;
+  
+  Video setVideo( Video v ) {
+    this._video = v;
+    notifyListeners();
+  }
+
+  Curso getCurso() => _curso;
+  
+  Video setCurso( Curso c ) {
+    this._curso = c;
+    notifyListeners();
+  }
+
 
   Future<List<Video>> getVideos() async {
     

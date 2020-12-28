@@ -1,3 +1,5 @@
+import 'package:bonova0002/src/models/usuario.dart';
+import 'package:bonova0002/src/services/auth_services.dart';
 import 'package:bonova0002/src/services/theme.dart';
 import 'package:bonova0002/src/services/prefs.dart';
 import 'package:fluentui_icons/fluentui_icons.dart';
@@ -25,9 +27,10 @@ class _UserPageState extends State<UserPage> {
   Widget build(BuildContext context) {
 
     var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
-    //prefs.colorSecundario();
     final Size pantalla = MediaQuery.of(context).size;
-    final tema = Provider.of<ThemeChanger>(context);
+    // final tema = Provider.of<ThemeChanger>(context);
+    final authService = Provider.of<AuthService>(context);
+    final usuario = authService.usuario;
     
     return Scaffold(
       //backgroundColor: Colors.grey[50],
@@ -49,7 +52,7 @@ class _UserPageState extends State<UserPage> {
               child: CircleAvatar(backgroundImage: AssetImage('assets/placeBonova.jpg'), radius: 55 ),
             ),
             //SizedBox( width: 20 ),
-            infoUsuario( context, pantalla ),
+            infoUsuario( context, pantalla, usuario ),
 
 
           ]),
@@ -75,7 +78,7 @@ class _UserPageState extends State<UserPage> {
     );
   }
 
-  Widget infoUsuario( BuildContext c, Size size ) {
+  Widget infoUsuario( BuildContext c, Size size, Usuario usuario ) {
 
     var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
 
@@ -101,15 +104,17 @@ class _UserPageState extends State<UserPage> {
             //     )]),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Text('Alumno', style: TextStyle( fontSize: 12, fontWeight: FontWeight.w700, letterSpacing: 0.4, color: isDarkTheme? Colors.grey[400] : Colors.grey[500], ) ),
-                Text('Javier Gonzalez D.', style: TextStyle( fontSize: 21, fontWeight: FontWeight.w500, letterSpacing: 0.2, color: isDarkTheme? Colors.white : Colors.grey[800] ) ),
-                SizedBox( height: 10 ),
+                Text(usuario.nombre, style: TextStyle( fontSize: 21, fontWeight: FontWeight.w500, letterSpacing: 0.2, color: isDarkTheme? Colors.white : Colors.grey[800] ) ),
+                SizedBox( height: 5 ),
                 Text('Curso', style: TextStyle( fontSize: 12, fontWeight: FontWeight.w700, letterSpacing: 0.4, color: isDarkTheme? Colors.grey[400] : Colors.grey[500], ) ),
                 Text('3ro · Patricio Mekis · TP', style: TextStyle( fontSize: 14, fontWeight: FontWeight.w400, letterSpacing: 0.2, color: isDarkTheme? Colors.grey[50] : Colors.grey[850] ) ),
-                SizedBox( height: 35 ),
+                SizedBox( height: 15 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text('editar informacion', style: TextStyle( fontSize: 14, fontWeight: FontWeight.w600, letterSpacing: 0.6, color: Colors.tealAccent[700], ) ),
                   ],

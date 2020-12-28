@@ -5,8 +5,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'dart:ui';
-// import 'package:kidd_video_player/models/layout_configs.dart';
-// import 'package:kidd_video_player/kidd_video_player.dart';
+import 'package:kidd_video_player/models/layout_configs.dart';
+import 'package:kidd_video_player/kidd_video_player.dart';
 import 'package:bonova0002/src/services/videos_service.dart';
 import 'package:bonova0002/src/models/video_modelo.dart';
 import 'package:bonova0002/src/models/curso_modelo.dart';
@@ -28,43 +28,46 @@ class _CursoPageState extends State<CursoPage> {
   VideoService videoService;
   List<Video> videos = [];
   Video video;
-  int indexx;
+  int indexx = 0;
+  Curso curso;
 
   @override
   void initState() { 
     super.initState();
     this.videoService = Provider.of<VideoService>(context, listen: false);
-    this._cargarVideos(videoService.curso);
-    this.indexx = videoService.indexVideo;
-    this.video = videoService.curso.videos[indexx];
-    _controller = VideoPlayerController.network( video.path );
-    _initializeVideoPlayerFuture = _controller.initialize();
-    this.value = _controller.value;
-    _controller.play();
+    this._cargarVideos(videoService.getCurso());
+    // this.indexx = videoService.getIndex();
+    // this.curso = videoService.getCurso();
+    // this.video = curso.videos[indexx];
+    // _controller = VideoPlayerController.network( video.path );
+    // _initializeVideoPlayerFuture = _controller.initialize();
+    // this.value = _controller.value;
+    // _controller.play();
   }
 
-  @override
-  void dispose() {
-    // _controller.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _controller.dispose();
+  //   super.dispose();
+  // }
     
   @override
   Widget build(BuildContext context) {
 
     videoService = Provider.of<VideoService>(context);
-    Curso curso = ModalRoute.of(context).settings.arguments;
+    curso = videoService.getCurso();
+    video = videoService.getVideo();
+    indexx = videoService.getIndex();
     
     Size pantalla = MediaQuery.of(context).size;
 
     return Scaffold(
-        backgroundColor: Colors.grey[900],
         body: CustomScrollView(
           //controller: _scrollController,
           physics: BouncingScrollPhysics(),
           slivers: <Widget>[
                           
-            SliverAppBar(title: Text(curso.titulo, style: TextStyle( color: Colors.grey[50])), backgroundColor: Colors.grey[900], elevation: 0.0, pinned: true, toolbarHeight: 55, brightness: Brightness.dark,),
+            SliverAppBar(title: Text(curso.videos[indexx].titulo), elevation: 0.0, pinned: true, toolbarHeight: 55, ),
             // SliverAppBar(
             //   //title: crearPlayer(),
             //   //titleSpacing: 0,
@@ -84,7 +87,7 @@ class _CursoPageState extends State<CursoPage> {
                 //   height: pantalla.width * 9/16,
                 //   child: KiddVideoPlayer(
                 //     fromUrl: true, 
-                //     videoUrl: '${curso.videos[0].path}',
+                //     videoUrl: '${curso.videos[indexx].path}',
                 //     layoutConfigs: KiddLayoutConfigs(
                 //       showVolumeControl: false,
                 //       backgroundSliderColor: Colors.white24,
@@ -92,7 +95,8 @@ class _CursoPageState extends State<CursoPage> {
                 //     ),
                 //   )),
 
-                BonovaPlayer(),
+                // BonovaPlayer(),
+                PlayPage( clips: curso.videos,),
                 _listVideos(),
 
 
@@ -140,18 +144,21 @@ class _CursoPageState extends State<CursoPage> {
     );
   }
 
-  ListTile _videoListTile(Video video, int index) {
+  ListTile _videoListTile(Video video, int i ) {
     return ListTile(
-        title: Text( video.titulo, style: TextStyle( color: Colors.grey[100], fontWeight: FontWeight.w500, fontSize: 15), ),
+        title: Text( video.titulo, style: TextStyle( fontWeight: FontWeight.w500, fontSize: 15), ),
         // subtitle: Text( video.path, style: TextStyle( color: Colors.grey[400]) ),
-        onTap: () {
+        onTap: () async {
           final videoService = Provider.of<VideoService>(context, listen: false);
           //TO DO:
           // videoService.indexVideo = index;
-          // videoService.curso.videos[index] = video;
-          // print(index);
+          // videoService.setVideo( video );
+          videoService.setIndex( i );
+          print(videoService.getIndex());
           // print(video.titulo);
-          // setState(() {});
+          // await _controller.initialize();
+          setState(() {});
+          
           
 
         },

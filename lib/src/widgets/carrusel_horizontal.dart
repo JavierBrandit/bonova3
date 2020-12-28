@@ -1,8 +1,9 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:bonova0002/src/models/curso_modelo.dart';
 import 'package:bonova0002/src/services/videos_service.dart';
 import 'package:fluentui_icons/fluentui_icons.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:bonova0002/src/widgets/reproductor_video.dart';
 
 
 Widget carruselHorizontal(BuildContext context, Curso curso) {
@@ -92,8 +93,9 @@ Widget carruselHorizontal(BuildContext context, Curso curso) {
           ),
         onTap: () {
           VideoService videoService = Provider.of<VideoService>(context, listen: false );
-          videoService.curso = curso;
-          Navigator.pushNamed(context, 'curso', arguments: curso );
+          videoService.setCurso( curso );
+          // Navigator.pushNamed(context, 'curso', arguments: curso );
+          Navigator.push(context, MaterialPageRoute(builder: (_) => PlayPage( clips: curso.videos ) ));
         },
        )
       ),

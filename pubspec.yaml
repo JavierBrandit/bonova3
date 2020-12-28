@@ -34,7 +34,7 @@ dependencies:
   mime_type:
   # video_player: ^0.11.0
   
-  # kidd_video_player:
+  kidd_video_player:
 
   pull_to_refresh: ^1.6.2
   provider: ^4.3.2+2

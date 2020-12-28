@@ -13,6 +13,7 @@ import 'package:bonova0002/home_page.dart';
 import 'package:bonova0002/src/pages/inicio/ramo_page.dart';
 import 'package:bonova0002/src/pages/login/login_page.dart';
 
+
 final Map<String, Widget Function(BuildContext)> appRoutes = {
         'loading'       : (_) => LoadingPage(),
         'login'         : (_) => LoginPage(),
@@ -23,7 +24,7 @@ final Map<String, Widget Function(BuildContext)> appRoutes = {
         'home'          : (_) => HomePage(),
         'inicio'        : (_) => InicioPage(),
         //'upload'        : (_) => ProductoPage(),
-        //'reproductor'   : (_) => VideosReproductor(),
+        // 'reproductor'   : (_) => PlayPage(),
         'ramo'          : (_) => RamoPage(),
         'curso'         : (_) => CursoPage(),
         'usuarios-chat' : (_) => UsuariosChatPage(),

@@ -1,11 +1,16 @@
+import 'package:bonova0002/src/services/auth_services.dart';
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
  
 class PerfilPage extends StatelessWidget {
  
   @override
   Widget build(BuildContext context) {
+
+    final authService = Provider.of<AuthService>(context);
+    final usuario = authService.usuario;
     
     return Scaffold(
       //backgroundColor: Colors.grey[50],
@@ -25,7 +30,7 @@ class PerfilPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(width: 50),
-              Text('Javier Gonzalez D.', style: TextStyle( fontSize: 28, fontWeight: FontWeight.w400, color: Colors.grey[700], letterSpacing: 0.8 ) ),
+              Text( usuario.nombre, style: TextStyle( fontSize: 28, fontWeight: FontWeight.w400, color: Colors.grey[700], letterSpacing: 0.8 ) ),
               IconButton(
                 icon: Icon( FluentSystemIcons.ic_fluent_edit_filled, size: 16, color: Colors.grey[700],),
                 onPressed: (){},
