@@ -1,11 +1,9 @@
 import 'dart:convert';
-
 import 'curso_modelo.dart';
 
+CursosResponse cursosFromJson(String str) => CursosResponse.fromJson(json.decode(str));
 
-CursosResponse cursosResponseFromJson(String str) => CursosResponse.fromJson(json.decode(str));
-
-String cursosResponseToJson(CursosResponse data) => json.encode(data.toJson());
+String cursosToJson(CursosResponse data) => json.encode(data.toJson());
 
 class CursosResponse {
     CursosResponse({

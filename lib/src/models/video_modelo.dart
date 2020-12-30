@@ -1,5 +1,3 @@
-
-
 class Video {
     Video({
         this.titulo,
@@ -7,13 +5,17 @@ class Video {
         this.path,
         this.curso,
         this.size,
+        this.numMod,
+        this.tituloMod,
     });
 
     String titulo;
     String descripcion;
     String path;
     String curso;
-    int size;
+    dynamic size;
+    int numMod;
+    String tituloMod;
 
     factory Video.fromJson(Map<String, dynamic> json) => Video(
         titulo: json["titulo"],
@@ -21,6 +23,8 @@ class Video {
         path: json["path"],
         curso: json["curso"],
         size: json["size"],
+        numMod: json["numMod"],
+        tituloMod: json["tituloMod"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -29,5 +33,7 @@ class Video {
         "path": path,
         "curso": curso,
         "size": size,
+        "numMod": numMod,
+        "tituloMod": tituloMod,
     };
 }

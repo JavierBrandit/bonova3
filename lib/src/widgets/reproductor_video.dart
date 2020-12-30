@@ -489,6 +489,7 @@ class _PlayPageState extends State<PlayPage> {
         });
   }
 
+
   @override
   Widget build(BuildContext context) {
 
@@ -835,7 +836,7 @@ class _PlayPageState extends State<PlayPage> {
                   children: <Widget>[
                     Text( clip.titulo, style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
                     Padding(
-                      child: Text("runtime", style: TextStyle(color: Colors.grey[500])),
+                      child: Text("${clip.tituloMod}", style: TextStyle(color: Colors.grey[500])),
                       padding: EdgeInsets.only(top: 3),
                     )
                   ]),

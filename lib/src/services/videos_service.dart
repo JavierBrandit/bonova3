@@ -1,9 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:bonova0002/src/global/environment.dart';
 import 'package:bonova0002/src/models/curso_modelo.dart';
 import 'package:bonova0002/src/models/curso_response.dart';
 import 'package:bonova0002/src/models/video_modelo.dart';
 import 'package:bonova0002/src/models/video_response.dart';
-import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
 
@@ -76,7 +76,7 @@ class CursoService with ChangeNotifier {
         }
       );
 
-      final cursosResponse = cursosResponseFromJson( resp.body );
+      final cursosResponse = cursosFromJson( resp.body );
       return cursosResponse.cursos;
     
     } catch (e) {

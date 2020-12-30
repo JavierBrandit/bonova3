@@ -96,7 +96,7 @@ class _CursoPageState extends State<CursoPage> {
                 //   )),
 
                 // BonovaPlayer(),
-                PlayPage( clips: curso.videos,),
+                // PlayPage( clips: curso.videos,),
                 _listVideos(),
 
 

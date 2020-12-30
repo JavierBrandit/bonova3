@@ -30,7 +30,7 @@ Widget carruselHorizontal(BuildContext context, Curso curso) {
                   child: Stack(
               alignment: AlignmentDirectional.bottomStart,
               children: [
-                Image.asset('assets/placeholder.png',
+                Image.network(curso.portada,
                   fit: BoxFit.cover,
                   height: 270.0,
                   width: double.infinity
@@ -39,27 +39,27 @@ Widget carruselHorizontal(BuildContext context, Curso curso) {
                   color: isDarkTheme? Colors.grey[850] : Colors.white, 
                   height: 135,
                   width: double.infinity,
-                ),
-                Padding(
                   padding: const EdgeInsets.symmetric( horizontal: 18.0 ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      SizedBox( height: 10),
                       Row(
                         children: [
-                          //SizedBox( width: 18),
-                          Text(curso.titulo, style: TextStyle( fontSize: 15, fontWeight: FontWeight.w500 ),)
+                          Text(curso.titulo, style: TextStyle( fontSize: 15, fontWeight: FontWeight.w600 ),),
                         ]
                       ),
+                      SizedBox( height: 3),
+                      Text(curso.videos.length.toString() + ' videos', style: TextStyle( fontSize: 9, fontWeight: FontWeight.w400 )),
                       SizedBox( height: 6),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           //SizedBox( width: 18),
                           Container(
-                            height: 65,
+                            height: 60,
                             width: 210,
-                            child: Text('Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar.',
+                            child: Text('Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto.',
                               style: TextStyle( fontSize: 11, fontWeight: FontWeight.w300, letterSpacing: 0.3, height: 1.5),
                               overflow: TextOverflow.clip,
                               softWrap: true,
@@ -68,27 +68,26 @@ Widget carruselHorizontal(BuildContext context, Curso curso) {
                           //SizedBox(width: 18),
                         ]
                       ),
-                      SizedBox( height: 6),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          //SizedBox( width: 20),
                           Row(
                             children: [
                               Icon( FluentSystemIcons.ic_fluent_star_filled, size: 11, color: Colors.teal[300],),
                               SizedBox(width: 3,),
-                              Text('5', style: TextStyle( fontSize: 12, fontWeight: FontWeight.w300) ),
+                              Text(curso.rate.toString(), style: TextStyle( fontSize: 12, fontWeight: FontWeight.w300) ),
                             ],
                           ),
-                          //SizedBox( width: 20),
-                          Text(curso.ramo + ' · ' + curso.nivel + 'º', style: TextStyle( fontSize: 12, fontWeight: FontWeight.w300) ),
-                          //SizedBox( width: 20),
+                          Text(curso.profesor, style: TextStyle( fontSize: 12, fontWeight: FontWeight.w400) ),
                         ]
                       ),
-                      SizedBox( height: 14),
                     ],
                   ),
                 ),
+                  
+
+
+                  
               ]
           ),
         onTap: () {
