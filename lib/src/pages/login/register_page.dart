@@ -11,7 +11,6 @@ class RegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[50],
       body: SafeArea( 
         child: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
@@ -28,7 +27,7 @@ class RegisterPage extends StatelessWidget {
 
                 Form(),
 
-                Labels(titulo: '¿Ya tienes una cuenta?', subtitulo: 'Ingresa Ahora', ruta: 'login' ),
+                Labels(titulo: '¿Ya tienes una cuenta?', subtitulo: 'Ingresar', ruta: 'login' ),
 
                 Text('Terminos y condiciones de uso', style: TextStyle( fontWeight: FontWeight.w500, fontFamily: 'Montserrat', fontSize: 11, color: Colors.grey[700]) ),
                 

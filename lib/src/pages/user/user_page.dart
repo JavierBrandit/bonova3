@@ -2,6 +2,7 @@ import 'package:bonova0002/src/models/usuario.dart';
 import 'package:bonova0002/src/services/auth_services.dart';
 import 'package:bonova0002/src/services/theme.dart';
 import 'package:bonova0002/src/services/prefs.dart';
+import 'package:bonova0002/theme.dart';
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -28,16 +29,13 @@ class _UserPageState extends State<UserPage> {
 
     var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
     final Size pantalla = MediaQuery.of(context).size;
-    // final tema = Provider.of<ThemeChanger>(context);
     final authService = Provider.of<AuthService>(context);
     final usuario = authService.usuario;
     
     return Scaffold(
-      //backgroundColor: Colors.grey[50],
       appBar: AppBar(
         title: Text(''),
-        //backgroundColor: Colors.white,
-        elevation: 0.0,
+        elevation: 0,
       ),
       body: Column(
 
@@ -48,7 +46,7 @@ class _UserPageState extends State<UserPage> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: EdgeInsets.all(8),
               child: CircleAvatar(backgroundImage: AssetImage('assets/placeBonova.jpg'), radius: 55 ),
             ),
             //SizedBox( width: 20 ),
@@ -86,14 +84,14 @@ class _UserPageState extends State<UserPage> {
       onTap: () => Navigator.pushNamed( c, 'perfil'),
       child: Container(
         decoration: BoxDecoration( boxShadow: [BoxShadow(
-            color: isDarkTheme? Colors.black.withOpacity(0.03) : Colors.grey[100],
+            color: isDarkTheme? Colors.black.withOpacity(0.01) : Colors.grey[100],
             offset: Offset.fromDirection(-10),
             blurRadius: 10
             )]),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(15),
           child: Container(
-            color: isDarkTheme? grisfondo.withOpacity(0.6) : Colors.white,
+            color: isDarkTheme? BonovaColors.azulNoche[700] : Colors.white,
             width: size.width * 0.54,
             height: 160,
             padding: EdgeInsets.all(18),
@@ -135,7 +133,7 @@ class _UserPageState extends State<UserPage> {
     return GestureDetector(
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 29),
-        color: isDarkTheme? grisfondo.withOpacity(0.1) : Colors.white,
+        color: isDarkTheme? BonovaColors.azulNoche[750] : Colors.white,
         height: 60,
         child: Row(
           children: [
@@ -158,8 +156,7 @@ class _UserPageState extends State<UserPage> {
               inactiveToggleColor: Colors.transparent,
 
               onToggle: (val) {
-                  // prefs.colorSecundario = val;
-                  isDarkTheme = val;
+                  val = isDarkTheme;
                 final tema = Provider.of<ThemeChanger>(context, listen: false);
                 isDarkTheme 
                   ? tema.setTheme(ThemeMode.light) 
@@ -167,8 +164,7 @@ class _UserPageState extends State<UserPage> {
                 setState(() {});  
               },
             ),
-            //SvgPicture.asset( svg, height: 19 ),
-            
+
             SizedBox( width: 15 ),
             Text( isDarkTheme? 'Modo Noche' : 'Modo Día' , 
               style: TextStyle( fontSize: 17, fontWeight: FontWeight.w400, color: isDarkTheme? Colors.grey[50] : Colors.grey[850] ) ),
@@ -177,7 +173,6 @@ class _UserPageState extends State<UserPage> {
       ),
       onTap: (){
         final tema = Provider.of<ThemeChanger>(context, listen: false);
-        // prefs.colorSecundario = isDarkTheme;
         isDarkTheme 
           ? tema.setTheme(ThemeMode.light) 
           : tema.setTheme(ThemeMode.dark);
@@ -193,7 +188,7 @@ class _UserPageState extends State<UserPage> {
     return GestureDetector(
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 25),
-        color: isDarkTheme? grisfondo.withOpacity(0.1) : Colors.white,
+        color: isDarkTheme? BonovaColors.azulNoche[750] : Colors.white,
         height: 60,
         child: Row(
           children: [

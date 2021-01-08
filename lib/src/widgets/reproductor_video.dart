@@ -1,272 +1,16 @@
 import 'dart:async';
 import 'dart:math';
-
-import 'package:bonova0002/src/models/curso_modelo.dart';
-import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:fluentui_icons/fluentui_icons.dart';
+import 'package:bonova0002/theme.dart';
+
+import 'package:flutter/services.dart';
+import 'package:bonova0002/src/services/videos_service.dart';
 
 import 'package:bonova0002/src/models/video_modelo.dart';
-import 'package:bonova0002/src/services/videos_service.dart';
 import 'package:video_player/video_player.dart';
-
-// class BonovaPlayer extends StatefulWidget {
-//   //BonovaPlayer({Key key}) : super(key: key);
-//   @override
-//   _BonovaPlayerState createState() => _BonovaPlayerState();
-// }
-
-// class _BonovaPlayerState extends State<BonovaPlayer> {
-
-//   VideoService videoService;
-//   VideoPlayerController _controller;
-//   Future<void> _initializeVideoPlayerFuture;
-//   int currentIndex;
-//   Size pantalla;
-//   VideoPlayerValue value;
-//   Key key;
-
-//   Video video;
-//   int indexx = 0;
-//   Curso curso;
-//   // Duration duration;
-//   // Duration position;
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     this.videoService = Provider.of<VideoService>(context, listen: false);
-//     // this._cargarVideos(videoService.getCurso());
-//     this.indexx = videoService.getIndex();
-//     this.curso = videoService.getCurso();
-//     this.video = curso.videos[indexx];
-//     _controller = VideoPlayerController.network( video.path );
-//     _initializeVideoPlayerFuture = _controller.initialize();
-//     this.value = _controller.value;
-//     _controller.play();
-//   }
-  
-//   @override
-//     void dispose() {
-//       _controller.dispose();
-//       super.dispose();
-//     }
-
-//   @override
-//   Widget build(BuildContext context) {
-
-//     videoService = Provider.of<VideoService>(context);
-//     pantalla = MediaQuery.of(context).size;
-
-//     return Container(
-//        child: Stack(
-//          fit: StackFit.passthrough,
-//          children : [
-//            crearPlayer(),
-//            //controles(pantalla),
-//            //VideoProgressIndicator(_controller, colors: VideoProgressColors(), allowScrubbing: true,)
-
-
-//            //_ControlsOverlay( controller: _controller )
-//          ]
-//        ),
-//     );
-//   }
-
-//   Widget crearPlayer() { 
-//     return FutureBuilder(
-//         future: _initializeVideoPlayerFuture,
-//         builder: (context, snapshot) {
-//           if ( snapshot.connectionState == ConnectionState.done ) {
-//             return AspectRatio(
-//               aspectRatio: _controller.value.aspectRatio,
-//               child: VideoPlayer(_controller),
-//             );
-//           } else {
-//             return Center(child: CircularProgressIndicator());
-//           }
-//         }
-//       );
-//   }
-
-
-//   Widget controles( Size p ) {
-//     return Container(
-//       color: Colors.transparent,
-//       height: p.width * 9/16 ,
-//       width: double.infinity,
-//       child: Column(
-//         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//         children: [
-
-//           controlesArriba(),
-          
-//           IconButton(
-//             onPressed: () {
-//               setState(() {
-//                 if (_controller.value.isPlaying) {
-//                   _controller.pause();
-//                 } else {
-//                   _controller.play();
-//                 }
-//               });
-//             },
-//             icon: _controller.value.isPlaying 
-//               ? Icon( Icons.pause, color: Colors.white, size: 40, )
-//               : SvgPicture.asset('assets/bvPlay.svg', color: Colors.white, height: 30)
-//           ),
-
-//           controlesAbajo(),
-
-//         ],
-//       ),
-//     ); 
-//   }
-
-//   Widget controlesArriba() {
-//     return Padding(
-//             padding: const EdgeInsets.all(12.0),
-//             child: Row( mainAxisAlignment: MainAxisAlignment.spaceBetween, 
-//               children: [
-//               Row( children: [
-//                      Container( height: 20, width: 20, color: Colors.red),
-              
-//               ]),
-                
-//               Row( children: [
-//                      Container( height: 20, width: 20, color: Colors.red),
-//                      SizedBox( width: 20 ),
-//                      Container( height: 20, width: 20, color: Colors.greenAccent),
-//                      SizedBox( width: 20 ),
-//                      Container( height: 20, width: 20, color: Colors.red),
-//               ]),
-               
-//             ]),
-//           );
-//   }
-//   Widget controlesAbajo() {
-//     return Padding(
-//             padding: const EdgeInsets.all(12.0),
-//             child: Row( mainAxisAlignment: MainAxisAlignment.spaceBetween, 
-//               children: [
-//               Row( children: [
-//                     // Text( '${value.position.inMinutes}:${value.position.inSeconds} / ${value.duration.inMinutes}:${value.duration.inSeconds}', 
-//                     //   style: TextStyle( color: Colors.white ) ),
-//                     //  Container( height: 20, width: 20, color: Colors.red),
-//                      SizedBox( width: 20 ),
-//                     //  Slider( 
-//                     //    value: value.position.inSeconds.toDouble(), 
-//                     //    onChanged:
-//                     //  ),
-//                     //Container( height: 20, width: 230, color: Colors.red),
-
-                     
-              
-//               ]),
-                
-//               Row( children: [
-//                      Container( height: 20, width: 20, color: Colors.red),
-//                      SizedBox( width: 20 ),
-//                      Container( height: 20, width: 20, color: Colors.greenAccent),
-//                      SizedBox( width: 20 ),
-//                      Container( height: 20, width: 20, color: Colors.red),
-//               ]),
-               
-//             ]),
-//           );
-//   }
- 
-
-// }
-
-
-
-
-// class _ControlsOverlay extends StatelessWidget {
-//   const 
-//   _ControlsOverlay({Key key, this.controller}) : super(key: key);
-
-//   static const _examplePlaybackRates = [
-//     0.25,
-//     0.5,
-//     1.0,
-//     1.5,
-//     2.0,
-//   ];
-
-//   final VideoPlayerController controller;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Stack(
-//       children: <Widget>[
-//         AnimatedSwitcher(
-//           duration: Duration(milliseconds: 50),
-//           reverseDuration: Duration(milliseconds: 200),
-//           child: controller.value.isPlaying
-//               ? SizedBox.shrink()
-//               : Container(
-//                   color: Colors.black26,
-//                   child: Center(
-//                     child: Icon(
-//                       Icons.play_arrow,
-//                       color: Colors.white,
-//                       size: 100.0,
-//                     ),
-//                   ),
-//                 ),
-//         ),
-//         GestureDetector(
-//           onTap: () {
-//             controller.value.isPlaying ? controller.pause() : controller.play();
-//           },
-//         ),
-        // Align(
-        //   alignment: Alignment.topRight,
-        //   child: PopupMenuButton<double>(
-        //     initialValue: controller.value.playbackSpeed,
-        //     tooltip: 'Playback speed',
-        //     onSelected: (speed) {
-        //       controller.setPlaybackSpeed(speed);
-        //     },
-        //     itemBuilder: (context) {
-        //       return [
-        //         for (final speed in _examplePlaybackRates)
-        //           PopupMenuItem(
-        //             value: speed,
-        //             child: Text('${speed}x'),
-        //           )
-        //       ];
-        //     },
-        //     child: Padding(
-        //       padding: const EdgeInsets.symmetric(
-        //         // Using less vertical padding as the text is also longer
-        //         // horizontally, so it feels like it would need more spacing
-        //         // horizontally (matching the aspect ratio of the video).
-        //         vertical: 12,
-        //         horizontal: 16,
-        //       ),
-        //       child: Text('${controller.value.playbackSpeed}x'),
-        //     ),
-        //   ),
-        // ),
-//       ],
-//     );
-//   }
-// }
-
-
-
-// import 'dart:async';
-// import 'dart:math';
-
-// import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart';
-// import 'package:flutter_video_list_sample/clips.dart';
-// import 'package:screen/screen.dart';
-// import 'package:video_player/video_player.dart';
 
 class PlayPage extends StatefulWidget {
   PlayPage({Key key, @required this.clips}) : super(key: key);
@@ -336,7 +80,6 @@ class _PlayPageState extends State<PlayPage> {
 
   @override
   void initState() {
-    // Screen.keepOn(true);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
     _initializeAndPlay(0);
     super.initState();
@@ -478,10 +221,10 @@ class _PlayPageState extends State<PlayPage> {
         barrierDismissible: true,
         builder: (BuildContext context) {
           return AlertDialog(
-            content: SingleChildScrollView(child: Text("Played all videos.")),
+            content: SingleChildScrollView(child: Text("Fin del Curso")),
             actions: <Widget>[
               FlatButton(
-                child: Text("Close"),
+                child: Text("Ok"),
                 onPressed: () => Navigator.pop(context, true),
               )
             ],
@@ -495,13 +238,14 @@ class _PlayPageState extends State<PlayPage> {
 
     videoService = Provider.of<VideoService>(context);
     final curso = videoService.getCurso();
+    final Size pantalla = MediaQuery.of(context).size;
 
     return Scaffold(
       appBar: _isFullScreen
           ? null
           : AppBar(
               elevation: 0.0,
-              title: Text("${curso.titulo}"),
+              title: Text('${curso.titulo}  ·  ${curso.nivel}º medio', style: TextStyle( fontSize: 17.5 )),
             ),
       body: _isFullScreen
           ? Container(
@@ -509,9 +253,27 @@ class _PlayPageState extends State<PlayPage> {
               decoration: BoxDecoration(color: Colors.black),
             )
           : Column(children: <Widget>[
-              Container(
-                child: Center(child: _playView(context)),
-                decoration: BoxDecoration(color: Colors.black),
+              
+              Stack(
+                children: [
+                  Container(
+                    child: Center(child: _playView(context)),
+                    decoration: BoxDecoration(color: Colors.black),
+                  ),
+                  Column(
+                    children: [
+                      SizedBox(height: pantalla.width * 9/16-25),
+                      _controlAlpha > 0
+                          ? AnimatedOpacity(
+                              opacity: _controlAlpha,
+                              duration: Duration(milliseconds: 3000),
+                              child: _bottomUI2(),
+                            )
+                          : Container(),
+                _reaccionar(),
+                    ],
+                  ),
+                ],
               ),
               Expanded(
                 child: _listView(),
@@ -528,8 +290,7 @@ class _PlayPageState extends State<PlayPage> {
     final controller = _controller;
     if (controller != null && controller.value.initialized) {
       return AspectRatio(
-        //aspectRatio: controller.value.aspectRatio,
-        aspectRatio: 16.0 / 9.0,
+        aspectRatio: 16 / 9,
         child: Stack(
           children: <Widget>[
             GestureDetector(
@@ -542,7 +303,7 @@ class _PlayPageState extends State<PlayPage> {
                     duration: Duration(milliseconds: 250),
                     child: _controlView(context),
                   )
-                : Container(),
+                : Container( height: 800 ),
           ],
         ),
       );
@@ -551,15 +312,41 @@ class _PlayPageState extends State<PlayPage> {
         aspectRatio: 16.0 / 9.0,
         child: Center(
             child: CircularProgressIndicator( strokeWidth: 1.5, valueColor: AlwaysStoppedAnimation<Color>(Colors.white),)
-            
-          //   Text(
-          // "Preparing ...",
-          // style: TextStyle(color: Colors.white70, fontWeight: FontWeight.bold, fontSize: 18.0),)
         ),
       );
     }
   }
 
+  Widget _reaccionar(){
+
+    var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
+    
+    return Container(
+       color: isDarkTheme? BonovaColors.azulNoche[800] : Colors.white,
+      padding: EdgeInsets.symmetric(vertical: 7),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly, 
+        children: [
+          
+          botonReaccion(Icon(FluentSystemIcons.ic_fluent_bookmark_regular), (){}, 'Guardar'),        
+          botonReaccion(Icon(FluentSystemIcons.ic_fluent_share_android_regular), (){}, 'Compartir'),       
+          botonReaccion(Icon(FluentSystemIcons.ic_fluent_more_filled), (){}, 'Opciones'),        
+
+
+        ]),
+    );
+  }
+
+  Widget botonReaccion(Widget icon, Function onTap, String label){
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        IconButton( icon: icon, onPressed: onTap),
+        Text( label, style: TextStyle( fontSize: 11)),
+        SizedBox( height: 10 )
+      ]);          
+  }
+  
   Widget _listView() {
     return ListView.builder(
       padding: EdgeInsets.symmetric(vertical: 0),
@@ -584,7 +371,7 @@ class _PlayPageState extends State<PlayPage> {
         Expanded(
           child: _centerUI(),
         ),
-        _bottomUI()
+        _bottomUI(),
       ],
     );
   }
@@ -594,20 +381,6 @@ class _PlayPageState extends State<PlayPage> {
         child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-
-        // FlatButton(
-        //   onPressed: () async {
-        //     // final index = _playingIndex + 1;
-        //     // if (index < _clips.length - 1) {
-        //     //   _initializeAndPlay(index);
-        //     // }
-        //   },
-        //   child: Icon(
-        //     FluentSystemIcons.ic_fluent_timer_10_regular,
-        //     size: 25,
-        //     color: Colors.white,
-        //   ),
-        // ),
         
         FlatButton(
           onPressed: () async {
@@ -733,34 +506,15 @@ class _PlayPageState extends State<PlayPage> {
       ],
     );
   }
+  
+  Widget _bottomUI2() {
 
-  Widget _bottomUI() {
-    final duration = _duration?.inSeconds ?? 0;
-    final head = _position?.inSeconds ?? 0;
-    final remained = max(0, duration - head);
-    final miniPos = _position.inMinutes ~/ 60;
-    final secPos = convertTwo(_position.inSeconds % 60);
-    final miniDur = _duration.inMinutes ~/ 60;
-    final secDur = convertTwo(_duration.inSeconds % 60);
-    return Row(
-      children: <Widget>[
-        SizedBox(width: 20),
-        Text(
-          "$miniPos:$secPos / $miniDur:$secDur",
-          style: TextStyle(
-            color: Colors.white, fontSize: 10, fontWeight: FontWeight.w700, letterSpacing: 0.8,
-            shadows: <Shadow>[
-              Shadow(
-                offset: Offset(0.0, 1.0),
-                blurRadius: 4.0,
-                color: Color.fromARGB(150, 0, 0, 0),
-              ),
-            ],
-          ),
-        ),
-        Expanded(
-          child:  Slider(
-            activeColor: Colors.white,
+    var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
+
+    return Slider(
+            focusNode: FocusNode(),
+            autofocus: true,
+            activeColor: isDarkTheme ? Colors.tealAccent : Colors.tealAccent[400],
             inactiveColor: Colors.white24,
             value: max(0, min(_progress * 100, 100)),
             min: 0,
@@ -783,20 +537,93 @@ class _PlayPageState extends State<PlayPage> {
                 _controller?.seekTo(Duration(milliseconds: millis));
                 _controller?.play();
               }
+              
             },
+      
+    );
+  }
+  Widget _bottomUI() {
+
+    final duration = _duration?.inSeconds ?? 0;
+    final durationMin = _duration.inMinutes ?? 0;
+    final position = _position?.inSeconds ?? 0;
+    final positionMin = _position?.inMinutes ?? 0;
+    // final headMin = _position?.inMinutes ?? 0;
+
+    // final remained = max(0, duration - head);
+    final minPos = positionMin ~/ 60.0;
+    final secPos = convertTwo(position % 60);
+
+    // final secPos = convertTwo(_position.inSeconds % 60);
+    final miniDur = durationMin ~/ 60;
+    final secDur = convertTwo(duration % 60);
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          // SizedBox(width: 20),
+          Padding(
+            padding: const EdgeInsets.only(left: 15),
+            child: Text(
+              "$minPos:$secPos / $miniDur:$secDur",
+              style: TextStyle(
+                color: Colors.white, fontSize: 10, fontWeight: FontWeight.w700, letterSpacing: 0.8,
+                shadows: <Shadow>[
+                  Shadow(
+                    offset: Offset(0.0, 1.0),
+                    blurRadius: 4.0,
+                    color: Color.fromARGB(150, 0, 0, 0),
+                  ),
+                ],
+              ),
+            ),
           ),
-        ),
-        IconButton(
-          // padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          color: Colors.yellow,
-          icon: Icon(
-            FluentSystemIcons.ic_fluent_full_screen_zoom_filled,
-            color: Colors.white,
+          // SizedBox(width: 180),
+          _isFullScreen 
+              ? Expanded(
+                  child:  Slider(
+                    activeColor: Colors.white,
+                    inactiveColor: Colors.white24,
+                    value: max(0, min(_progress * 100, 100)),
+                    min: 0,
+                    max: 100,
+                    onChanged: (value) {
+                      setState(() {
+                        _progress = value * 0.01;
+                      });
+                    },
+                    onChangeStart: (value) {
+                      debugPrint("-- onChangeStart $value");
+                      _controller?.pause();
+                    },
+                    onChangeEnd: (value) {
+                      debugPrint("-- onChangeEnd $value");
+                      final duration = _controller?.value?.duration;
+                      if (duration != null) {
+                        var newValue = max(0, min(value, 99)) * 0.01;
+                        var millis = (duration.inMilliseconds * newValue).toInt();
+                        _controller?.seekTo(Duration(milliseconds: millis));
+                        _controller?.play();
+                      }
+                    },
+                  ),
+                )
+              : Container(), 
+          IconButton(
+            // padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            color: Colors.yellow,
+            icon: Icon(
+              FluentSystemIcons.ic_fluent_full_screen_zoom_filled,
+              color: Colors.white,
+              size: 20,
+            ),
+            onPressed: _toggleFullscreen,
           ),
-          onPressed: _toggleFullscreen,
-        ),
-        SizedBox(width: 8),
-      ],
+          // SizedBox(width: 8),
+        ],
+      ),
     );
   }
 
@@ -818,12 +645,7 @@ class _PlayPageState extends State<PlayPage> {
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            // Padding(
-            //   padding: EdgeInsets.only(right: 8),
-            //   child: clip.parent.startsWith("http")
-            //       ? Image.network(clip.thumbPath(), width: 70, height: 50, fit: BoxFit.fill)
-            //       : Image.asset(clip.thumbPath(), width: 70, height: 50, fit: BoxFit.fill),
-            // ),
+
             Padding(
               padding: EdgeInsets.only(right: 35, left: 10),
               child: Text( (index + 1).toString(), style: TextStyle( fontSize: 14, fontWeight: FontWeight.w700 ), )
@@ -860,12 +682,12 @@ class _PlayPageState extends State<PlayPage> {
 
     if (playing) {
       return isDarkTheme
-      ? Colors.black12
-      : Colors.tealAccent[700].withOpacity(0.1);
+      ? BonovaColors.azulNoche[700]
+      : Colors.white;
     } else {
       return isDarkTheme
-      ? Colors.grey[800].withOpacity(0.1)
-      : Colors.white;
+      ? BonovaColors.azulNoche[800]
+      : Colors.grey[50];
     }
 
   }

@@ -1,12 +1,16 @@
 import 'dart:ui';
+import 'package:bonova0002/src/models/curso_modelo.dart';
 import 'package:bonova0002/src/models/usuario.dart';
+import 'package:bonova0002/src/services/videos_service.dart';
+import 'package:bonova0002/src/widgets/carrusel_horizontal.dart';
+import 'package:bonova0002/src/widgets/header_titulo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/rendering.dart';
 import 'package:fluentui_icons/fluentui_icons.dart';
-import 'package:bonova0002/src/widgets/carrusel_profesores.dart';
 import 'package:bonova0002/src/widgets/portadas_categorias.dart';
 import 'package:bonova0002/src/services/usuarios_service.dart';
+import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 
@@ -17,18 +21,21 @@ class InicioPage extends StatefulWidget {
 
 class _InicioPageState extends State<InicioPage> {
 
+  final cursoService = new CursoService();
   ScrollController _scrollController;
+  PageController _pageController;
   List<Usuario> usuarios = [];
   final RefreshController _refreshController = RefreshController(initialRefresh: false);
   final usuarioService = new UsuarioService();
   Color grisfondo = Colors.grey[850];
+  List<Curso> cursosUltimos = [];
 
 
 
   @override
   void initState() {
-    _cargarUsuarios();
-    _scrollController = ScrollController();
+    this._cargarUsuarios();
+    this._cargarUltimosCursos();
     super.initState();
   }
 
@@ -51,12 +58,20 @@ class _InicioPageState extends State<InicioPage> {
               SliverToBoxAdapter(
                 child: Column(
                   children: <Widget>[
-                    //SizedBox(height: 80),
-                    //CarruselProfesores( usuarios: usuarios ),
-                    //_listUsuarios(),
+
                     CrearPortadas(pantalla:pantalla),
+                    _listViewUsuarios(),
+                    
+                    //SizedBox(height: 80),
+                    // CarruselProfesores(usuarios: usuarios),
+                    // _carruselProfesores(),
+                    // _listUsuarios(),
+                    // SizedBox(height: 5),
+                    HeaderTitulo(titulo: 'Sugeridos Para Ti', paginaDestino: '',),
+                    SizedBox(height: 15),
+                    _listaCursos(),
                     //_listadoCarrusel(),
-                    SizedBox(height: 60.0,),
+                    SizedBox(height: 80),
                     //_crearListadoPost(),
                   ],
                 ),
@@ -69,21 +84,90 @@ class _InicioPageState extends State<InicioPage> {
 
   }
 
+  _cargarUsuarios() async {
+
+    this.usuarios = await usuarioService.getUsuarios();
+    setState(() {});
+  }
+  Widget _listViewUsuarios() {
+    return Column(
+      children: [
+        HeaderTitulo( titulo: 'Profesores Particulares', paginaDestino: '' ),
+        Container(
+          height: 120,
+          child: ListView.builder(
+            padding: EdgeInsets.only(left: 30),
+            shrinkWrap: true,
+            physics: BouncingScrollPhysics(),
+            scrollDirection: Axis.horizontal,
+            controller: _scrollController,
+            itemCount: usuarios.length,
+            itemBuilder: (_, i) => _itemUsuario(usuarios[i])
+            ),
+        ),
+      ],
+    );
+  }
+  _itemUsuario( Usuario u ) {
+    var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
+
+    return Padding(
+      padding: const EdgeInsets.all(12),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+
+          SizedBox(height: 8),
+          CircleAvatar(
+            radius: 28,
+            backgroundColor: isDarkTheme ? Colors.teal[800] : Colors.tealAccent[100],
+            child: Text( u.nombre.substring(0,2), style: TextStyle( color: isDarkTheme ? Colors.white : Colors.teal[900] ))
+          ),
+          SizedBox(height: 8),
+          Text( u.nombre,
+            style: TextStyle(
+                     fontSize: 11,
+                     fontWeight: FontWeight.w500 
+                     ),
+          ),
+          SizedBox(height: 8),
+        ],
+      ),
+    );
+  }
+
+
+  _cargarUltimosCursos() async {
+    this.cursosUltimos = await cursoService.getCursos('matematica', '1');
+    setState((){});
+  }
+  Widget _listaCursos() {
+
+    return Container(
+      height: 330,
+      child: PageView.builder(
+        physics: BouncingScrollPhysics(),
+        pageSnapping: false,
+        itemBuilder: (_, i) => carruselHorizontal(context, cursosUltimos[i]),
+        itemCount: cursosUltimos.length,
+        controller: PageController(
+          viewportFraction: 0.65 ), 
+      ),
+    );
+
+
+
+  }
   Widget _crearAppbar() {
 
     var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
 
     return SliverAppBar(
-      //brightness: Brightness.light,
-      //backgroundColor: Colors.white,
-      //expandedHeight: 75.0,
       collapsedHeight: 75,
       elevation: 0,
       floating: true,
       pinned: true,
       snap: false,
-      //leading: ,
-      //title: Text('bonova'),
       flexibleSpace: Padding(
         padding: const EdgeInsets.only(top: 15.0),
 
@@ -96,7 +180,7 @@ class _InicioPageState extends State<InicioPage> {
                 child: Padding(
                   padding: const EdgeInsets.only(top:0.0),
                   child: SvgPicture.asset('assets/bv_ic.svg',
-                    color: isDarkTheme? Colors.tealAccent[400] : Colors.teal,
+                    color: isDarkTheme? Colors.tealAccent : Colors.teal[600],
                     alignment: Alignment.bottomCenter,
                     height: 27.0,
                     fit: BoxFit.cover,),
@@ -107,11 +191,11 @@ class _InicioPageState extends State<InicioPage> {
                 children: <Widget>[
                 IconButton(
                   icon: Icon(FluentSystemIcons.ic_fluent_upload_filled),
-                  color: isDarkTheme? Colors.grey[100] : Colors.grey[600],
+                  color: isDarkTheme? Colors.tealAccent : Colors.teal[600],
                   onPressed: () => Navigator.pushNamed(context, 'upload'),
                 ),
                 IconButton(
-                  icon: SvgPicture.asset('assets/send.svg', height: 20.0, width: 20.0, color: isDarkTheme? Colors.white : Colors.grey[600],),
+                  icon: SvgPicture.asset('assets/send.svg', height: 20.0, width: 20.0, color: isDarkTheme? Colors.tealAccent : Colors.teal[600],),
                   //color:  Colors.teal,
                   onPressed: () => Navigator.pushNamed(context, 'usuarios-chat'),
                 ),
@@ -122,35 +206,6 @@ class _InicioPageState extends State<InicioPage> {
     );
   }
 
-  _cargarUsuarios() async {
-    
-    this.usuarios = await usuarioService.getUsuarios();
-    setState(() {});
-
-    //await Future.delayed(Duration(milliseconds: 1000));
-    // if failed,use refreshFailed()
-    //_refreshController.refreshCompleted();
-  }
-  _listUsuarios() {
-    return ListView.builder(
-      shrinkWrap: true,
-      controller: ScrollController(),
-      scrollDirection: Axis.horizontal,
-      itemCount: usuarios.length,
-      itemBuilder: ( _ , i ) => _itemUsuario( usuarios[i] )
-    );
-  }
-  _itemUsuario( Usuario u ) {
-    return Column(
-      children: [
-        Text(u.nombre),
-        CircleAvatar(
-          radius: 10,
-          backgroundColor: Colors.teal,
-        ),
-      ],
-    );
-  }
 
   // Widget _crearListadoPost() {
   //   return FutureBuilder(
@@ -160,7 +215,6 @@ class _InicioPageState extends State<InicioPage> {
   //           final videos = snapshot.data;
   //           final post = PostFeed();
   //           print(videos);
-
   //             return ListView.builder(
   //                 shrinkWrap: true,
   //                 controller: _scrollController,

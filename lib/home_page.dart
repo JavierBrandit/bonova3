@@ -16,9 +16,15 @@ class _HomePageState extends State<HomePage> {
       @override
       Widget build(BuildContext context) {
         return Scaffold(
+          backgroundColor: Colors.transparent,
           extendBody: true,
-          body: _callPage(currentIndex),
-          bottomNavigationBar: _crearBNBar(),
+          body: Stack(
+            alignment: AlignmentDirectional.bottomCenter,
+            children: [
+              _callPage(currentIndex),
+              _crearBNBar()
+            ]),
+          // bottomNavigationBar: _crearBNBar(),
         );
       }
 
@@ -46,7 +52,6 @@ class _HomePageState extends State<HomePage> {
               borderRadius: BorderRadius.circular(30),
               child: BottomNavigationBar(
                 elevation: 0,
-                //backgroundColor: Colors.white,
                 currentIndex: currentIndex,
                 onTap: (index) {
                   setState(() {

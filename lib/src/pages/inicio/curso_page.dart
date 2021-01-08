@@ -5,8 +5,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'dart:ui';
-import 'package:kidd_video_player/models/layout_configs.dart';
-import 'package:kidd_video_player/kidd_video_player.dart';
 import 'package:bonova0002/src/services/videos_service.dart';
 import 'package:bonova0002/src/models/video_modelo.dart';
 import 'package:bonova0002/src/models/curso_modelo.dart';
@@ -36,20 +34,8 @@ class _CursoPageState extends State<CursoPage> {
     super.initState();
     this.videoService = Provider.of<VideoService>(context, listen: false);
     this._cargarVideos(videoService.getCurso());
-    // this.indexx = videoService.getIndex();
-    // this.curso = videoService.getCurso();
-    // this.video = curso.videos[indexx];
-    // _controller = VideoPlayerController.network( video.path );
-    // _initializeVideoPlayerFuture = _controller.initialize();
-    // this.value = _controller.value;
-    // _controller.play();
   }
 
-  // @override
-  // void dispose() {
-  //   _controller.dispose();
-  //   super.dispose();
-  // }
     
   @override
   Widget build(BuildContext context) {

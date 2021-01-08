@@ -11,8 +11,9 @@ import 'package:bonova0002/src/services/socket_service.dart';
 class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
+
     return Scaffold(
-      backgroundColor: Colors.grey[50],
       body: SafeArea( 
         child: SingleChildScrollView(
           physics: BouncingScrollPhysics(),

@@ -12,10 +12,12 @@ class BtnAzul extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
+    
     return RaisedButton(
        elevation: 1.5,
        highlightElevation: 5,
-       color: Colors.tealAccent[700],
+       color: isDarkTheme ? Colors.teal[800] : Colors.tealAccent[700],
        shape: StadiumBorder(),
        onPressed: 
           this.callBack

@@ -14,14 +14,16 @@ class CarruselProfesores extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
+    ScrollController _scrollController;
     return Column(
       children: [
-        HeaderTitulo(titulo: 'profesores', paginaDestino: '',),
+        HeaderTitulo(titulo: 'Profesores', paginaDestino: '',),
         //AvatarPerfil(imgUrl: 'https://marketing4ecommerce.net/wp-content/uploads/2018/01/Depositphotos_3667865_m-2015-compressor.jpg',),
         ListView.builder(
+            controller: _scrollController,
+            shrinkWrap: true,
             scrollDirection: Axis.horizontal,
-            itemCount: 1 + usuarios.length,
+            itemCount: usuarios.length,
             itemBuilder: (BuildContext context, int index) {
                 return CircleAvatar(
                   radius: 10,
@@ -29,9 +31,6 @@ class CarruselProfesores extends StatelessWidget {
                 );
             }
         ),
-
-
-
 
 
       ],

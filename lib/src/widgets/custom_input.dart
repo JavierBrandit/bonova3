@@ -1,3 +1,4 @@
+import 'package:bonova0002/theme.dart';
 import 'package:flutter/material.dart';
 
 class CustomInput extends StatelessWidget {
@@ -20,11 +21,14 @@ class CustomInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
      margin: EdgeInsets.only(bottom: 30,),
      padding: EdgeInsets.only( top: 5, left: 5 ,bottom: 5, right: 20 ),
      decoration: BoxDecoration(
-       color: Colors.white, 
+       color: isDarkTheme ? BonovaColors.azulNoche[600] : Colors.white, 
        borderRadius: BorderRadius.circular(30),
        boxShadow: <BoxShadow>[
          BoxShadow(

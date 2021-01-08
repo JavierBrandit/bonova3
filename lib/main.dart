@@ -13,9 +13,9 @@ import 'package:bonova0002/theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  final prefs = new PreferenciasUsuario();
+  await prefs.initPrefs();
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle( statusBarColor: Colors.transparent ));
-  // final prefs = new PreferenciasUsuario();
-  // await prefs.initPrefs();
   runApp(MyApp());
 }
 
@@ -23,21 +23,19 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    //final themeChanger = Provider.of<ThemeChanger>(context);
-    // final prefs = new PreferenciasUsuario();
-    // bool isDarkTheme = prefs.colorSecundario;
-    
+  final prefs = new PreferenciasUsuario();
+
+    print(prefs.colorSecundario);
     return ChangeNotifierProvider<ThemeChanger>(
-      create: (_) => ThemeChanger(ThemeMode.light),
+      create: (_) => ThemeChanger( prefs.colorSecundario ? ThemeMode.dark : ThemeMode.light ),
       child: AppWithTheme(),
     );
-
-    
   }
 }
 
 class AppWithTheme extends StatelessWidget {
 
+  final prefs = new PreferenciasUsuario();
   @override
   Widget build(BuildContext context) {
 
@@ -54,18 +52,10 @@ class AppWithTheme extends StatelessWidget {
       child: MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'bonova',
+
       theme: AppTheme().lightTheme,
       darkTheme: AppTheme().darkTheme,
       themeMode: tema.getTheme(),
-      // theme: ThemeData(
-      //   fontFamily: 'MontserratAlternates',
-      //   scaffoldBackgroundColor: Colors.white,
-      //   //primarySwatch: Colors.teal,
-      //   primaryColor: Colors.teal,
-      //   primaryColorBrightness: Brightness.light,
-      //   brightness: Brightness.light
-      //   //visualDensity: VisualDensity.adaptivePlatformDensity,
-      // ),
       initialRoute: 'loading',
       routes: appRoutes,
       ),

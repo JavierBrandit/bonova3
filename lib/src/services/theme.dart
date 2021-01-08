@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:bonova0002/src/services/prefs.dart';
+
 
 class ThemeChanger with ChangeNotifier {
+
+  final prefs = new PreferenciasUsuario();
 
   ThemeMode _themeData;
 
@@ -11,6 +14,9 @@ class ThemeChanger with ChangeNotifier {
 
   ThemeMode setTheme( ThemeMode theme ) {
     this._themeData = theme;
+    var isDarkTheme = theme == ThemeMode.dark;
+    prefs.colorSecundario = isDarkTheme;
+    print(prefs.colorSecundario);
     notifyListeners();
   }
 

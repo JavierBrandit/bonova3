@@ -1,3 +1,4 @@
+import 'package:bonova0002/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bonova0002/src/models/curso_modelo.dart';
@@ -12,7 +13,7 @@ Widget carruselHorizontal(BuildContext context, Curso curso) {
   var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
 
   return Container(
-    margin: EdgeInsets.all(14.0),
+    margin: EdgeInsets.all(14),
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.end,
@@ -25,21 +26,22 @@ Widget carruselHorizontal(BuildContext context, Curso curso) {
           blurRadius: 10
         )]),
         child: ClipRRect(
-        borderRadius: BorderRadius.circular(20.0),
+        borderRadius: BorderRadius.circular(20),
         child: GestureDetector(
                   child: Stack(
               alignment: AlignmentDirectional.bottomStart,
               children: [
+                
                 Image.network(curso.portada,
                   fit: BoxFit.cover,
-                  height: 270.0,
+                  height: 270,
                   width: double.infinity
                 ),
                 Container(
-                  color: isDarkTheme? Colors.grey[850] : Colors.white, 
+                  color: isDarkTheme? BonovaColors.azulNoche[600] : Colors.white, 
                   height: 135,
                   width: double.infinity,
-                  padding: const EdgeInsets.symmetric( horizontal: 18.0 ),
+                  padding: const EdgeInsets.symmetric( horizontal: 18 ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

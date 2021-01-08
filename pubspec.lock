@@ -163,13 +163,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.16.1"
-  kidd_video_player:
-    dependency: "direct main"
-    description:
-      name: kidd_video_player
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.12"
   lite_rolling_switch:
     dependency: "direct main"
     description:
@@ -421,7 +414,7 @@ packages:
     source: hosted
     version: "2.0.8"
   video_player:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: video_player
       url: "https://pub.dartlang.org"

@@ -1,3 +1,4 @@
+import 'package:bonova0002/theme.dart';
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
 
@@ -19,36 +20,22 @@ class HeaderTitulo extends StatelessWidget {
 
     return GestureDetector(
       child: Container(
-        color: isDarkTheme? Colors.grey[850] : Colors.white,
-        child: Column(
+        color: isDarkTheme? BonovaColors.azulNoche[900].withOpacity(0.25) : Colors.white,
+        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 14),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-
-            SizedBox(height: 18.0,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Row(
-                  children: [
-                    SizedBox(width: 30 ),
+            
                     Text(titulo,
-                      style: TextStyle(fontSize: 17.5,
-                        fontWeight: FontWeight.w400, letterSpacing: 0.7,
+                      style: TextStyle(fontSize: 13.5,
+                        fontWeight: FontWeight.w500, letterSpacing: 0.5,
                         color: isDarkTheme? Colors.white : Colors.grey[850]
-                    ))],
-                ),
-                Row(
-                  children: [
-                    Icon(FluentSystemIcons.ic_fluent_chevron_right_regular,
-                      color: isDarkTheme? Colors.white : Colors.teal, size: 19,),
-                    SizedBox(width: 28,),
-                  ],
-                )
-              ],),
-            SizedBox(height: 20.0,),
+                    )),
+                    Icon(FluentSystemIcons.ic_fluent_chevron_right_regular, size: 17,),
 
-          ],
-        ),
-      ),
+            
+          ]
+      )),
       onTap: () => Navigator.pushNamed(context, paginaDestino),
     );
   }
