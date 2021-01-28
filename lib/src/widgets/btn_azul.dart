@@ -15,9 +15,9 @@ class BtnAzul extends StatelessWidget {
     var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
     
     return RaisedButton(
-       elevation: 1.5,
+       elevation: 0.0,
        highlightElevation: 5,
-       color: isDarkTheme ? Colors.teal[800] : Colors.tealAccent[700],
+       color: isDarkTheme ? Colors.teal[800] : Colors.tealAccent[400],
        shape: StadiumBorder(),
        onPressed: 
           this.callBack
@@ -26,7 +26,7 @@ class BtnAzul extends StatelessWidget {
          width: double.infinity,
          height: 55,
          child: Center( 
-           child: Text( this.txt , style: TextStyle( color:  Colors.white, fontSize: 15, letterSpacing: 0.5, fontWeight: FontWeight.w700 ),))),
+           child: Text( this.txt , style: TextStyle(color: Colors.white, fontSize: 14, letterSpacing: -.4, fontWeight: FontWeight.w600 ),))),
        
      );
   }

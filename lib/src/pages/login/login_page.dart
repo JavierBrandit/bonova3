@@ -1,4 +1,6 @@
-import 'package:fluentui_icons/fluentui_icons.dart';
+// import 'package:fluentui_icons/fluentui_icons.dart';
+import 'package:bonova0002/theme.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bonova0002/src/helpers/mostrar_alerta.dart';
@@ -12,21 +14,23 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
+      backgroundColor: isDarkTheme ? BonovaColors.azulNoche[800] : Colors.grey[100],
       body: SafeArea( 
         child: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
           child: Container(
             height: MediaQuery.of(context).size.height * 0.9,
             child: Padding(
-              padding: const EdgeInsets.symmetric( vertical: 20),
+              padding: const EdgeInsets.symmetric( vertical: 10),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   //Logo(titulo: 'Messenger'),
                   SizedBox(height: 10),
-                  Image.asset('assets/bv_login.png', height: 160,),
+                  Image.asset('assets/bv_login.png', height: 140,),
                   Form(),
                   Labels(titulo: '¿Aun no tienes una cuenta?', subtitulo: 'Registrate Ahora', ruta: 'register' ),
                   Text('Terminos y condiciones de uso', style: TextStyle( fontWeight: FontWeight.w500, fontFamily: 'Montserrat', fontSize: 11, color: Colors.grey[700])),
@@ -57,19 +61,19 @@ class FormState extends State<Form> {
     final socketService = Provider.of<SocketService>(context);
 
     return Container(
-      height: 280,
-      margin: EdgeInsets.only(top: 40),
+      // height: 280,
+      margin: EdgeInsets.only(top: 0),
       padding: EdgeInsets.symmetric(horizontal: 50),
        child: Column( children: <Widget>[
         
         CustomInput(
-          icon: FluentSystemIcons.ic_fluent_mail_filled,
+          icon: FluentIcons.mail_16_regular,
           placeholder: 'Correo',
           keyboardType: TextInputType.emailAddress,
           textController: emailCtrl,
         ),
         CustomInput(
-          icon: FluentSystemIcons.ic_fluent_lock_filled,
+          icon: FluentIcons.lock_closed_12_regular,
           placeholder: 'Contraseña',
           isPassword: true,
           textController: passCtrl,

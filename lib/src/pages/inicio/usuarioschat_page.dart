@@ -35,24 +35,20 @@ class _UsuariosChatPageState extends State<UsuariosChatPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(usuario.nombre, style:  TextStyle( color: Colors.black54),),
-        elevation: 1,
-        backgroundColor: Colors.white,
-        leading: IconButton(
-          icon: Icon(Icons.exit_to_app, color: Colors.black54,),
-          onPressed: () {
-            socketService.disconnect();
-            Navigator.pushReplacementNamed(context, 'login');
-            AuthService.deleteToken();
-          },  
-        ),
+        title: Text('Conversaciones', style: TextStyle( fontSize: 23, letterSpacing: -1, fontWeight: FontWeight.w400 )),
+        elevation: 0,
+        toolbarHeight: 70,
+        // PASAR A SETTINGS/CERRAR SESION
+        // leading: IconButton(
+        //   icon: Icon(Icons.exit_to_app, color: Colors.black54,),
+        //   onPressed: () {
+        //     socketService.disconnect();
+        //     Navigator.pushReplacementNamed(context, 'login');
+        //     AuthService.deleteToken();
+        //   },  
+        // ),
         actions: <Widget>[
-          Container(
-            margin: EdgeInsets.only( right: 10 ),
-            child: ( socketService.serverStatus == ServerStatus.Online )
-            ? Icon(Icons.check_circle, color: Colors.tealAccent[400],)
-            : Icon(Icons.offline_bolt, color: Colors.red[300],)
-          ),
+          _itemUsuario(usuario)
         ],
       ),
       body: SmartRefresher(
@@ -69,35 +65,26 @@ class _UsuariosChatPageState extends State<UsuariosChatPage> {
   }
 
   _cargarUsuarios() async {
-    
     this.usuarios = await usuarioService.getUsuarios();
     setState(() {});
-
-    //await Future.delayed(Duration(milliseconds: 1000));
-    // if failed,use refreshFailed()
     _refreshController.refreshCompleted();
   }
-
-
-
 
   ListView _listViewUsuarios() {
     return ListView.separated(
       physics: BouncingScrollPhysics(),
       itemBuilder: (_, i) => _usuarioListTile(usuarios[i]), 
-      separatorBuilder: (_, i) => Divider(), 
+      separatorBuilder: (_, i) => Divider(indent: 80, color: Colors.grey.withOpacity(0.15),), 
       itemCount: usuarios.length
     );
   }
 
   ListTile _usuarioListTile(Usuario usuario) {
     return ListTile(
-        title: Text( usuario.nombre, style: TextStyle( fontSize: 18, fontWeight: FontWeight.w500, color: Colors.grey[600]),),
-        subtitle: Text( usuario.email, style: TextStyle( fontSize: 12, fontWeight: FontWeight.w400, color: Colors.grey[600])),
-        leading: CircleAvatar(
-          child: Text( usuario.nombre.substring(0,2), style: TextStyle( color: Colors.teal[800] ), ),
-          backgroundColor: Colors.teal[100],
-        ),
+        
+        title: Text( usuario.nombre, style: TextStyle( fontSize: 17, fontWeight: FontWeight.w400 ),),
+        subtitle: Text( usuario.email, style: TextStyle( fontSize: 12, fontWeight: FontWeight.w400 )),
+        leading: _itemUsuario(usuario),
         trailing: Container(
           width: 10,
           height: 10,
@@ -113,4 +100,33 @@ class _UsuariosChatPageState extends State<UsuariosChatPage> {
         },
       );
   }
+
+  _itemUsuario( Usuario u ) {
+    var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
+
+    return GestureDetector(
+      onTap: () => Navigator.pushNamed( context, 'perfil', arguments: u ),
+      child: Padding(
+        padding: const EdgeInsets.only(right: 20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+
+            // SizedBox(height: 8),
+            CircleAvatar(
+              radius: 25,
+              backgroundColor: isDarkTheme ? Colors.teal[800] : Colors.tealAccent[100],
+              child: Text( u.nombre.substring(0,2), style: TextStyle( color: isDarkTheme ? Colors.white : Colors.teal[900] ))
+            ),
+            // SizedBox(height: 8),
+
+          ],
+        ),
+      ),
+    );
+  }
+
+
+
+
 }

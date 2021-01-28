@@ -30,13 +30,13 @@ class CustomInput extends StatelessWidget {
      decoration: BoxDecoration(
        color: isDarkTheme ? BonovaColors.azulNoche[600] : Colors.white, 
        borderRadius: BorderRadius.circular(30),
-       boxShadow: <BoxShadow>[
-         BoxShadow(
-           color: Colors.black.withOpacity(0.05),
-           offset: Offset(0, 5),
-           blurRadius: 5
-         )
-       ]
+      //  boxShadow: <BoxShadow>[
+      //    BoxShadow(
+      //      color: Colors.black.withOpacity(0.05),
+      //      offset: Offset(0, 5),
+      //      blurRadius: 5
+      //    )
+      //  ]
      ),
      child: TextField(
        controller: this.textController,
@@ -45,10 +45,11 @@ class CustomInput extends StatelessWidget {
        obscureText: this.isPassword,
        textAlignVertical: TextAlignVertical.center,
        decoration: InputDecoration(
-         prefixIcon: Icon( this.icon, size: 17, ),
+         prefixIcon: Icon( this.icon, size: 18, ),
          focusedBorder: InputBorder.none,
          border: InputBorder.none,
          hintText: this.placeholder,
+         hintStyle: TextStyle( fontSize: 13, fontWeight: FontWeight.w500, letterSpacing: -.2)
        ),
         
      ));

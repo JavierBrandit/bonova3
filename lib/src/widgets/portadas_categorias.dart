@@ -1,6 +1,7 @@
 import 'package:bonova0002/src/services/videos_service.dart';
 import 'package:bonova0002/src/widgets/header_titulo.dart';
-import 'package:fluentui_icons/fluentui_icons.dart';
+// import 'package:fluentui_icons/fluentui_icons.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

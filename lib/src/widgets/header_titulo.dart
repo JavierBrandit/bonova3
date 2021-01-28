@@ -1,5 +1,6 @@
 import 'package:bonova0002/theme.dart';
-import 'package:fluentui_icons/fluentui_icons.dart';
+// import 'package:fluentui_icons/fluentui_icons.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
 class HeaderTitulo extends StatelessWidget {
@@ -31,7 +32,7 @@ class HeaderTitulo extends StatelessWidget {
                         fontWeight: FontWeight.w500, letterSpacing: 0.5,
                         color: isDarkTheme? Colors.white : Colors.grey[850]
                     )),
-                    Icon(FluentSystemIcons.ic_fluent_chevron_right_regular, size: 17,),
+                    Icon(FluentIcons.chevron_right_24_regular, size: 17,),
 
             
           ]

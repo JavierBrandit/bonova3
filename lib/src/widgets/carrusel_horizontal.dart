@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bonova0002/src/models/curso_modelo.dart';
 import 'package:bonova0002/src/services/videos_service.dart';
-import 'package:fluentui_icons/fluentui_icons.dart';
+// import 'package:fluentui_icons/fluentui_icons.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:bonova0002/src/widgets/reproductor_video.dart';
 
 
@@ -32,7 +33,7 @@ Widget carruselHorizontal(BuildContext context, Curso curso) {
               alignment: AlignmentDirectional.bottomStart,
               children: [
                 
-                Image.network(curso.portada,
+                 Image.network(curso.portada,
                   fit: BoxFit.cover,
                   height: 270,
                   width: double.infinity
@@ -75,7 +76,7 @@ Widget carruselHorizontal(BuildContext context, Curso curso) {
                         children: [
                           Row(
                             children: [
-                              Icon( FluentSystemIcons.ic_fluent_star_filled, size: 11, color: Colors.teal[300],),
+                              Icon( FluentIcons.star_24_filled, size: 11, color: Colors.teal[300],),
                               SizedBox(width: 3,),
                               Text(curso.rate.toString(), style: TextStyle( fontSize: 12, fontWeight: FontWeight.w300) ),
                             ],

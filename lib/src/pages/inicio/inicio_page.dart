@@ -7,7 +7,8 @@ import 'package:bonova0002/src/widgets/header_titulo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/rendering.dart';
-import 'package:fluentui_icons/fluentui_icons.dart';
+// import 'package:fluentui_icons/fluentui_icons.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:bonova0002/src/widgets/portadas_categorias.dart';
 import 'package:bonova0002/src/services/usuarios_service.dart';
 import 'package:provider/provider.dart';
@@ -111,34 +112,37 @@ class _InicioPageState extends State<InicioPage> {
   _itemUsuario( Usuario u ) {
     var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
 
-    return Padding(
-      padding: const EdgeInsets.all(12),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
+    return GestureDetector(
+      onTap: () => Navigator.pushNamed( context, 'perfil', arguments: u ),
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
 
-          SizedBox(height: 8),
-          CircleAvatar(
-            radius: 28,
-            backgroundColor: isDarkTheme ? Colors.teal[800] : Colors.tealAccent[100],
-            child: Text( u.nombre.substring(0,2), style: TextStyle( color: isDarkTheme ? Colors.white : Colors.teal[900] ))
-          ),
-          SizedBox(height: 8),
-          Text( u.nombre,
-            style: TextStyle(
-                     fontSize: 11,
-                     fontWeight: FontWeight.w500 
-                     ),
-          ),
-          SizedBox(height: 8),
-        ],
+            SizedBox(height: 8),
+            CircleAvatar(
+              radius: 28,
+              backgroundColor: isDarkTheme ? Colors.teal[800] : Colors.tealAccent[100],
+              child: Text( u.nombre.substring(0,2), style: TextStyle( color: isDarkTheme ? Colors.white : Colors.teal[900] ))
+            ),
+            SizedBox(height: 8),
+            Text( u.nombre,
+              style: TextStyle(
+                       fontSize: 11,
+                       fontWeight: FontWeight.w500 
+                       ),
+            ),
+            SizedBox(height: 8),
+          ],
+        ),
       ),
     );
   }
 
 
   _cargarUltimosCursos() async {
-    this.cursosUltimos = await cursoService.getCursos('matematica', '1');
+    this.cursosUltimos = await cursoService.getAllCursos();
     setState((){});
   }
   Widget _listaCursos() {
@@ -163,7 +167,7 @@ class _InicioPageState extends State<InicioPage> {
     var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
 
     return SliverAppBar(
-      collapsedHeight: 75,
+      toolbarHeight: 60,
       elevation: 0,
       floating: true,
       pinned: true,
@@ -173,6 +177,7 @@ class _InicioPageState extends State<InicioPage> {
 
         child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
 
               Container(
@@ -188,16 +193,23 @@ class _InicioPageState extends State<InicioPage> {
               ),
               Row(
                 //mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                IconButton(
-                  icon: Icon(FluentSystemIcons.ic_fluent_upload_filled),
-                  color: isDarkTheme? Colors.tealAccent : Colors.teal[600],
-                  onPressed: () => Navigator.pushNamed(context, 'upload'),
+                Padding(
+                  padding: const EdgeInsets.only(bottom:10),
+                  // child: IconButton(
+                  //   icon: Icon(FluentSystemIcons.ic_fluent_upload_filled),
+                  //   color: isDarkTheme? Colors.tealAccent : Colors.teal[600],
+                  //   onPressed: () => Navigator.pushNamed(context, 'upload'),
+                  // ),
                 ),
-                IconButton(
-                  icon: SvgPicture.asset('assets/send.svg', height: 20.0, width: 20.0, color: isDarkTheme? Colors.tealAccent : Colors.teal[600],),
-                  //color:  Colors.teal,
-                  onPressed: () => Navigator.pushNamed(context, 'usuarios-chat'),
+                Padding(
+                  padding: const EdgeInsets.only(bottom:5, right: 5),
+                  child: IconButton(
+                    icon: SvgPicture.asset('assets/send.svg', height: 20.0, width: 20.0, color: isDarkTheme? Colors.tealAccent : Colors.teal[600],),
+                    //color:  Colors.teal,
+                    onPressed: () => Navigator.pushNamed(context, 'usuarios-chat'),
+                  ),
                 ),
                 SizedBox(width: 12.0,)
               ],)

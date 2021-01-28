@@ -18,6 +18,7 @@ class ChatMessage extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final authService = Provider.of<AuthService>(context);
+    var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
 
     return FadeTransition(
       opacity: animationController,
@@ -25,38 +26,38 @@ class ChatMessage extends StatelessWidget {
         sizeFactor: CurvedAnimation( parent: animationController, curve: Curves.easeOut ),
         child: Container(
           child: this.uid == authService.usuario.uid
-            ? _myMessage()
-            : _otherMessage(),
+            ? _myMessage(isDarkTheme)
+            : _otherMessage(isDarkTheme),
         ),
       ),
     );
   }
 
-  Widget _myMessage() {
+  Widget _myMessage(bool dark) {
     return Align(
       alignment: Alignment.centerRight,
       child: Container(
-        margin: EdgeInsets.only( bottom: 5, left: 50, right: 8),
-        padding: EdgeInsets.all(10),
-        child: Text( this.texto, style: TextStyle( color: Colors.white ), ),
+        margin: EdgeInsets.only( bottom: 2, left: 50, right: 20),
+        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+        child: Text( this.texto, style: TextStyle( fontWeight: FontWeight.w400, letterSpacing: -0.4, fontSize: 14 ), ),
         decoration: BoxDecoration( 
-          color: Color(0xff4D9EF6),
-          borderRadius: BorderRadius.circular(20)
+          color: dark? Colors.teal[800] : Colors.tealAccent.withOpacity(0.34),
+          borderRadius: BorderRadius.circular(10)
         ),
       ),
     );
   }
 
-  Widget _otherMessage() {
+  Widget _otherMessage(bool dark) {
     return Align(
       alignment: Alignment.centerLeft,
       child: Container(
-        margin: EdgeInsets.only( bottom: 5, right: 50, left: 8),
-        padding: EdgeInsets.all(10),
-        child: Text( this.texto, style: TextStyle( color: Colors.black87 ), ),
+        margin: EdgeInsets.only( bottom: 2, right: 50, left: 20),
+        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+        child: Text( this.texto, style: TextStyle( fontWeight: FontWeight.w400, letterSpacing: -0.4, fontSize: 14 ) ),
         decoration: BoxDecoration( 
-          color: Color(0xffE4E5E8),
-          borderRadius: BorderRadius.circular(20)
+          color: dark? Colors.blueGrey[800] : Colors.white,
+          borderRadius: BorderRadius.circular(10)
         ),
       ),
     );

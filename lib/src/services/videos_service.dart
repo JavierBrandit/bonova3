@@ -65,11 +65,34 @@ class CursoService with ChangeNotifier {
   String ramo = '';
   String nivel = '';
 
+  
+  
   Future<List<Curso>> getCursos( String ramox, String nivelx ) async {
     
     try {
 
       final resp = await http.get('${ Environment.apiUrl }/curso/$ramox/$nivelx',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-token' : await AuthService.getToken()
+        }
+      );
+
+      final cursosResponse = cursosFromJson( resp.body );
+      return cursosResponse.cursos;
+    
+    } catch (e) {
+      print(e);
+      return [];
+    }
+   
+  }
+
+  Future<List<Curso>> getAllCursos() async {
+    
+    try {
+
+      final resp = await http.get('${ Environment.apiUrl }/curso',
         headers: {
           'Content-Type': 'application/json',
           'x-token' : await AuthService.getToken()

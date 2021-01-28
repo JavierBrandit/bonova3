@@ -1,9 +1,11 @@
 import 'package:bonova0002/src/models/usuario.dart';
+import 'package:bonova0002/src/pages/user/perfil_page.dart';
 import 'package:bonova0002/src/services/auth_services.dart';
 import 'package:bonova0002/src/services/theme.dart';
 import 'package:bonova0002/src/services/prefs.dart';
 import 'package:bonova0002/theme.dart';
-import 'package:fluentui_icons/fluentui_icons.dart';
+// import 'package:fluentui_icons/fluentui_icons.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -59,15 +61,15 @@ class _UserPageState extends State<UserPage> {
 
           tiraDiaNoche(),
           
-          Divider( color: Colors.transparent, height: 8),
-          tira( 'Biblioteca', Icon( FluentSystemIcons.ic_fluent_folder_filled, color: isDarkTheme? Colors.yellow[700] : Colors.yellow[400] )),
-          Divider( color: Colors.transparent, height: 8),
-          tira( 'Actividad', Icon( FluentSystemIcons.ic_fluent_heart_filled, color: isDarkTheme? Colors.red[700] : Colors.redAccent[100] )),
-          Divider( color: Colors.transparent, height: 8),
-          tira( 'Configuracion', Icon( FluentSystemIcons.ic_fluent_settings_filled, color: isDarkTheme? Colors.blue[700] : Colors.blue[100] )),
-          Divider( color: Colors.transparent, height: 8),
-          tira( 'Ayuda', Icon( FluentSystemIcons.ic_fluent_help_circle_filled, color: isDarkTheme? Colors.grey[700] : Colors.grey[400] )),
-          Divider( color: Colors.transparent, height: 8),
+          // Divider( color: Colors.transparent, height: 8),
+          tira( 'Configuracion', Icon( FluentIcons.settings_24_regular, color: isDarkTheme? Colors.blue[700] : Colors.blue[300]), 'config' ),
+          // Divider( color: Colors.transparent, height: 8),
+          tira( 'Biblioteca', Icon( FluentIcons.bookmark_16_regular, color: isDarkTheme? Colors.yellow[700] : Colors.yellow[600]), ''),
+          // Divider( color: Colors.transparent, height: 8),
+          tira( 'Actividad', Icon( FluentIcons.alert_16_regular, color: isDarkTheme? Colors.red[700] : Colors.redAccent[100]), ''),
+          // Divider( color: Colors.transparent, height: 8),
+          tira( 'Ayuda', Icon( FluentIcons.chat_help_24_regular, color: isDarkTheme? Colors.grey[500] : Colors.grey[400]), ''),
+          // Divider( color: Colors.transparent, height: 8),
           
 
         ],
@@ -81,9 +83,9 @@ class _UserPageState extends State<UserPage> {
     var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
 
     return GestureDetector(
-      onTap: () => Navigator.pushNamed( c, 'perfil'),
       child: Container(
-        decoration: BoxDecoration( boxShadow: [BoxShadow(
+        decoration: BoxDecoration( 
+          boxShadow: [BoxShadow(
             color: isDarkTheme? Colors.black.withOpacity(0.01) : Colors.grey[100],
             offset: Offset.fromDirection(-10),
             blurRadius: 10
@@ -114,7 +116,10 @@ class _UserPageState extends State<UserPage> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text('editar informacion', style: TextStyle( fontSize: 14, fontWeight: FontWeight.w600, letterSpacing: 0.6, color: Colors.tealAccent[700], ) ),
+                    GestureDetector(
+                      child: Text('editar informacion', style: TextStyle( fontSize: 14, fontWeight: FontWeight.w600, letterSpacing: 0.6, color: Colors.tealAccent[700] ) ),
+                      onTap: () => Navigator.pushNamed(context, 'formulario'),
+                    ),
                   ],
                 ),
                
@@ -123,6 +128,9 @@ class _UserPageState extends State<UserPage> {
           ),
         ),
       ),
+      onTap: (){
+        Navigator.pushNamed( c, 'perfil', arguments: usuario);
+      },
     );
   }
 
@@ -133,7 +141,7 @@ class _UserPageState extends State<UserPage> {
     return GestureDetector(
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 29),
-        color: isDarkTheme? BonovaColors.azulNoche[750] : Colors.white,
+        // color: isDarkTheme? BonovaColors.azulNoche[750] : Colors.white,
         height: 60,
         child: Row(
           children: [
@@ -147,11 +155,11 @@ class _UserPageState extends State<UserPage> {
               borderRadius: 30.0,
               padding: 4,
               
-              activeIcon: Icon(FluentSystemIcons.ic_fluent_weather_moon_filled, color: Colors.teal[50]),
+              activeIcon: Icon(FluentIcons.weather_moon_16_regular, color: Colors.teal[50]),
               activeColor: Colors.black26,
               activeToggleColor: Colors.transparent,
 
-              inactiveIcon: Icon(Icons.brightness_7, color: Colors.tealAccent[700]),
+              inactiveIcon: Icon(Icons.brightness_5_outlined, color: Colors.tealAccent[700], size: 21,),
               inactiveColor: Colors.grey[100],
               inactiveToggleColor: Colors.transparent,
 
@@ -167,7 +175,7 @@ class _UserPageState extends State<UserPage> {
 
             SizedBox( width: 15 ),
             Text( isDarkTheme? 'Modo Noche' : 'Modo Día' , 
-              style: TextStyle( fontSize: 17, fontWeight: FontWeight.w400, color: isDarkTheme? Colors.grey[50] : Colors.grey[850] ) ),
+              style: TextStyle( fontSize: 17, fontWeight: FontWeight.w500 ) ),
           ],
         ),
       ),
@@ -181,14 +189,14 @@ class _UserPageState extends State<UserPage> {
     );
   }
   
-  Widget tira( String text, Widget icon) {
+  Widget tira( String text, Widget icon, String ruta) {
 
     var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
 
     return GestureDetector(
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 25),
-        color: isDarkTheme? BonovaColors.azulNoche[750] : Colors.white,
+        // color: isDarkTheme? BonovaColors.azulNoche[750] : Colors.white,
         height: 60,
         child: Row(
           children: [
@@ -196,12 +204,12 @@ class _UserPageState extends State<UserPage> {
             icon,
             //SvgPicture.asset( svg, height: 19 ),
             SizedBox( width: 29 ),
-            Text( text , style: TextStyle( fontSize: 17, fontWeight: FontWeight.w400, color: isDarkTheme? Colors.grey[50] : Colors.grey[850] ) ),
+            Text( text , style: TextStyle( fontSize: 17, fontWeight: FontWeight.w500, ) ),
           ],
         ),
       ),
       onTap: (){
-        
+        Navigator.pushNamed(context, ruta);
       },
     );
   }

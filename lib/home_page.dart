@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:fluentui_icons/fluentui_icons.dart';
+// import 'package:fluentui_icons/fluentui_icons.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'src/pages/explore/explore_page.dart';
 import 'src/pages/inicio/inicio_page.dart';
 import 'src/pages/user/user_page.dart';
@@ -62,20 +63,20 @@ class _HomePageState extends State<HomePage> {
                 items: [
                   BottomNavigationBarItem(
                       icon: (currentIndex == 0)
-                          ? Icon(FluentSystemIcons.ic_fluent_home_filled, size: 25, )
-                          : Icon(FluentSystemIcons.ic_fluent_home_regular, size: 25, color: Colors.grey,),
+                          ? Icon(FluentIcons.home_24_filled, size: 25, )
+                          : Icon(FluentIcons.home_24_regular, size: 25, color: Colors.grey,),
                       title: Container()
                   ),
                   BottomNavigationBarItem(
                       icon: (currentIndex == 1)
-                          ? Icon(FluentSystemIcons.ic_fluent_search_filled, size: 25,)
-                          : Icon(FluentSystemIcons.ic_fluent_search_regular, size: 25, color: Colors.grey),
+                          ? Icon(FluentIcons.search_24_filled, size: 25,)
+                          : Icon(FluentIcons.search_24_regular, size: 25, color: Colors.grey),
                       title: Container()
                   ),
                   BottomNavigationBarItem(
                       icon: (currentIndex == 2)
-                          ? Icon(FluentSystemIcons.ic_fluent_person_filled, size: 25,)
-                          : Icon(FluentSystemIcons.ic_fluent_person_regular, size: 25, color: Colors.grey),
+                          ? Icon(FluentIcons.person_24_filled, size: 25,)
+                          : Icon(FluentIcons.person_24_regular, size: 25, color: Colors.grey),
                       title: Container()
                   ),
 

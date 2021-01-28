@@ -3,7 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:fluentui_icons/fluentui_icons.dart';
+// import 'package:fluentui_icons/fluentui_icons.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:bonova0002/theme.dart';
 
 import 'package:flutter/services.dart';
@@ -328,9 +329,9 @@ class _PlayPageState extends State<PlayPage> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly, 
         children: [
           
-          botonReaccion(Icon(FluentSystemIcons.ic_fluent_bookmark_regular), (){}, 'Guardar'),        
-          botonReaccion(Icon(FluentSystemIcons.ic_fluent_share_android_regular), (){}, 'Compartir'),       
-          botonReaccion(Icon(FluentSystemIcons.ic_fluent_more_filled), (){}, 'Opciones'),        
+          botonReaccion(Icon(FluentIcons.bookmark_24_regular), (){}, 'Guardar'),        
+          botonReaccion(Icon(FluentIcons.share_android_24_regular), (){}, 'Compartir'),       
+          botonReaccion(Icon(FluentIcons.more_24_regular), (){}, 'Opciones'),        
 
 
         ]),
@@ -390,7 +391,7 @@ class _PlayPageState extends State<PlayPage> {
             }
           },
           child: Icon(
-            FluentSystemIcons.ic_fluent_previous_filled,
+            FluentIcons.previous_24_filled,
             size: 25,
             color: Colors.white,
           ),
@@ -417,7 +418,7 @@ class _PlayPageState extends State<PlayPage> {
             setState(() {});
           },
           child: _isPlaying 
-          ? Icon( FluentSystemIcons.ic_fluent_pause_filled, size: 40, color: Colors.white )
+          ? Icon( FluentIcons.pause_20_regular, size: 40, color: Colors.white )
           : Container(height: 38, width: 38, child: SvgPicture.asset('assets/bvPlay.svg', fit: BoxFit.contain, alignment: Alignment.center, color: Colors.white)),
         ),
         FlatButton(
@@ -429,7 +430,7 @@ class _PlayPageState extends State<PlayPage> {
             }
           },
           child: Icon(
-            FluentSystemIcons.ic_fluent_next_filled,
+            FluentIcons.next_24_filled,
             size: 25,
             color: Colors.white,
           ),
@@ -472,7 +473,7 @@ class _PlayPageState extends State<PlayPage> {
                   BoxShadow(offset: const Offset(0.0, 0.0), blurRadius: 4.0, color: Color.fromARGB(50, 0, 0, 0)),
                 ]),
                 child: Icon(
-                  noMute ? FluentSystemIcons.ic_fluent_speaker_filled : FluentSystemIcons.ic_fluent_speaker_none_regular,
+                  noMute ? FluentIcons.speaker_16_filled : FluentIcons.speaker_0_16_regular,
                   color: Colors.transparent,
                   size: 20,
                 )),
@@ -615,7 +616,7 @@ class _PlayPageState extends State<PlayPage> {
             // padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             color: Colors.yellow,
             icon: Icon(
-              FluentSystemIcons.ic_fluent_full_screen_zoom_filled,
+              FluentIcons.full_screen_zoom_24_filled,
               color: Colors.white,
               size: 20,
             ),
