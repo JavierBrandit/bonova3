@@ -1,22 +1,15 @@
 import 'package:bonova0002/src/models/usuario.dart';
-import 'package:bonova0002/src/pages/user/perfil_page.dart';
 import 'package:bonova0002/src/services/auth_services.dart';
 import 'package:bonova0002/src/services/theme.dart';
 import 'package:bonova0002/src/services/prefs.dart';
 import 'package:bonova0002/theme.dart';
-// import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
-import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 
-
-
  
-class UserPage extends StatefulWidget {
- 
+class UserPage extends StatefulWidget { 
   @override
   _UserPageState createState() => _UserPageState();
 }
@@ -64,11 +57,11 @@ class _UserPageState extends State<UserPage> {
           // Divider( color: Colors.transparent, height: 8),
           tira( 'Configuracion', Icon( FluentIcons.settings_24_regular, color: isDarkTheme? Colors.blue[700] : Colors.blue[300]), 'config' ),
           // Divider( color: Colors.transparent, height: 8),
-          tira( 'Biblioteca', Icon( FluentIcons.bookmark_16_regular, color: isDarkTheme? Colors.yellow[700] : Colors.yellow[600]), ''),
+          tira( 'Biblioteca', Icon( FluentIcons.bookmark_16_regular, color: isDarkTheme? Colors.yellow[700] : Colors.yellow[600]), 'biblioteca'),
           // Divider( color: Colors.transparent, height: 8),
-          tira( 'Actividad', Icon( FluentIcons.alert_16_regular, color: isDarkTheme? Colors.red[700] : Colors.redAccent[100]), ''),
+          tira( 'Actividad', Icon( FluentIcons.alert_16_regular, color: isDarkTheme? Colors.red[700] : Colors.redAccent[100]), 'actividad'),
           // Divider( color: Colors.transparent, height: 8),
-          tira( 'Ayuda', Icon( FluentIcons.chat_help_24_regular, color: isDarkTheme? Colors.grey[500] : Colors.grey[400]), ''),
+          tira( 'Ayuda', Icon( FluentIcons.chat_help_24_regular, color: isDarkTheme? Colors.grey[500] : Colors.grey[400]), 'ayuda'),
           // Divider( color: Colors.transparent, height: 8),
           
 
@@ -159,7 +152,7 @@ class _UserPageState extends State<UserPage> {
               activeColor: Colors.black26,
               activeToggleColor: Colors.transparent,
 
-              inactiveIcon: Icon(Icons.brightness_5_outlined, color: Colors.tealAccent[700], size: 21,),
+              inactiveIcon: Icon(FluentIcons.weather_sunny_24_regular, color: Colors.tealAccent[700], size: 28,),
               inactiveColor: Colors.grey[100],
               inactiveToggleColor: Colors.transparent,
 

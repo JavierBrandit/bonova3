@@ -1,7 +1,9 @@
 import 'package:bonova0002/src/pages/user/perfil_page.dart';
 import 'package:bonova0002/src/pages/user/formulario.dart';
 import 'package:bonova0002/src/pages/user/config.dart';
-import 'package:bonova0002/src/widgets/reproductor_video.dart';
+import 'package:bonova0002/src/pages/user/biblioteca.dart';
+import 'package:bonova0002/src/pages/user/actividad.dart';
+import 'package:bonova0002/src/pages/user/ayuda.dart';
 import 'package:flutter/material.dart';
 import 'package:bonova0002/src/pages/inicio/curso_page.dart';
 import 'package:bonova0002/src/pages/user/user_page.dart';
@@ -17,27 +19,26 @@ import 'package:bonova0002/src/pages/login/login_page.dart';
 
 
 final Map<String, Widget Function(BuildContext)> appRoutes = {
+  // Login
         'loading'       : (_) => LoadingPage(),
         'login'         : (_) => LoginPage(),
         'register'      : (_) => RegisterPage(),
+        'home'          : (_) => HomePage(),
+  // Explore      
         'explore'       : (_) => ExplorePage(),
+  // Usuario      
         'user'          : (_) => UserPage(),
         'perfil'        : (_) => PerfilPage(),
         'formulario'    : (_) => Formulario(),
         'config'        : (_) => Configuracion(),
-        'home'          : (_) => HomePage(),
+        'biblioteca'    : (_) => Biblioteca(),
+        'actividad'     : (_) => Actividad(),
+        'ayuda'         : (_) => Ayuda(),
+  // Inicio      
         'inicio'        : (_) => InicioPage(),
-        //'upload'        : (_) => ProductoPage(),
-        // 'reproductor'   : (_) => PlayPage(),
         'ramo'          : (_) => RamoPage(),
         'curso'         : (_) => CursoPage(),
         'usuarios-chat' : (_) => UsuariosChatPage(),
         'chat'          : (_) => ChatPage(),
-
-
-
-        //'test'            : ( BuildContext context) => PruebaMil(),
-
-        //SettingsPage.routeName : ( BuildContext context) => SettingsPage(),
 
       };

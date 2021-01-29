@@ -16,7 +16,7 @@ class PerfilPage extends StatelessWidget {
     var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
     final authService = Provider.of<AuthService>(context);
     usuario = ModalRoute.of(context).settings.arguments;
-    // final usuario = authService.usuario;
+    final yo = authService.usuario;
     
     return Scaffold(
       appBar: AppBar(
@@ -51,12 +51,17 @@ class PerfilPage extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(width: 50),
+                SizedBox(width: 40),
                 Text( usuario.nombre, style: TextStyle( fontSize: 28, fontWeight: FontWeight.w400, letterSpacing: 0.8 ) ),
-                IconButton(
-                  icon: Icon( FluentIcons.edit_24_filled, size: 16,),
-                  onPressed: () => Navigator.pushNamed(context, 'formulario'),
-                ),
+                this.usuario == yo
+                ? IconButton(
+                    icon: Icon( FluentIcons.edit_32_regular, size: 21),
+                    onPressed: () => Navigator.pushNamed(context, 'formulario'),
+                  )
+                : IconButton(
+                    icon: Icon( FluentIcons.person_add_24_regular, size: 25, color: Colors.tealAccent[700],),
+                    onPressed: (){},
+                  )
               ],
             ),
             Text('Profesor', style: TextStyle( fontSize: 13, fontWeight: FontWeight.w700, color: Colors.teal[300])),

@@ -29,7 +29,7 @@ class Configuracion extends StatelessWidget {
               children: [
               titulo('Cuenta'),
                 item('Tipo de cuenta', FluentIcons.person_16_regular,(){}),
-                item('Estado de conexión', FluentIcons.connector_20_regular, (){}),
+                item('Estado de conexión', FluentIcons.communication_16_regular, (){}),
                 item('Puntos bonova', FluentIcons.ticket_diagonal_20_regular,(){}),
 
               titulo('Seguridad'),
@@ -49,7 +49,7 @@ class Configuracion extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     GestureDetector(
-                      child: Text('Cerrar Sesión', style:TextStyle( color:Colors.teal[300], fontWeight: FontWeight.w500 )),
+                      child: Text('Cerrar sesión', style:TextStyle( color:Colors.teal[300], fontWeight: FontWeight.w500 )),
                       onTap: (){
                         socketService.disconnect();
                         Navigator.pushReplacementNamed(context, 'login');
@@ -58,6 +58,15 @@ class Configuracion extends StatelessWidget {
                     ),
                   ],
                 ),
+                SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('bonova v1.0.0',
+                      style: TextStyle( fontSize: 10 ),
+                    ),
+                  ],
+                )
         ]))),
       ])   
     );
