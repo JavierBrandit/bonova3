@@ -23,18 +23,19 @@ class PerfilPage extends StatelessWidget {
         title: Text(''),
         elevation: 0.0,
         actions: [
+          
+          usuario != yo ?
           Padding(
             padding: const EdgeInsets.only(bottom:5, right: 10),
             child: IconButton(
-              icon: SvgPicture.asset('assets/send.svg', height: 20.0, width: 20.0, color: isDarkTheme? Colors.tealAccent : Colors.teal[600],),
-              //color:  Colors.teal,
+              icon: SvgPicture.asset('assets/sendd.svg', height: 21, width: 21, color: isDarkTheme? Colors.tealAccent : Colors.teal[700],),
               onPressed: () {
                 final chatService = Provider.of<ChatService>(context, listen: false);
                 chatService.usuarioPara = usuario;
                 Navigator.pushNamed(context, 'chat');
         },
             ),
-          ),
+          ) : Container()
         ],
       ),
       body: CustomScrollView(
@@ -46,7 +47,13 @@ class PerfilPage extends StatelessWidget {
           children: [
             
             SizedBox( height: 20 ),
-            Center(child: CircleAvatar(backgroundImage: AssetImage('assets/placeBonova.jpg'), radius: 55 )),
+            Hero(
+              tag: 'foto',
+              child: Center(child: GestureDetector( child: 
+                CircleAvatar(backgroundImage: NetworkImage(usuario.foto), radius: 55 ),
+                onTap: () => Navigator.pushNamed(context, 'foto', arguments: usuario),
+              )),
+            ),
             SizedBox( height: 13 ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -64,41 +71,49 @@ class PerfilPage extends StatelessWidget {
                   )
               ],
             ),
-            Text('Profesor', style: TextStyle( fontSize: 13, fontWeight: FontWeight.w700, color: Colors.teal[300])),
-            SizedBox( height: 10 ),
 
-            FlatButton(
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 4),
+                  child:
+                   usuario.profesor
+                    ? Container(height: 19, width: 19, child: SvgPicture.asset('assets/manzana.svg', color: Colors.redAccent.withOpacity(.8)))
+                    : 
+                    Icon(FluentIcons.hat_graduation_24_regular, size: 19, color: Colors.teal)),
+
+                Padding(
+                  padding: const EdgeInsets.only(top:2),
+                  child: Text(usuario.profesor? 'Profesor' :'Alumno' , style: TextStyle( fontSize: 16, letterSpacing: -.5, fontWeight: FontWeight.w500, color: usuario.profesor? Colors.redAccent.withOpacity(.8): Colors.teal[500])),
+                ),
+                SizedBox(width: 15)
+              ],
+            ),
+            SizedBox( height: 20 ),
+
+            yo.profesor || usuario != yo
+            ? Container()
+            : FlatButton(
+              height: 34,
+              padding: EdgeInsets.symmetric(horizontal: 13),
               onPressed: (){},
-              child: Text('Cambiate a Profesor', style: TextStyle( fontSize: 13, fontWeight: FontWeight.w700),),
-              color: Colors.tealAccent[400],
+              child: Text('Cambiate a Profesor', style: TextStyle( fontSize: 12, fontWeight: FontWeight.w700, letterSpacing: -.2)),
+              color: Colors.teal,
               colorBrightness: Brightness.dark,
               shape: StadiumBorder(),
             ),
-            SizedBox( height: 10 ),
+            
+
+            SizedBox( height: 40 ),
 
             cajaBorde(isDarkTheme, [
-              listTileInfo('Universidad de Santiago', FluentIcons.hat_graduation_16_regular, 'Estudios'),
+              listTileInfo(usuario.colegio, FluentIcons.hat_graduation_16_regular, 'Estudios'),
               listTileInfo('5', FluentIcons.video_16_regular, 'Cursos en que enseña'),
               listTileInfo('Matemática · Física', FluentIcons.book_20_regular, 'Especialidad'),
               listTileInfo('5.0', FluentIcons.star_16_regular, 'Valoración promedio'),
-              listTileInfo('Padre Hurtado', FluentIcons.location_16_regular, 'Comuna')
+              listTileInfo(usuario.comuna, FluentIcons.location_16_regular, 'Comuna')
             ]),
-            cajaBorde(isDarkTheme, [
-              listTileInfo('Universidad de Santiago', FluentIcons.hat_graduation_16_regular, 'Estudios'),
-              listTileInfo('5', FluentIcons.video_16_regular, 'Cursos en que enseña'),
-              listTileInfo('Matemática · Física', FluentIcons.book_20_regular, 'Especialidad'),
-              listTileInfo('5.0', FluentIcons.star_16_regular, 'Valoración promedio'),
-              listTileInfo('Padre Hurtado', FluentIcons.location_16_regular, 'Comuna')
-            ]),
-            cajaBorde(isDarkTheme, [
-              listTileInfo('Universidad de Santiago', FluentIcons.hat_graduation_16_regular, 'Estudios'),
-              listTileInfo('5', FluentIcons.video_16_regular, 'Cursos en que enseña'),
-              listTileInfo('Matemática · Física', FluentIcons.book_20_regular, 'Especialidad'),
-              listTileInfo('5.0', FluentIcons.star_16_regular, 'Valoración promedio'),
-              listTileInfo('Padre Hurtado', FluentIcons.location_16_regular, 'Comuna')
-            ]),
-
-             
           ]),
         )
         ])
@@ -108,9 +123,9 @@ class PerfilPage extends StatelessWidget {
   cajaBorde(bool dark, List<Widget> children){
     return Container(
       // color: Colors.white,
-      padding: EdgeInsets.all(15),
+      padding: EdgeInsets.symmetric(horizontal:20),
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 16),
+        padding: EdgeInsets.symmetric(horizontal: 40, vertical: 25),
         width: double.infinity,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
@@ -126,19 +141,19 @@ class PerfilPage extends StatelessWidget {
 
   listTileInfo(String titulo, IconData icon, String descripcion){
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 10),
+      padding: EdgeInsets.symmetric(vertical: 15),
       child: Row(
         children: [
 
           Padding(
             padding: EdgeInsets.only(right: 23),
-            child: Icon(icon, size: 17),
+            child: Icon(icon, size: 18),
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(titulo, style: TextStyle(fontWeight: FontWeight.w500),),
-              Text(descripcion, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300),),
+              Text(titulo, style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15),),
+              Text(descripcion, style: TextStyle(fontSize: 11, fontWeight: FontWeight.w500),),
             ],
           )
 

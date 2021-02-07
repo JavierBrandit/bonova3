@@ -29,7 +29,9 @@ class Formulario extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      CircleAvatar(backgroundImage: AssetImage('assets/placeBonova.jpg'), radius: 65),
+                      Hero(
+                        tag: 'foto',
+                        child: CircleAvatar(backgroundImage: NetworkImage(usuario.foto), radius: 65)),
                     ],
                   ),
                   nombre('Nombre'),
@@ -50,7 +52,7 @@ class Formulario extends StatelessWidget {
       padding: EdgeInsets.only( top: 30, bottom: 12),
       child: Text(
         nombre,
-        style: TextStyle( fontSize: 12, letterSpacing: -.3),
+        style: TextStyle( fontSize: 12, letterSpacing: -.3, fontWeight: FontWeight.w500),
       ),
     );
   }

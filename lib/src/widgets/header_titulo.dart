@@ -21,18 +21,18 @@ class HeaderTitulo extends StatelessWidget {
 
     return GestureDetector(
       child: Container(
-        color: isDarkTheme? BonovaColors.azulNoche[900].withOpacity(0.25) : Colors.white,
+        // color: isDarkTheme? BonovaColors.azulNoche[900].withOpacity(0.25) : Colors.white,
         padding: EdgeInsets.symmetric(horizontal: 30, vertical: 14),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             
-                    Text(titulo,
-                      style: TextStyle(fontSize: 13.5,
-                        fontWeight: FontWeight.w500, letterSpacing: 0.5,
-                        color: isDarkTheme? Colors.white : Colors.grey[850]
-                    )),
-                    Icon(FluentIcons.chevron_right_24_regular, size: 17,),
+            Text(titulo,
+              style: TextStyle(fontSize: 13.5,
+                fontWeight: FontWeight.w500, letterSpacing: -.2,
+                // color: isDarkTheme? Colors.white : Colors.grey[850]
+            )),
+            Icon(FluentIcons.chevron_right_24_regular, size: 17,),
 
             
           ]

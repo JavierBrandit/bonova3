@@ -1,11 +1,8 @@
 import 'package:bonova0002/src/models/curso_modelo.dart';
 import 'package:bonova0002/src/widgets/carrusel_horizontal.dart';
 import 'package:bonova0002/src/widgets/header_titulo.dart';
-import 'package:bonova0002/src/widgets/ramopage_widgets.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:bonova0002/src/services/videos_service.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 class RamoPage extends StatefulWidget {
@@ -16,13 +13,9 @@ class RamoPage extends StatefulWidget {
 
 class _RamoPageState extends State<RamoPage> {
 
-  //final videoService = new VideoService();
-  //final cursoService = new CursoService();
-  //List<Video> videos = [];
   ScrollController _scrollController;
   CursoService cursoService;
   String ramo;
-  //final branding = new Branding();
   List<Curso> cursos1 = [];
   List<Curso> cursos2 = [];
   List<Curso> cursos3 = [];
@@ -41,19 +34,16 @@ class _RamoPageState extends State<RamoPage> {
   @override
   Widget build(BuildContext context) {
 
-    var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
-
       this.cursoService = Provider.of<CursoService>(context, listen: false);
       this.ramo = cursoService.ramo;
+
     return Scaffold(
-      //backgroundColor: Colors.grey[50],
       body: CustomScrollView(
         controller: _scrollController,
         slivers: <Widget>[
           _switchAppBar(ramo),
           SliverToBoxAdapter( child: Column(
             children: <Widget>[
-              //SizedBox(height: 20),
               HeaderTitulo(titulo: 'Primero Medio', paginaDestino: '',),
               _listaNivel(cursos1),
               HeaderTitulo(titulo: 'Segundo Medio', paginaDestino: '',),

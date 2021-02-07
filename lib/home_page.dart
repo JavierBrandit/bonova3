@@ -63,8 +63,8 @@ class _HomePageState extends State<HomePage> {
                 items: [
                   BottomNavigationBarItem(
                       icon: (currentIndex == 0)
-                          ? Icon(FluentIcons.home_24_filled, size: 25, )
-                          : Icon(FluentIcons.home_24_regular, size: 25, color: Colors.grey,),
+                          ? Icon(FluentIcons.home_48_filled, size: 25, )
+                          : Icon(FluentIcons.home_48_regular, size: 25, color: Colors.grey,),
                       title: Container()
                   ),
                   BottomNavigationBarItem(
@@ -75,8 +75,8 @@ class _HomePageState extends State<HomePage> {
                   ),
                   BottomNavigationBarItem(
                       icon: (currentIndex == 2)
-                          ? Icon(FluentIcons.person_24_filled, size: 25,)
-                          : Icon(FluentIcons.person_24_regular, size: 25, color: Colors.grey),
+                          ? Icon(FluentIcons.person_48_filled, size: 25,)
+                          : Icon(FluentIcons.person_48_regular, size: 25, color: Colors.grey),
                       title: Container()
                   ),
 

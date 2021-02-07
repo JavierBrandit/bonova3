@@ -246,7 +246,7 @@ class _PlayPageState extends State<PlayPage> {
           ? null
           : AppBar(
               elevation: 0.0,
-              title: Text('${curso.titulo}  ·  ${curso.nivel}º medio', style: TextStyle( fontSize: 17.5 )),
+              title: Text('${curso.titulo}  ·  ${curso.nivel}º medio', style: TextStyle( fontSize: 19, letterSpacing: -1, fontWeight: FontWeight.w400 ))              
             ),
       body: _isFullScreen
           ? Container(
@@ -331,7 +331,7 @@ class _PlayPageState extends State<PlayPage> {
           
           botonReaccion(Icon(FluentIcons.bookmark_24_regular), (){}, 'Guardar'),        
           botonReaccion(Icon(FluentIcons.share_android_24_regular), (){}, 'Compartir'),       
-          botonReaccion(Icon(FluentIcons.more_24_regular), (){}, 'Opciones'),        
+          botonReaccion(Icon(FluentIcons.more_horizontal_24_filled),(){}, 'Opciones'),        
 
 
         ]),
@@ -343,7 +343,7 @@ class _PlayPageState extends State<PlayPage> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         IconButton( icon: icon, onPressed: onTap),
-        Text( label, style: TextStyle( fontSize: 11)),
+        Text( label, style: TextStyle( fontSize: 11, fontWeight: FontWeight.w600)),
         SizedBox( height: 10 )
       ]);          
   }
@@ -418,8 +418,8 @@ class _PlayPageState extends State<PlayPage> {
             setState(() {});
           },
           child: _isPlaying 
-          ? Icon( FluentIcons.pause_20_regular, size: 40, color: Colors.white )
-          : Container(height: 38, width: 38, child: SvgPicture.asset('assets/bvPlay.svg', fit: BoxFit.contain, alignment: Alignment.center, color: Colors.white)),
+          ? Icon( FluentIcons.pause_20_filled, size: 40, color: Colors.white )
+          : Container(height: 35, width: 35, child: SvgPicture.asset('assets/bvPlay.svg', fit: BoxFit.contain, alignment: Alignment.center, color: Colors.white)),
         ),
         FlatButton(
           padding: EdgeInsets.all(10),
@@ -457,53 +457,66 @@ class _PlayPageState extends State<PlayPage> {
   }
 
   Widget _topUI() {
+    var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
+    final controller = _controller;
     final noMute = (_controller?.value?.volume ?? 0) > 0;
     final duration = _duration?.inSeconds ?? 0;
     final head = _position?.inSeconds ?? 0;
     final remained = max(0, duration - head);
     final min = convertTwo(remained ~/ 60.0);
     final sec = convertTwo(remained % 60);
+    const _examplePlaybackRates = [
+    0.7,
+    1.0,
+    1.2,
+    1.5,
+    2.0,
+    2.2
+  ];
+
     return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
-        InkWell(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            child: Container(
-                decoration: BoxDecoration(shape: BoxShape.circle, boxShadow: [
-                  BoxShadow(offset: const Offset(0.0, 0.0), blurRadius: 4.0, color: Color.fromARGB(50, 0, 0, 0)),
-                ]),
-                child: Icon(
-                  noMute ? FluentIcons.speaker_16_filled : FluentIcons.speaker_0_16_regular,
-                  color: Colors.transparent,
-                  size: 20,
-                )),
+        PopupMenuButton(
+            color: isDarkTheme? Colors.blueGrey[900].withOpacity(.55) : Colors.white.withOpacity(.85),
+            padding: EdgeInsets.zero,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            elevation: 0.001,
+            initialValue: controller.value.playbackSpeed,
+            tooltip: 'Playback speed',
+            onSelected: (speed) {
+              controller.setPlaybackSpeed(speed);
+              setState(() {});
+            },
+            itemBuilder: (context) {
+              return [
+                for (final speed in _examplePlaybackRates)
+                  PopupMenuItem(
+                    height: 37,
+                    value: speed,
+                    child: Text('${speed}x', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, letterSpacing: .2),),
+                  )
+              ];
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                // Using less vertical padding as the text is also longer
+                // horizontally, so it feels like it would need more spacing
+                // horizontally (matching the aspect ratio of the video).
+                vertical: 12,
+                horizontal: 16,
+              ),
+              child: Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(right:4),
+                    child: Icon(FluentIcons.top_speed_24_filled, color: Colors.white, size: 24,),
+                  ),
+                  Text(controller.value.playbackSpeed == 1.0 || controller.value.playbackSpeed == 2.0? '${controller.value.playbackSpeed.round()}x' : '${controller.value.playbackSpeed}x', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.white, fontSize: 17, letterSpacing: .2 ),),
+                ],
+              ),
+            ),
           ),
-          onTap: () {
-            if (noMute) {
-              _controller?.setVolume(0);
-            } else {
-              _controller?.setVolume(1.0);
-            }
-            setState(() {});
-          },
-        ),
-        // Expanded(
-        //   child: Container(),
-        // ),
-        // Text(
-        //   "$min:$sec",
-        //   style: TextStyle(
-        //     color: Colors.white,
-        //     shadows: <Shadow>[
-        //       Shadow(
-        //         offset: Offset(0.0, 1.0),
-        //         blurRadius: 4.0,
-        //         color: Color.fromARGB(150, 0, 0, 0),
-        //       ),
-        //     ],
-        //   ),
-        // ),
-        // SizedBox(width: 10)
       ],
     );
   }
@@ -515,7 +528,7 @@ class _PlayPageState extends State<PlayPage> {
     return Slider(
             focusNode: FocusNode(),
             autofocus: true,
-            activeColor: isDarkTheme ? Colors.tealAccent : Colors.tealAccent[400],
+            activeColor: isDarkTheme ? Colors.tealAccent[700] : Colors.teal[300],
             inactiveColor: Colors.white24,
             value: max(0, min(_progress * 100, 100)),
             min: 0,
@@ -570,7 +583,7 @@ class _PlayPageState extends State<PlayPage> {
             child: Text(
               "$minPos:$secPos / $miniDur:$secDur",
               style: TextStyle(
-                color: Colors.white, fontSize: 10, fontWeight: FontWeight.w700, letterSpacing: 0.8,
+                color: Colors.white, fontSize: 12, fontWeight: FontWeight.w700, letterSpacing: 0.2,
                 shadows: <Shadow>[
                   Shadow(
                     offset: Offset(0.0, 1.0),
@@ -616,7 +629,7 @@ class _PlayPageState extends State<PlayPage> {
             // padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             color: Colors.yellow,
             icon: Icon(
-              FluentIcons.full_screen_zoom_24_filled,
+              FluentIcons.arrow_expand_24_regular,
               color: Colors.white,
               size: 20,
             ),

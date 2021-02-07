@@ -53,8 +53,8 @@ Widget carruselHorizontal(BuildContext context, Curso curso) {
                         ]
                       ),
                       SizedBox( height: 3),
-                      Text(curso.videos.length.toString() + ' videos', style: TextStyle( fontSize: 9, fontWeight: FontWeight.w400 )),
-                      SizedBox( height: 6),
+                      Text(curso.videos.length.toString() + ' videos', style: TextStyle( fontSize: 11, fontWeight: FontWeight.w500 )),
+                      SizedBox( height: 7),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
@@ -62,8 +62,8 @@ Widget carruselHorizontal(BuildContext context, Curso curso) {
                           Container(
                             height: 60,
                             width: 210,
-                            child: Text('Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto.',
-                              style: TextStyle( fontSize: 11, fontWeight: FontWeight.w300, letterSpacing: 0.3, height: 1.5),
+                            child: Text(curso.descripcion,
+                              style: TextStyle( fontSize: 10, fontWeight: FontWeight.w500, letterSpacing: 0.3, height: 1.5),
                               overflow: TextOverflow.clip,
                               softWrap: true,
                             ),

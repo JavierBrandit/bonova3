@@ -1,9 +1,16 @@
+import 'package:bonova0002/src/pages/inicio/upload.dart';
+import 'package:bonova0002/src/pages/user/about.dart';
+import 'package:bonova0002/src/pages/user/foto.dart';
+import 'package:bonova0002/src/pages/user/password.dart';
 import 'package:bonova0002/src/pages/user/perfil_page.dart';
 import 'package:bonova0002/src/pages/user/formulario.dart';
 import 'package:bonova0002/src/pages/user/config.dart';
 import 'package:bonova0002/src/pages/user/biblioteca.dart';
 import 'package:bonova0002/src/pages/user/actividad.dart';
 import 'package:bonova0002/src/pages/user/ayuda.dart';
+import 'package:bonova0002/src/pages/user/preguntas.dart';
+import 'package:bonova0002/src/pages/user/profesor.dart';
+import 'package:bonova0002/src/pages/user/puntos.dart';
 import 'package:flutter/material.dart';
 import 'package:bonova0002/src/pages/inicio/curso_page.dart';
 import 'package:bonova0002/src/pages/user/user_page.dart';
@@ -34,6 +41,17 @@ final Map<String, Widget Function(BuildContext)> appRoutes = {
         'biblioteca'    : (_) => Biblioteca(),
         'actividad'     : (_) => Actividad(),
         'ayuda'         : (_) => Ayuda(),
+        'profesor'      : (_) => Profesor(),
+        'puntos'        : (_) => Puntos(),
+        'password'      : (_) => Password(),
+        'about'         : (_) => About(),
+        'preguntas'     : (_) => Preguntas(),
+        'foto'          : (_) => Foto(),
+        'subir'         : (_) => SubirFoto(),
+
+
+
+
   // Inicio      
         'inicio'        : (_) => InicioPage(),
         'ramo'          : (_) => RamoPage(),

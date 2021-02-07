@@ -28,21 +28,21 @@ class Configuracion extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
               titulo('Cuenta'),
-                item('Tipo de cuenta', FluentIcons.person_16_regular,(){}),
-                item('Estado de conexión', FluentIcons.communication_16_regular, (){}),
-                item('Puntos bonova', FluentIcons.ticket_diagonal_20_regular,(){}),
+                item('Tipo de cuenta', FluentIcons.person_16_regular, 'profesor',context),
+                item('Estado de conexión', FluentIcons.communication_16_regular, '',context),
+                item('Puntos bonova', FluentIcons.ticket_diagonal_20_regular,'puntos',context),
 
               titulo('Seguridad'),
-                item('Contraseña', FluentIcons.lock_closed_16_regular,(){}),
-                item('Información', FluentIcons.info_16_regular,(){}),
-                item('Notificaciones', FluentIcons.alert_16_regular,(){}),
-                item('Recordatorios de aprendizaje', FluentIcons.clock_16_regular, (){} ),
+                item('Contraseña', FluentIcons.lock_closed_16_regular,'password',context),
+                item('Información', FluentIcons.info_16_regular, '',context),
+                item('Notificaciones', FluentIcons.alert_16_regular, '',context),
+                item('Recordatorios de aprendizaje', FluentIcons.clock_16_regular, '',context ),
 
               titulo('Soporte'),
-                item('Sobre bonova', FluentIcons.more_horizontal_16_regular,(){}),
-                item('Preguntas frecuentes', FluentIcons.question_circle_16_regular,(){}),
-                item('Calificar', FluentIcons.star_16_regular,(){}),
-                item('Recomendar bonova a un amigo', FluentIcons.gift_20_regular,(){}),
+                item('Sobre bonova', FluentIcons.more_horizontal_16_regular, 'about',context),
+                item('Preguntas frecuentes', FluentIcons.question_circle_16_regular, 'preguntas',context),
+                item('Calificar', FluentIcons.star_16_regular, '',context),
+                item('Recomendar bonova a un amigo', FluentIcons.gift_20_regular, '',context),
 
                 SizedBox(height: 50),
                 Row(
@@ -82,18 +82,23 @@ class Configuracion extends StatelessWidget {
     );
   }
 
-  item(String nombre, IconData icon, Function onTap){
-    return Row(
-      children: [
-        Icon(icon, size: 21),
-        SizedBox(width: 7),
-        Padding(
-          padding: EdgeInsets.all(11),
-          child: Text( nombre,
-            style: TextStyle( fontWeight: FontWeight.w500, fontSize: 16),
+  item(String nombre, IconData icon, String ruta, BuildContext context){
+    return GestureDetector(
+      onTap: () => Navigator.pushNamed(context, ruta),
+      child: Container(
+        child: Row(
+          children: [
+            Icon(icon, size: 21),
+            SizedBox(width: 7),
+            Padding(
+              padding: EdgeInsets.all(11),
+              child: Text( nombre,
+                style: TextStyle( fontWeight: FontWeight.w500, fontSize: 16),
+                ),
             ),
+          ],
         ),
-      ],
+      ),
     );
   }
 

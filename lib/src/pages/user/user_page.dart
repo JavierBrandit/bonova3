@@ -1,14 +1,15 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:bonova0002/theme.dart';
 import 'package:bonova0002/src/models/usuario.dart';
 import 'package:bonova0002/src/services/auth_services.dart';
 import 'package:bonova0002/src/services/theme.dart';
 import 'package:bonova0002/src/services/prefs.dart';
-import 'package:bonova0002/theme.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_switch/flutter_switch.dart';
+import 'package:full_screen_image/full_screen_image.dart';
 
- 
+
 class UserPage extends StatefulWidget { 
   @override
   _UserPageState createState() => _UserPageState();
@@ -29,20 +30,36 @@ class _UserPageState extends State<UserPage> {
     
     return Scaffold(
       appBar: AppBar(
+        toolbarHeight: 60,
+        backgroundColor: Colors.transparent,
         title: Text(''),
         elevation: 0,
       ),
       body: Column(
 
         children: [
-          SizedBox( height: 40 ),
+          // SizedBox( height: 40 ),
+
+          // foto(usuario.foto),
           
           Row( 
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-            Padding(
-              padding: EdgeInsets.all(8),
-              child: CircleAvatar(backgroundImage: AssetImage('assets/placeBonova.jpg'), radius: 55 ),
+            GestureDetector(
+              onTap: (){
+                
+              },
+              child: Padding(
+                padding: EdgeInsets.all(8),
+                child: Hero(
+                  tag: 'foto',
+                  child: GestureDetector(
+                    child: CircleAvatar(backgroundImage: NetworkImage(usuario.foto), radius: 55 ),
+                    onTap: () => Navigator.pushNamed(context, 'foto', arguments: usuario)
+                    
+                  ),
+                ),
+              ),
             ),
             //SizedBox( width: 20 ),
             infoUsuario( context, pantalla, usuario ),
@@ -71,6 +88,26 @@ class _UserPageState extends State<UserPage> {
     );
   }
 
+  foto(String img){
+    return Container(
+      height: 70,
+      width: 70,
+
+      child: FullScreenWidget(
+          child: Hero(
+            tag: "customTag",
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: Image.network(
+                img, fit: BoxFit.cover, height: 70, width: 70,
+              ),
+            ),
+          ),
+        ),
+    );
+
+  }
+
   Widget infoUsuario( BuildContext c, Size size, Usuario usuario ) {
 
     var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
@@ -90,27 +127,30 @@ class _UserPageState extends State<UserPage> {
             width: size.width * 0.54,
             height: 160,
             padding: EdgeInsets.all(18),
-            // decoration: BoxDecoration(boxShadow: [BoxShadow(
-            //     color: Colors.grey,
-            //     offset: Offset.fromDirection(-10.0),
-            //     blurRadius: 20.0
-            //     )]),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Text('Alumno', style: TextStyle( fontSize: 12, fontWeight: FontWeight.w700, letterSpacing: 0.4, color: isDarkTheme? Colors.grey[400] : Colors.grey[500], ) ),
+                Text(usuario.profesor?'Profesor' :'Alumno', style: TextStyle( fontSize: 12, fontWeight: FontWeight.w500, color: isDarkTheme? Colors.grey[400] : Colors.grey[700], ) ),
                 Text(usuario.nombre, style: TextStyle( fontSize: 21, fontWeight: FontWeight.w500, letterSpacing: 0.2, color: isDarkTheme? Colors.white : Colors.grey[800] ) ),
                 SizedBox( height: 5 ),
-                Text('Curso', style: TextStyle( fontSize: 12, fontWeight: FontWeight.w700, letterSpacing: 0.4, color: isDarkTheme? Colors.grey[400] : Colors.grey[500], ) ),
-                Text('3ro · Patricio Mekis · TP', style: TextStyle( fontSize: 14, fontWeight: FontWeight.w400, letterSpacing: 0.2, color: isDarkTheme? Colors.grey[50] : Colors.grey[850] ) ),
+                Text('Curso', style: TextStyle( fontSize: 12, fontWeight: FontWeight.w600, color: isDarkTheme? Colors.grey[400] : Colors.grey[700], ) ),
+                Text('${usuario.curso} · ${usuario.colegio}', style: TextStyle( fontSize: 14, fontWeight: FontWeight.w400, letterSpacing: 0.2, color: isDarkTheme? Colors.grey[50] : Colors.grey[850] ) ),
                 SizedBox( height: 15 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     GestureDetector(
-                      child: Text('editar informacion', style: TextStyle( fontSize: 14, fontWeight: FontWeight.w600, letterSpacing: 0.6, color: Colors.tealAccent[700] ) ),
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 4),
+                            child: Icon(FluentIcons.info_16_regular, size: 16, color: Colors.tealAccent[700]),
+                          ),
+                          Text('editar informacion', style: TextStyle( fontSize: 14, fontWeight: FontWeight.w500, letterSpacing: -0.3, color: Colors.tealAccent[700] ) ),
+                        ],
+                      ),
                       onTap: () => Navigator.pushNamed(context, 'formulario'),
                     ),
                   ],

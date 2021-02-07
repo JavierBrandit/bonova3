@@ -81,7 +81,6 @@ class FormState extends State<Form> {
           textController: passCtrl,
         ),
 
-
          BtnAzul(
            txt:'Crear Cuenta', 
            callBack: authService.autenticando ? null : () async {

@@ -121,15 +121,20 @@ class _InicioPageState extends State<InicioPage> {
           children: [
 
             SizedBox(height: 8),
-            CircleAvatar(
+            u.foto == '' || u.foto == null
+            ? CircleAvatar(
               radius: 28,
               backgroundColor: isDarkTheme ? Colors.teal[800] : Colors.tealAccent[100],
               child: Text( u.nombre.substring(0,2), style: TextStyle( color: isDarkTheme ? Colors.white : Colors.teal[900] ))
+            )
+            : CircleAvatar(
+              radius: 28,
+              backgroundImage: NetworkImage(u.foto),
             ),
             SizedBox(height: 8),
             Text( u.nombre,
               style: TextStyle(
-                       fontSize: 11,
+                       fontSize: 12,
                        fontWeight: FontWeight.w500 
                        ),
             ),
@@ -183,7 +188,7 @@ class _InicioPageState extends State<InicioPage> {
               Container(
                 margin: EdgeInsets.only(left: 24.0),
                 child: Padding(
-                  padding: const EdgeInsets.only(top:0.0),
+                  padding: const EdgeInsets.only(top:8),
                   child: SvgPicture.asset('assets/bv_ic.svg',
                     color: isDarkTheme? Colors.tealAccent : Colors.teal[600],
                     alignment: Alignment.bottomCenter,
@@ -195,23 +200,14 @@ class _InicioPageState extends State<InicioPage> {
                 //mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
+
                 Padding(
-                  padding: const EdgeInsets.only(bottom:10),
-                  // child: IconButton(
-                  //   icon: Icon(FluentSystemIcons.ic_fluent_upload_filled),
-                  //   color: isDarkTheme? Colors.tealAccent : Colors.teal[600],
-                  //   onPressed: () => Navigator.pushNamed(context, 'upload'),
-                  // ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom:5, right: 5),
+                  padding: const EdgeInsets.only(top:3, right: 15),
                   child: IconButton(
-                    icon: SvgPicture.asset('assets/send.svg', height: 20.0, width: 20.0, color: isDarkTheme? Colors.tealAccent : Colors.teal[600],),
-                    //color:  Colors.teal,
+                    icon: SvgPicture.asset('assets/sendd.svg', height: 21, width: 21, color: isDarkTheme? Colors.tealAccent : Colors.teal[700],),
                     onPressed: () => Navigator.pushNamed(context, 'usuarios-chat'),
                   ),
                 ),
-                SizedBox(width: 12.0,)
               ],)
             ] ),
       ),
