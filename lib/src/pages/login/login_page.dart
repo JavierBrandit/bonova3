@@ -1,9 +1,9 @@
 // import 'package:fluentui_icons/fluentui_icons.dart';
+import 'package:bonova0002/src/helpers/mostrar_alerta.dart';
 import 'package:bonova0002/theme.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:bonova0002/src/helpers/mostrar_alerta.dart';
 import 'package:bonova0002/src/widgets/btn_azul.dart';
 import 'package:bonova0002/src/widgets/custom_input.dart';
 import 'package:bonova0002/src/widgets/labels_widget.dart';
@@ -83,17 +83,14 @@ class FormState extends State<Form> {
          BtnAzul(
            txt:'Continuar', 
            callBack: authService.autenticando ? null : () async {
-              
               FocusScope.of(context).unfocus(); 
-              
-              final loginOk = await authService.login(emailCtrl.text.trim(), passCtrl.text.trim()); //trim() para que no se pasen espacios o tabs
-              
-              if ( loginOk ) {
+              final loginOk = await authService.login(emailCtrl.text.trim(), passCtrl.text.trim());
+              if ( loginOk == true ) {
                 socketService.connect();
                 Navigator.pushReplacementNamed(context, 'home');
               } else {
-                mostrarAlerta(context, 'Login incorrecto', 'Revise sus credenciales nuevamente');
-              }
+                mostrarAlerta(context, 'Correo o contraseña incorrectos', 'Error al iniciar sesion');
+              } //trim() para que no se pasen espacios o tabs
            }
          ),
        ],),

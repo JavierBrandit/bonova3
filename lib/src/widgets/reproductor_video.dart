@@ -13,6 +13,8 @@ import 'package:bonova0002/src/services/videos_service.dart';
 import 'package:bonova0002/src/models/video_modelo.dart';
 import 'package:video_player/video_player.dart';
 
+import 'list_videos.dart';
+
 class PlayPage extends StatefulWidget {
   PlayPage({Key key, @required this.clips}) : super(key: key);
 
@@ -36,8 +38,11 @@ class _PlayPageState extends State<PlayPage> {
   var _isEndOfClip = false;
   var _progress = 0.0;
   var _showingDialog = false;
-  Timer _timerVisibleControl;
+  var _updateProgressInterval = 0.0;
   double _controlAlpha = 1.0;
+  Timer _timerVisibleControl;
+  Duration _duration;
+  Duration _position;
 
   var _playing = false;
   bool get _isPlaying {
@@ -157,10 +162,6 @@ class _PlayPageState extends State<PlayPage> {
       });
   }
 
-  var _updateProgressInterval = 0.0;
-  Duration _duration;
-  Duration _position;
-
   void _onControllerUpdated() async {
     if (_disposed) return;
     // blocking too many updation
@@ -233,7 +234,6 @@ class _PlayPageState extends State<PlayPage> {
         });
   }
 
-
   @override
   Widget build(BuildContext context) {
 
@@ -242,52 +242,33 @@ class _PlayPageState extends State<PlayPage> {
     final Size pantalla = MediaQuery.of(context).size;
 
     return Scaffold(
-      appBar: _isFullScreen
-          ? null
+      appBar: _isFullScreen? null
           : AppBar(
               elevation: 0.0,
               title: Text('${curso.titulo}  ·  ${curso.nivel}º medio', style: TextStyle( fontSize: 19, letterSpacing: -1, fontWeight: FontWeight.w400 ))              
             ),
       body: _isFullScreen
           ? Container(
-              child: Center(child: _playView(context)),
-              decoration: BoxDecoration(color: Colors.black),
-            )
+            child: Center(child: _playView(context)),
+            height: double.infinity,
+            width: double.infinity,
+            decoration: BoxDecoration(color: Colors.black),
+          )
           : Column(children: <Widget>[
-              
-              Stack(
-                children: [
-                  Container(
-                    child: Center(child: _playView(context)),
-                    decoration: BoxDecoration(color: Colors.black),
-                  ),
-                  Column(
-                    children: [
-                      SizedBox(height: pantalla.width * 9/16-25),
-                      _controlAlpha > 0
-                          ? AnimatedOpacity(
-                              opacity: _controlAlpha,
-                              duration: Duration(milliseconds: 3000),
-                              child: _bottomUI2(),
-                            )
-                          : Container(),
-                _reaccionar(),
-                    ],
-                  ),
-                ],
+              Container(
+                child: Center(child: _playView(context)),
+                decoration: BoxDecoration(color: Colors.black),
               ),
               Expanded(
-                child: _listView(),
+                child: ListVideos(clips: _clips),
               ),
             ]),
     );
   }
 
-  void _onTapCard(int index) {
-    _initializeAndPlay(index);
-  }
 
   Widget _playView(BuildContext context) {
+    // _isFullScreen;
     final controller = _controller;
     if (controller != null && controller.value.initialized) {
       return AspectRatio(
@@ -318,62 +299,21 @@ class _PlayPageState extends State<PlayPage> {
     }
   }
 
-  Widget _reaccionar(){
-
-    var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
-    
-    return Container(
-       color: isDarkTheme? BonovaColors.azulNoche[800] : Colors.white,
-      padding: EdgeInsets.symmetric(vertical: 7),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly, 
-        children: [
-          
-          botonReaccion(Icon(FluentIcons.bookmark_24_regular), (){}, 'Guardar'),        
-          botonReaccion(Icon(FluentIcons.share_android_24_regular), (){}, 'Compartir'),       
-          botonReaccion(Icon(FluentIcons.more_horizontal_24_filled),(){}, 'Opciones'),        
-
-
-        ]),
-    );
-  }
-
-  Widget botonReaccion(Widget icon, Function onTap, String label){
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        IconButton( icon: icon, onPressed: onTap),
-        Text( label, style: TextStyle( fontSize: 11, fontWeight: FontWeight.w600)),
-        SizedBox( height: 10 )
-      ]);          
-  }
-  
-  Widget _listView() {
-    return ListView.builder(
-      padding: EdgeInsets.symmetric(vertical: 0),
-      itemCount: _clips.length,
-      itemBuilder: (BuildContext context, int index) {
-        return InkWell(
-          borderRadius: BorderRadius.all(Radius.circular(6)),
-          splashColor: Colors.blue[100],
-          onTap: () {
-            _onTapCard(index);
-          },
-          child: _buildCard(index),
-        );
-      },
-    ).build(context);
-  }
-
   Widget _controlView(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        _topUI(),
-        Expanded(
-          child: _centerUI(),
+    return Container(
+      color: Colors.black26,
+      child: Expanded(
+        child: Column(
+          children: <Widget>[
+            _topUI(),
+            Expanded(
+              child: _centerUI(),
+            ),
+            _bottomUI(),
+            // _bottomUI2(),
+          ],
         ),
-        _bottomUI(),
-      ],
+      ),
     );
   }
 
@@ -477,6 +417,7 @@ class _PlayPageState extends State<PlayPage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
+        
         PopupMenuButton(
             color: isDarkTheme? Colors.blueGrey[900].withOpacity(.55) : Colors.white.withOpacity(.85),
             padding: EdgeInsets.zero,
@@ -494,7 +435,7 @@ class _PlayPageState extends State<PlayPage> {
                   PopupMenuItem(
                     height: 37,
                     value: speed,
-                    child: Text('${speed}x', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, letterSpacing: .2),),
+                    child: Text('${speed}x', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, letterSpacing: .2),),
                   )
               ];
             },
@@ -510,9 +451,9 @@ class _PlayPageState extends State<PlayPage> {
                 children: [
                   Padding(
                     padding: EdgeInsets.only(right:4),
-                    child: Icon(FluentIcons.top_speed_24_filled, color: Colors.white, size: 24,),
+                    child: Icon(FluentIcons.top_speed_24_filled, color: Colors.white, size: 18,),
                   ),
-                  Text(controller.value.playbackSpeed == 1.0 || controller.value.playbackSpeed == 2.0? '${controller.value.playbackSpeed.round()}x' : '${controller.value.playbackSpeed}x', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.white, fontSize: 17, letterSpacing: .2 ),),
+                  Text(controller.value.playbackSpeed == 1.0 || controller.value.playbackSpeed == 2.0? '${controller.value.playbackSpeed.round()}x' : '${controller.value.playbackSpeed}x', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.white, fontSize: 15, letterSpacing: .2 ),),
                 ],
               ),
             ),
@@ -521,41 +462,6 @@ class _PlayPageState extends State<PlayPage> {
     );
   }
   
-  Widget _bottomUI2() {
-
-    var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
-
-    return Slider(
-            focusNode: FocusNode(),
-            autofocus: true,
-            activeColor: isDarkTheme ? Colors.tealAccent[700] : Colors.teal[300],
-            inactiveColor: Colors.white24,
-            value: max(0, min(_progress * 100, 100)),
-            min: 0,
-            max: 100,
-            onChanged: (value) {
-              setState(() {
-                _progress = value * 0.01;
-              });
-            },
-            onChangeStart: (value) {
-              debugPrint("-- onChangeStart $value");
-              _controller?.pause();
-            },
-            onChangeEnd: (value) {
-              debugPrint("-- onChangeEnd $value");
-              final duration = _controller?.value?.duration;
-              if (duration != null) {
-                var newValue = max(0, min(value, 99)) * 0.01;
-                var millis = (duration.inMilliseconds * newValue).toInt();
-                _controller?.seekTo(Duration(milliseconds: millis));
-                _controller?.play();
-              }
-              
-            },
-      
-    );
-  }
   Widget _bottomUI() {
 
     final duration = _duration?.inSeconds ?? 0;
@@ -573,138 +479,78 @@ class _PlayPageState extends State<PlayPage> {
     final secDur = convertTwo(duration % 60);
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          // SizedBox(width: 20),
-          Padding(
-            padding: const EdgeInsets.only(left: 15),
-            child: Text(
-              "$minPos:$secPos / $miniDur:$secDur",
-              style: TextStyle(
-                color: Colors.white, fontSize: 12, fontWeight: FontWeight.w700, letterSpacing: 0.2,
-                shadows: <Shadow>[
-                  Shadow(
-                    offset: Offset(0.0, 1.0),
-                    blurRadius: 4.0,
-                    color: Color.fromARGB(150, 0, 0, 0),
+      padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+      child: Column(
+        children: [
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              // SizedBox(width: 20),
+              Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: Text(
+                  "$minPos:$secPos / $miniDur:$secDur",
+                  style: TextStyle(
+                    color: Colors.white, fontSize: 12, fontWeight: FontWeight.w600, letterSpacing: 0.2,
+                    shadows: <Shadow>[
+                      Shadow(
+                        offset: Offset(0.0, 1.0),
+                        blurRadius: 4.0,
+                        color: Color.fromARGB(150, 0, 0, 0),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
+              // SizedBox(width: 180),
+              // _isFullScreen 
+              //     ? 
+                  Expanded(
+                      child:  Slider(
+                        // activeColor: Colors.tealAccent[700],
+                        // inactiveColor: Colors.white38,
+                        value: max(0, min(_progress * 100, 100)),
+                        min: 0,
+                        max: 100,
+                        onChanged: (value) {
+                          setState(() {
+                            _progress = value * 0.01;
+                          });
+                        },
+                        onChangeStart: (value) {
+                          debugPrint("-- onChangeStart $value");
+                          _controller?.pause();
+                        },
+                        onChangeEnd: (value) {
+                          debugPrint("-- onChangeEnd $value");
+                          final duration = _controller?.value?.duration;
+                          if (duration != null) {
+                            var newValue = max(0, min(value, 99)) * 0.01;
+                            var millis = (duration.inMilliseconds * newValue).toInt();
+                            _controller?.seekTo(Duration(milliseconds: millis));
+                            _controller?.play();
+                          }
+                        },
+                      ),
+                    ),
+                  // : Container(), 
+              IconButton(
+                color: Colors.yellow,
+                icon: Icon(
+                  FluentIcons.arrow_expand_24_regular,
+                  color: Colors.white,
+                  size: 20,
+                ),
+                onPressed: _toggleFullscreen,
+              ),
+            ],
           ),
-          // SizedBox(width: 180),
-          _isFullScreen 
-              ? Expanded(
-                  child:  Slider(
-                    activeColor: Colors.white,
-                    inactiveColor: Colors.white24,
-                    value: max(0, min(_progress * 100, 100)),
-                    min: 0,
-                    max: 100,
-                    onChanged: (value) {
-                      setState(() {
-                        _progress = value * 0.01;
-                      });
-                    },
-                    onChangeStart: (value) {
-                      debugPrint("-- onChangeStart $value");
-                      _controller?.pause();
-                    },
-                    onChangeEnd: (value) {
-                      debugPrint("-- onChangeEnd $value");
-                      final duration = _controller?.value?.duration;
-                      if (duration != null) {
-                        var newValue = max(0, min(value, 99)) * 0.01;
-                        var millis = (duration.inMilliseconds * newValue).toInt();
-                        _controller?.seekTo(Duration(milliseconds: millis));
-                        _controller?.play();
-                      }
-                    },
-                  ),
-                )
-              : Container(), 
-          IconButton(
-            // padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            color: Colors.yellow,
-            icon: Icon(
-              FluentIcons.arrow_expand_24_regular,
-              color: Colors.white,
-              size: 20,
-            ),
-            onPressed: _toggleFullscreen,
-          ),
-          // SizedBox(width: 8),
         ],
       ),
     );
   }
 
-  Widget _buildCard(int index) {
-    var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
-    final clip = _clips[index];
-    final playing = index == _playingIndex;
-    // String runtime;
-    // if (clip.runningTime > 60) {
-    //   runtime = "${clip.runningTime ~/ 60}분 ${clip.runningTime % 60}초";
-    // } else {
-    //   runtime = "${clip.runningTime % 60}초";
-    // }
-    return Container(
-        color: colorTira(playing),
-        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 22),
-        margin: EdgeInsets.only(top: 3),
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-
-            Padding(
-              padding: EdgeInsets.only(right: 35, left: 10),
-              child: Text( (index + 1).toString(), style: TextStyle( fontSize: 14, fontWeight: FontWeight.w700 ), )
-            ),
-            Expanded(
-              child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text( clip.titulo, style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
-                    Padding(
-                      child: Text("${clip.tituloMod}", style: TextStyle(color: Colors.grey[500])),
-                      padding: EdgeInsets.only(top: 3),
-                    )
-                  ]),
-            ),
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: playing
-                  ? Icon(Icons.play_arrow)
-                  : Icon(
-                      Icons.play_arrow,
-                      color: Colors.grey.withOpacity(0.5),
-                    ),
-            ),
-          ],
-        ),
-    );
-  }
-
-  Color colorTira(bool playing) {
-    var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
-
-    if (playing) {
-      return isDarkTheme
-      ? BonovaColors.azulNoche[700]
-      : Colors.white;
-    } else {
-      return isDarkTheme
-      ? BonovaColors.azulNoche[800]
-      : Colors.grey[50];
-    }
-
-  }
 
 
 }

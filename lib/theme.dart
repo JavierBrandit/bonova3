@@ -7,15 +7,16 @@ class AppTheme {
       primarySwatch: Colors.teal,
       scaffoldBackgroundColor: Colors.grey[50],
       brightness: Brightness.light,
+      sliderTheme: SliderThemeData(trackHeight: 1.7, activeTrackColor: Colors.teal[400], thumbColor: Colors.white, minThumbSeparation: 0  ),
 
-      appBarTheme: AppBarTheme( brightness: Brightness.light, color: Colors.white ),
+      appBarTheme: AppBarTheme( brightness: Brightness.light, color: Colors.grey[50], elevation: 0 ),
       inputDecorationTheme: InputDecorationTheme(
         hintStyle: TextStyle(color: Colors.grey),
         labelStyle: TextStyle(color: Colors.white),
       ),
       
       canvasColor: Colors.white,
-      accentColor: Colors.grey,
+      accentColor: Colors.tealAccent[700],
       primaryColor: Colors.teal[600],
       primaryColorBrightness: Brightness.light,
       accentIconTheme: IconThemeData(color: Colors.black),
@@ -35,15 +36,16 @@ class AppTheme {
       primarySwatch: Colors.teal,
       scaffoldBackgroundColor: BonovaColors.azulNoche[800],
       brightness: Brightness.dark,
+      sliderTheme: SliderThemeData(trackHeight: 1.7, activeTrackColor: Colors.teal[400], thumbColor: Colors.white ),
 
-      appBarTheme: AppBarTheme( brightness: Brightness.dark, color: BonovaColors.azulNoche[750] ),
+      appBarTheme: AppBarTheme( brightness: Brightness.dark, color: BonovaColors.azulNoche[800], elevation: 0 ),
       inputDecorationTheme: InputDecorationTheme(
         hintStyle: TextStyle(color: Colors.grey),
         labelStyle: TextStyle(color: Colors.white),
       ),
       
       canvasColor: Colors.grey[700],
-      accentColor: Colors.tealAccent,
+      accentColor: Colors.teal[400],
       primaryColor: Colors.teal,
       primaryColorBrightness: Brightness.dark,
       accentIconTheme: IconThemeData(color: Colors.white),

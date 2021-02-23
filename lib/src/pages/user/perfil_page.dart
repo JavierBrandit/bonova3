@@ -5,11 +5,19 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
  
-class PerfilPage extends StatelessWidget {
+class PerfilPage extends StatefulWidget {
 
+  @override
+  _PerfilPageState createState() => _PerfilPageState();
+}
+
+class _PerfilPageState extends State<PerfilPage> {
   Usuario usuario;
- 
+  final auth = AuthService();
+  final RefreshController _refreshController = RefreshController(initialRefresh: false);
+
   @override
   Widget build(BuildContext context) {
 
@@ -38,86 +46,111 @@ class PerfilPage extends StatelessWidget {
           ) : Container()
         ],
       ),
-      body: CustomScrollView(
-        slivers: [
-          
-          SliverToBoxAdapter(
-            child: Column(
-
-          children: [
+      body: SmartRefresher(
+        controller: _refreshController,
+        enablePullDown: true,
+        onRefresh: _cargarProfesor,
+        header: WaterDropHeader(
+          complete: Icon(Icons.check, color: Colors.blue[400] ),
+          waterDropColor: Colors.tealAccent[100],
+        ),
+        child: CustomScrollView(
+          slivers: [
             
-            SizedBox( height: 20 ),
-            Hero(
-              tag: 'foto',
-              child: Center(child: GestureDetector( child: 
-                CircleAvatar(backgroundImage: NetworkImage(usuario.foto), radius: 55 ),
-                onTap: () => Navigator.pushNamed(context, 'foto', arguments: usuario),
-              )),
-            ),
-            SizedBox( height: 13 ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(width: 40),
-                Text( usuario.nombre, style: TextStyle( fontSize: 28, fontWeight: FontWeight.w400, letterSpacing: 0.8 ) ),
-                this.usuario == yo
-                ? IconButton(
-                    icon: Icon( FluentIcons.edit_32_regular, size: 21),
-                    onPressed: () => Navigator.pushNamed(context, 'formulario'),
-                  )
-                : IconButton(
-                    icon: Icon( FluentIcons.person_add_24_regular, size: 25, color: Colors.tealAccent[700],),
-                    onPressed: (){},
-                  )
-              ],
-            ),
+            SliverToBoxAdapter(
+              child: Column(
 
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 4),
-                  child:
-                   usuario.profesor
-                    ? Container(height: 19, width: 19, child: SvgPicture.asset('assets/manzana.svg', color: Colors.redAccent.withOpacity(.8)))
-                    : 
-                    Icon(FluentIcons.hat_graduation_24_regular, size: 19, color: Colors.teal)),
+            children: [
+              
+              SizedBox( height: 20 ),
+              Hero(
+                tag: 'foto',
+                child: Center(child: GestureDetector( child: 
+                  CircleAvatar(backgroundImage: NetworkImage(usuario.foto), radius: 55 ),
+                  onTap: () => Navigator.pushNamed(context, 'foto', arguments: usuario),
+                )),
+              ),
+              SizedBox( height: 13 ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(width: 40),
+                  Text( usuario.nombre, style: TextStyle( fontSize: 28, fontWeight: FontWeight.w400, letterSpacing: 0.8 ) ),
+                  this.usuario == yo
+                  ? IconButton(
+                      icon: Icon( FluentIcons.edit_32_regular, size: 21),
+                      onPressed: () => Navigator.pushNamed(context, 'formulario'),
+                    )
+                  : IconButton(
+                      icon: Icon( FluentIcons.person_add_24_regular, size: 25, color: Colors.tealAccent[700],),
+                      onPressed: (){},
+                    )
+                ],
+              ),
 
-                Padding(
-                  padding: const EdgeInsets.only(top:2),
-                  child: Text(usuario.profesor? 'Profesor' :'Alumno' , style: TextStyle( fontSize: 16, letterSpacing: -.5, fontWeight: FontWeight.w500, color: usuario.profesor? Colors.redAccent.withOpacity(.8): Colors.teal[500])),
-                ),
-                SizedBox(width: 15)
-              ],
-            ),
-            SizedBox( height: 20 ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 4),
+                    child:
+                     usuario.profesor
+                      ? Container(height: 19, width: 19, child: SvgPicture.asset('assets/manzana.svg', color: Colors.redAccent.withOpacity(.8)))
+                      : 
+                      Icon(FluentIcons.hat_graduation_24_regular, size: 19, color: Colors.teal)),
 
-            yo.profesor || usuario != yo
-            ? Container()
-            : FlatButton(
-              height: 34,
-              padding: EdgeInsets.symmetric(horizontal: 13),
-              onPressed: (){},
-              child: Text('Cambiate a Profesor', style: TextStyle( fontSize: 12, fontWeight: FontWeight.w700, letterSpacing: -.2)),
-              color: Colors.teal,
-              colorBrightness: Brightness.dark,
-              shape: StadiumBorder(),
-            ),
-            
+                  Padding(
+                    padding: const EdgeInsets.only(top:2),
+                    child: Text(usuario.profesor? 'Profesor' :'Alumno' , style: TextStyle( fontSize: 16, letterSpacing: -.5, fontWeight: FontWeight.w500, color: usuario.profesor? Colors.redAccent.withOpacity(.8): Colors.teal[500])),
+                  ),
+                  SizedBox(width: 15)
+                ],
+              ),
+              SizedBox( height: 20 ),
 
-            SizedBox( height: 40 ),
+              yo.profesor || usuario != yo
+              ? Container()
+              : FlatButton(
+                height: 34,
+                padding: EdgeInsets.symmetric(horizontal: 13),
+                child: Text('Cambiate a Profesor', style: TextStyle( fontSize: 12, fontWeight: FontWeight.w700, letterSpacing: -.2)),
+                color: Colors.teal,
+                colorBrightness: Brightness.dark,
+                shape: StadiumBorder(),
+                onPressed: (){
+                  print('onTap');
+                  _cargarProfesor();
+                  // val = usuario.profesor;
+                  // await auth.profesor(context, yo.profesor);
+                  // setState(() {});
+                },
+              ),
+              
 
-            cajaBorde(isDarkTheme, [
-              listTileInfo(usuario.colegio, FluentIcons.hat_graduation_16_regular, 'Estudios'),
-              listTileInfo('5', FluentIcons.video_16_regular, 'Cursos en que enseña'),
-              listTileInfo('Matemática · Física', FluentIcons.book_20_regular, 'Especialidad'),
-              listTileInfo('5.0', FluentIcons.star_16_regular, 'Valoración promedio'),
-              listTileInfo(usuario.comuna, FluentIcons.location_16_regular, 'Comuna')
+              SizedBox( height: 40 ),
+
+              cajaBorde(isDarkTheme, [
+                listTileInfo(usuario.colegio, FluentIcons.hat_graduation_16_regular, 'Estudios'),
+                listTileInfo('5', FluentIcons.video_16_regular, 'Cursos en que enseña'),
+                listTileInfo('Matemática · Física', FluentIcons.book_20_regular, 'Especialidad'),
+                listTileInfo('5.0', FluentIcons.star_16_regular, 'Valoración promedio'),
+                listTileInfo(usuario.comuna, FluentIcons.location_16_regular, 'Comuna')
+              ]),
             ]),
+          )
           ]),
-        )
-        ])
+      )
     );
+  }
+
+
+
+  _cargarProfesor() async {
+    final yo = Provider.of<AuthService>(context, listen: false).usuario;
+    // this.usuarios = await usuarioService.getUsuarios();
+    yo.profesor = await auth.profesor(context, yo.profesor);
+    setState(() {});
+    _refreshController.refreshCompleted();
   }
 
   cajaBorde(bool dark, List<Widget> children){
@@ -160,7 +193,4 @@ class PerfilPage extends StatelessWidget {
       ]),
     );
   }
-
-
-
 }

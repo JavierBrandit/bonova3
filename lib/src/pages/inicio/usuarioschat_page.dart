@@ -31,24 +31,15 @@ class _UsuariosChatPageState extends State<UsuariosChatPage> {
     //final chatService = Provider.of<ChatService>(context);   
     final socketService = Provider.of<SocketService>(context);
     final authService = Provider.of<AuthService>(context);
-    final usuario = authService.usuario;
+    final yo = authService.usuario;
 
     return Scaffold(
       appBar: AppBar(
         title: Text('Conversaciones', style: TextStyle( fontSize: 23, letterSpacing: -1, fontWeight: FontWeight.w400 )),
-        elevation: 0,
         toolbarHeight: 70,
-        // PASAR A SETTINGS/CERRAR SESION
-        // leading: IconButton(
-        //   icon: Icon(Icons.exit_to_app, color: Colors.black54,),
-        //   onPressed: () {
-        //     socketService.disconnect();
-        //     Navigator.pushReplacementNamed(context, 'login');
-        //     AuthService.deleteToken();
-        //   },  
-        // ),
         actions: <Widget>[
-          _itemUsuario(usuario)
+          _itemUsuario(yo),
+          SizedBox(width: 15)
         ],
       ),
       body: SmartRefresher(
@@ -81,23 +72,24 @@ class _UsuariosChatPageState extends State<UsuariosChatPage> {
 
   ListTile _usuarioListTile(Usuario usuario) {
     return ListTile(
-        
-        title: Text( usuario.nombre, style: TextStyle( fontSize: 17, fontWeight: FontWeight.w400 ),),
-        subtitle: Text( usuario.email, style: TextStyle( fontSize: 12, fontWeight: FontWeight.w400 )),
-        leading: _itemUsuario(usuario),
-        trailing: Container(
-          width: 10,
-          height: 10,
-          decoration: BoxDecoration(
-            color: usuario.online? Colors.tealAccent[400] : Colors.red[200],
-            borderRadius: BorderRadius.circular(100)
-          ),
+      
+      contentPadding: EdgeInsets.symmetric(horizontal: 20),
+      title: Text( usuario.nombre, style: TextStyle( fontSize: 16, fontWeight: FontWeight.w400, letterSpacing: -.5 ),),
+      subtitle: Text( usuario.email, style: TextStyle( fontSize: 11, fontWeight: FontWeight.w500 )),
+      leading: _itemUsuario(usuario),
+      trailing: Container(
+        width: 10,
+        height: 10,
+        decoration: BoxDecoration(
+          color: usuario.online? Colors.tealAccent[400] : Colors.red[200],
+          borderRadius: BorderRadius.circular(100)
         ),
-        onTap: () {
-          final chatService = Provider.of<ChatService>(context, listen: false);
-          chatService.usuarioPara = usuario;
-          Navigator.pushNamed(context, 'chat');
-        },
+      ),
+      onTap: () {
+        final chatService = Provider.of<ChatService>(context, listen: false);
+        chatService.usuarioPara = usuario;
+        Navigator.pushNamed(context, 'chat');
+      },
       );
   }
 
@@ -107,18 +99,21 @@ class _UsuariosChatPageState extends State<UsuariosChatPage> {
     return GestureDetector(
       onTap: () => Navigator.pushNamed( context, 'perfil', arguments: u ),
       child: Padding(
-        padding: const EdgeInsets.only(right: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
 
-            // SizedBox(height: 8),
-            CircleAvatar(
-              radius: 25,
+            u.foto == '' || u.foto == null
+            ? CircleAvatar(
+              radius: 27,
               backgroundColor: isDarkTheme ? Colors.teal[800] : Colors.tealAccent[100],
               child: Text( u.nombre.substring(0,2), style: TextStyle( color: isDarkTheme ? Colors.white : Colors.teal[900] ))
+            )
+            : CircleAvatar(
+              radius: 27,
+              backgroundImage: NetworkImage(u.foto),
             ),
-            // SizedBox(height: 8),
 
           ],
         ),

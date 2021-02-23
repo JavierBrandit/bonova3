@@ -22,7 +22,7 @@ class HeaderTitulo extends StatelessWidget {
     return GestureDetector(
       child: Container(
         // color: isDarkTheme? BonovaColors.azulNoche[900].withOpacity(0.25) : Colors.white,
-        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 14),
+        padding: EdgeInsets.symmetric(horizontal:25),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

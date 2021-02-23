@@ -58,22 +58,20 @@ class _InicioPageState extends State<InicioPage> {
               _crearAppbar(),
               SliverToBoxAdapter(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
 
-                    CrearPortadas(pantalla:pantalla),
+                    Padding(
+                      padding: EdgeInsets.only(top: 15, bottom: 25),
+                      child: CrearPortadas(pantalla:pantalla),
+                    ),
                     _listViewUsuarios(),
-                    
-                    //SizedBox(height: 80),
-                    // CarruselProfesores(usuarios: usuarios),
-                    // _carruselProfesores(),
-                    // _listUsuarios(),
-                    // SizedBox(height: 5),
-                    HeaderTitulo(titulo: 'Sugeridos Para Ti', paginaDestino: '',),
                     SizedBox(height: 15),
+
+                    HeaderTitulo(titulo: 'Sugeridos Para Ti', paginaDestino: '',),
+                    SizedBox(height: 8),
                     _listaCursos(),
-                    //_listadoCarrusel(),
                     SizedBox(height: 80),
-                    //_crearListadoPost(),
                   ],
                 ),
               ),
@@ -92,12 +90,14 @@ class _InicioPageState extends State<InicioPage> {
   }
   Widget _listViewUsuarios() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         HeaderTitulo( titulo: 'Profesores Particulares', paginaDestino: '' ),
+        SizedBox(height: 5),
         Container(
-          height: 120,
+          height: 130,
           child: ListView.builder(
-            padding: EdgeInsets.only(left: 30),
+            padding: EdgeInsets.only(left: 13),
             shrinkWrap: true,
             physics: BouncingScrollPhysics(),
             scrollDirection: Axis.horizontal,
@@ -114,27 +114,27 @@ class _InicioPageState extends State<InicioPage> {
 
     return GestureDetector(
       onTap: () => Navigator.pushNamed( context, 'perfil', arguments: u ),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
+      child: Container(
+        width: 95,
+        padding: EdgeInsets.symmetric( horizontal: 6),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
 
-            SizedBox(height: 8),
             u.foto == '' || u.foto == null
             ? CircleAvatar(
-              radius: 28,
+              radius: 32,
               backgroundColor: isDarkTheme ? Colors.teal[800] : Colors.tealAccent[100],
               child: Text( u.nombre.substring(0,2), style: TextStyle( color: isDarkTheme ? Colors.white : Colors.teal[900] ))
             )
             : CircleAvatar(
-              radius: 28,
+              radius: 32,
               backgroundImage: NetworkImage(u.foto),
             ),
             SizedBox(height: 8),
-            Text( u.nombre,
+            Text( u.nombre, overflow: TextOverflow.ellipsis, textAlign: TextAlign.center,
               style: TextStyle(
-                       fontSize: 12,
+                       fontSize: 10.5, letterSpacing: -.5,
                        fontWeight: FontWeight.w500 
                        ),
             ),
@@ -150,23 +150,39 @@ class _InicioPageState extends State<InicioPage> {
     this.cursosUltimos = await cursoService.getAllCursos();
     setState((){});
   }
-  Widget _listaCursos() {
+  // Widget _listaCursos() {
 
+  //   return Container(
+  //     height: 270,
+  //     child: PageView.builder(
+  //       physics: BouncingScrollPhysics(),
+  //       pageSnapping: false,
+  //       itemBuilder: (_, i) => carruselHorizontala(context, cursosUltimos[i]),
+  //       itemCount: cursosUltimos.length,
+  //       controller: PageController(
+  //         viewportFraction: 0.57 ), 
+  //     ),
+  //   );
+  // }
+  
+  Widget _listaCursos() {
     return Container(
-      height: 330,
-      child: PageView.builder(
+      height: 270,
+      child: ListView.builder(
+        padding: EdgeInsets.only(left: 13),
         physics: BouncingScrollPhysics(),
-        pageSnapping: false,
+        scrollDirection: Axis.horizontal,
+        shrinkWrap: true,
+        // pageSnapping: false,
         itemBuilder: (_, i) => carruselHorizontal(context, cursosUltimos[i]),
         itemCount: cursosUltimos.length,
-        controller: PageController(
-          viewportFraction: 0.65 ), 
+        controller: _scrollController,
+      //   controller: PageController(
+      //     viewportFraction: 0.57 ), 
       ),
     );
-
-
-
   }
+
   Widget _crearAppbar() {
 
     var isDarkTheme = Theme.of(context).brightness == Brightness.dark;

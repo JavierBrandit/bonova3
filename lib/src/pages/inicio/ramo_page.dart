@@ -44,6 +44,7 @@ class _RamoPageState extends State<RamoPage> {
           _switchAppBar(ramo),
           SliverToBoxAdapter( child: Column(
             children: <Widget>[
+              SizedBox( height: 17),
               HeaderTitulo(titulo: 'Primero Medio', paginaDestino: '',),
               _listaNivel(cursos1),
               HeaderTitulo(titulo: 'Segundo Medio', paginaDestino: '',),
@@ -115,17 +116,34 @@ class _RamoPageState extends State<RamoPage> {
 
   Widget _listaNivel( List<Curso> cursosx ) {
     return Container(
-      height: 330,
-      child: PageView.builder(
+      height: 270,
+      child: ListView.builder(
+        padding: EdgeInsets.only(left: 13),
         physics: BouncingScrollPhysics(),
-        pageSnapping: false,
+        scrollDirection: Axis.horizontal,
+        shrinkWrap: true,
+        // pageSnapping: false,
         itemBuilder: (_, i) => carruselHorizontal(context, cursosx[i]),
         itemCount: cursosx.length,
-        controller: PageController(
-          viewportFraction: 0.65 ), 
+        controller: _scrollController,
+      //   controller: PageController(
+      //     viewportFraction: 0.57 ), 
       ),
     );
   }
+  // Widget _listaNivel( List<Curso> cursosx ) {
+  //   return Container(
+  //     height: 330,
+  //     child: PageView.builder(
+  //       physics: BouncingScrollPhysics(),
+  //       pageSnapping: false,
+  //       itemBuilder: (_, i) => carruselHorizontal(context, cursosx[i]),
+  //       itemCount: cursosx.length,
+  //       controller: PageController(
+  //         viewportFraction: 0.65 ), 
+  //     ),
+  //   );
+  // }
 
 
 

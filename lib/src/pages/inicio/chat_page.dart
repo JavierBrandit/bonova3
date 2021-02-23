@@ -158,23 +158,28 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
   _itemUsuario( Usuario u ) {
     var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
 
-    return GestureDetector(
-      onTap: () => Navigator.pushNamed( context, 'perfil', arguments: u ),
-      child: Padding(
-        padding: const EdgeInsets.only(right: 0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+    return Hero(
+      tag: 'foto',
+      child: GestureDetector(
+        onTap: () => Navigator.pushNamed( context, 'perfil', arguments: u ),
+        child: Padding(
+          padding: const EdgeInsets.only(right: 0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
 
-            // SizedBox(height: 8),
-            CircleAvatar(
-              radius: 23,
-              backgroundColor: isDarkTheme ? Colors.teal[800] : Colors.tealAccent[100],
-              child: Text( u.nombre.substring(0,2), style: TextStyle( color: isDarkTheme ? Colors.white : Colors.teal[900] ))
-            ),
-            // SizedBox(height: 8),
-
-          ],
+              u.foto == '' || u.foto == null
+              ? CircleAvatar(
+                radius: 23,
+                backgroundColor: isDarkTheme ? Colors.teal[800] : Colors.tealAccent[100],
+                child: Text( u.nombre.substring(0,2), style: TextStyle( color: isDarkTheme ? Colors.white : Colors.teal[900] ))
+              )
+              : CircleAvatar(
+                radius: 23,
+                backgroundImage: NetworkImage(u.foto),
+              ),
+            ],
+          ),
         ),
       ),
     );

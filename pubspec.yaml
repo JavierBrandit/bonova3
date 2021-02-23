@@ -44,6 +44,7 @@ dependencies:
   shared_preferences: ^0.5.12+4
   lite_rolling_switch: ^0.1.1
   flutter_switch: ^0.2.0
+  flutter_xlider: ^3.4.0
 
 
 

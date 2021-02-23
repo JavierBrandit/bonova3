@@ -31,7 +31,6 @@ class _UserPageState extends State<UserPage> {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 60,
-        backgroundColor: Colors.transparent,
         title: Text(''),
         elevation: 0,
       ),

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:provider/provider.dart';
 
 
 class AuthService with ChangeNotifier{
@@ -119,6 +120,57 @@ class AuthService with ChangeNotifier{
       this.logout();
       return false;
     }
+  }
+
+  Future profesor( BuildContext context, bool profesor ) async {
+
+    final auth = Provider.of<AuthService>(context, listen: false); 
+    final id = auth.usuario.uid;
+    final token = await this._storage.read(key: 'token');
+
+    final data = {
+      'profesor' : profesor
+    };
+
+    final resp = await http.put('${ Environment.apiUrl }/usuarios/$id',
+      body: jsonEncode(data),
+      headers: {
+        'Content-Type': 'application/json',
+        'x-token': token
+      }
+    );
+
+    final respBody = jsonDecode(resp.body);
+    return print(respBody['usuario']['profesor']);
+  }
+
+  Future editarInfo( BuildContext context, String nombre, String email, String password,
+                     String comuna, String colegio, String curso,
+                     String foto, String descripcion, String celular,
+   ) async {
+
+    final auth = Provider.of<AuthService>(context);
+    final id = auth.usuario.uid;
+
+    final data = {
+      'nombre': nombre,
+      'email': email,
+      'password': password,
+      'antiguedad': DateTime.now().toIso8601String(),
+      'comuna': comuna,
+      'colegio': colegio,
+      'curso': curso,
+      'foto': foto,
+      'descripcion': descripcion,
+      'celular': celular
+    };
+
+    final resp = await http.put('${ Environment.apiUrl }/usuarios/$id',
+      body: jsonEncode(data),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    );
   }
 
   Future _guardarToken( String token ) async {

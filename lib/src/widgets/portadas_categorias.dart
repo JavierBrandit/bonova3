@@ -20,21 +20,18 @@ class CrearPortadas extends StatelessWidget {
     var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
 
-        HeaderTitulo(titulo: 'Materias', paginaDestino: '',),
-        SizedBox( height: 25 ),
+        HeaderTitulo(titulo: 'Materias', paginaDestino: ''),
+        SizedBox( height: 10),
 
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              portada( context, isDarkTheme? 'assets/portadaMatematicaNoche.png' : 'assets/portadaMatematica.png', 'matematica'),
-              portada( context, isDarkTheme? 'assets/portadaFisicaNoche.png' : 'assets/portadaFisica.png', 'fisica'),
-            ],),
-        ),
-        SizedBox( height: 25 ),
+        Row(
+          // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            portada( context, isDarkTheme? 'assets/portadaMatematicaNoche.png' : 'assets/portadaMatematica.png', 'matematica'),
+            portada( context, isDarkTheme? 'assets/portadaFisicaNoche.png' : 'assets/portadaFisica.png', 'fisica'),
+        ]),
         
       ],
     );
@@ -42,23 +39,17 @@ class CrearPortadas extends StatelessWidget {
 
   Widget portada( BuildContext context, String img, String path ) {
 
-    CursoService cursoService = Provider.of<CursoService>(context, listen: false );
     return Container(
-      margin: EdgeInsets.symmetric( vertical:10.0 ),
-      width: pantalla.width * 0.35,
-      // decoration: BoxDecoration( boxShadow: [BoxShadow(
-      //     color: Colors.grey[100],
-      //     offset: Offset.fromDirection(-10.0),
-      //     blurRadius: 10
-      // )]),
+      margin: EdgeInsets.only(right: 25, left: 25, top: 7, bottom: 10),
+      width: 115,
       child: GestureDetector(
-          onTap: (){
-            CursoService cursoService = Provider.of<CursoService>(context, listen: false );
-            cursoService.ramo = path;
+        onTap: (){
+          CursoService cursoService = Provider.of<CursoService>(context, listen: false );
+          cursoService.ramo = path;
 
-            Navigator.pushNamed(context, 'ramo'); 
-          },
-          child: Image.asset(img)
+          Navigator.pushNamed(context, 'ramo'); 
+        },
+        child: Image.asset(img)
       ),
     );
   }
