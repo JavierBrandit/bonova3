@@ -1,18 +1,32 @@
+import 'dart:io';
+
 import 'package:bonova0002/src/helpers/mostrar_alerta.dart';
+import 'package:bonova0002/src/models/usuario.dart';
 import 'package:bonova0002/src/services/auth_services.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class Formulario extends StatelessWidget {
+class Formulario extends StatefulWidget {
 
+  @override
+  _FormularioState createState() => _FormularioState();
+}
+
+class _FormularioState extends State<Formulario> {
   final nameCtrl = TextEditingController();
   final emailCtrl = TextEditingController();
   final passCtrl = TextEditingController();
   final cursoCtrl = TextEditingController();
   final colegioCtrl = TextEditingController();
+  final RefreshController _refreshController = RefreshController(initialRefresh: false);
+  final auth = AuthService();
+  File foto;
   GlobalKey<FormState> keyForm = GlobalKey();
-  AuthService auth = AuthService();
+
+  bool _subiendo = false;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +55,12 @@ class Formulario extends StatelessWidget {
                     children: [
                       Hero(
                         tag: 'foto',
-                        child: CircleAvatar(backgroundImage: NetworkImage(usuario.foto), radius: 65)),
+                        child: GestureDetector(
+                          child: _subiendo
+                          ? CircleAvatar( radius: 65, backgroundColor: Colors.teal,)
+                          : CircleAvatar(backgroundImage: NetworkImage(usuario.foto), radius: 65),
+                        onTap: _seleccionarFoto,
+                      )),
                     ],
                   ),
                   // nombre('Nombre'),
@@ -53,24 +72,35 @@ class Formulario extends StatelessWidget {
                   // nombre('Colegio'),
                   // input('', FluentIcons.hat_graduation_20_regular, TextInputType.name, colegioCtrl),
 
-                  formulario(),
+                  formulario(usuario),
                   Padding(
                     padding: EdgeInsets.all(20),
                     child: RaisedButton(
                       child: Text('subir'),
                       shape: StadiumBorder(),
                       onPressed: () async {
+
                         if (keyForm.currentState.validate()) {
-                          print("Nombre ${nameCtrl.text}");
-                          // print("Telefono ${mobileCtrl.text}");
-                          print("Correo ${emailCtrl.text}");
-                          final editOk = await auth.editarInfo(context, nameCtrl.text, emailCtrl.text.trim(), passCtrl.text.trim(), '', colegioCtrl.text, cursoCtrl.text, '', 'descripcion', 'celular');                    
-                          // keyForm.currentState.reset();
-                          if ( editOk ) {
-                            Navigator.pushReplacementNamed(context, 'user');
-                          } else {
-                            mostrarAlerta(context, 'Login incorrecto', 'Revise sus credenciales nuevamente');
+                          
+                          if (nameCtrl.text != ''.trim() && nameCtrl.text != null ){
+                            print("Nombre ${nameCtrl.text}");
+                            await authService.editarNombre(context, nameCtrl.text);               
                           }
+                          if (colegioCtrl.text != ''.trim() && colegioCtrl.text != null ){
+                            print("Colegio ${colegioCtrl.text}");
+                            await authService.editarColegio(context, colegioCtrl.text);               
+                          }
+                          if (cursoCtrl.text != ''.trim() && cursoCtrl.text != null ){
+                            print("Curso ${cursoCtrl.text}");
+                            await authService.editarCurso(context, cursoCtrl.text);               
+                          }
+                          Navigator.pushReplacementNamed(context, 'home');
+                          // // print("Telefono ${mobileCtrl.text}");
+                          // print("Correo ${emailCtrl.text}");
+                          // await auth.editarColegio(context, colegioCtrl.text);               
+                          // await auth.editarCurso(context, cursoCtrl.text);   
+                          // // authService.autenticando = true;          
+                          // // keyForm.currentState.reset();
                         }
                       }
                     ),
@@ -80,7 +110,7 @@ class Formulario extends StatelessWidget {
     ]));
   }
 
-  formulario(){
+  formulario(Usuario usuario){
     return Column(
       children: [
         Form(
@@ -89,13 +119,13 @@ class Formulario extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
             nombre('Nombre'),
-                      input('nombre', FluentIcons.text_font_16_regular, TextInputType.name, nameCtrl),
-                      nombre('Cumpleaños'),
-                      input('', FluentIcons.food_cake_20_regular, TextInputType.datetime, TextEditingController()),
-                      nombre('Curso'),
-                      input('', FluentIcons.backpack_20_regular, TextInputType.number, cursoCtrl),
-                      nombre('Colegio'),
-                      input('', FluentIcons.hat_graduation_20_regular, TextInputType.name, colegioCtrl),
+            input(usuario.nombre, FluentIcons.text_font_16_regular, TextInputType.name, nameCtrl),
+            nombre('Cumpleaños'),
+            input(usuario.antiguedad.timeZoneName, FluentIcons.food_cake_20_regular, TextInputType.datetime, TextEditingController()),
+            nombre('Curso'),
+            input(usuario.curso, FluentIcons.backpack_20_regular, TextInputType.number, cursoCtrl),
+            nombre('Colegio'),
+            input(usuario.colegio, FluentIcons.hat_graduation_20_regular, TextInputType.name, colegioCtrl),
           ])
         ),
       ],
@@ -104,15 +134,15 @@ class Formulario extends StatelessWidget {
 
   nombre(String nombre){
     return Padding(
-      padding: EdgeInsets.only( top: 30, bottom: 12),
+      padding: EdgeInsets.only( top: 30, bottom: 17),
       child: Text(
         nombre,
-        style: TextStyle( fontSize: 12, letterSpacing: -.3, fontWeight: FontWeight.w500),
+        style: TextStyle( fontSize: 14, letterSpacing: -.3, fontWeight: FontWeight.w500),
       ),
     );
   }
 
-  input( String nombre, IconData icon, TextInputType keyboardType, TextEditingController ctrl ){
+  input( String hint, IconData icon, TextInputType keyboardType, TextEditingController ctrl, ){
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 5),
      padding: EdgeInsets.symmetric(horizontal: 10),
@@ -130,10 +160,40 @@ class Formulario extends StatelessWidget {
          contentPadding: EdgeInsets.symmetric(horizontal: 25, vertical: 0),
          focusedBorder: InputBorder.none,
          border: InputBorder.none,
-         hintText: nombre,
+         hintText: hint,
          hintStyle: TextStyle( fontSize: 17, fontWeight: FontWeight.w400, letterSpacing: -.2)
     )));
   }
 
+  _seleccionarFoto() async {
+    _procesarImagen( ImageSource.gallery );
+  }
 
+  _tomarFoto() async {
+    _procesarImagen( ImageSource.camera );
+  }
+
+  _procesarImagen( ImageSource origen ) async {
+
+    _subiendo = true;
+    final authService = Provider.of<AuthService>(context, listen: false);
+    foto = await ImagePicker.pickImage(
+      source: origen
+    );
+    print('ontap');
+
+    if (foto != null ){
+      await authService.editarFoto(context, foto);
+    }
+    // Navigator.pop(context, true);
+    // Navigator.pushReplacementNamed(context, 'home');
+
+    // if ( foto != null ) {
+    //   producto.fotoUrl = null;
+    // }
+
+    _subiendo = false;
+    setState(() {});
+
+  }
 }

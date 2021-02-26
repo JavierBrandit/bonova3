@@ -1,3 +1,4 @@
+import 'package:bonova0002/src/helpers/mostrar_alerta.dart';
 import 'package:bonova0002/src/models/usuario.dart';
 import 'package:bonova0002/src/services/auth_services.dart';
 import 'package:flutter/material.dart';
@@ -13,18 +14,19 @@ class _ProfesorState extends State<Profesor> {
 
   final auth = AuthService();
 
-  @override
-    void initState() { 
+  // @override
+  //   void initState() { 
 
-      final usuario = Provider.of<AuthService>(context).usuario;
-      this._cargarProfesor(usuario.profesor);
-      super.initState();
-    }
+  //     final usuario = Provider.of<AuthService>(context).usuario;
+  //     // this._cargarProfesor(usuario.profesor);
+  //     super.initState();
+  //   }
 
   @override
   Widget build(BuildContext context) {
 
-    final usuario = Provider.of<AuthService>(context).usuario;
+    final authService = Provider.of<AuthService>(context);
+    final usuario = authService.usuario;
 
     return Scaffold(
       appBar: AppBar(
@@ -40,9 +42,15 @@ class _ProfesorState extends State<Profesor> {
               Text(usuario.profesor? 'Profesor' : 'Alumno'),
               FlutterSwitch(
                 value: usuario.profesor,
-                onToggle: (val) {
+                onToggle: (val) async {
                   print('onTap');
-                  _cargarProfesor(val);
+                  // val == true
+                  // ? mostrarAlerta(context, 'Estas a Punto de ser Profesor', 'Felicitaciones') //quiere ser profesor
+                  // : mostrarAlerta(context, '¿Estas seguro?', 'No te vayas :('); //quiere dejar de ser profesor
+
+                  await authService.editarProfesor(context, val);
+                  Navigator.pushReplacementNamed(context, 'home');
+                  // _cargarProfesor(val);
                   // // val = usuario.profesor;
                   // await auth.profesor(context, val);
                   // setState(() {});
@@ -53,12 +61,5 @@ class _ProfesorState extends State<Profesor> {
       ])
     );
     
-  }
-  _cargarProfesor(bool b) async {
-    final yo = Provider.of<AuthService>(context, listen: false).usuario;
-    // this.usuarios = await usuarioService.getUsuarios();
-    await auth.profesor(context, !b);
-    setState(() {});
-    // _refreshController.refreshCompleted();
   }
 }

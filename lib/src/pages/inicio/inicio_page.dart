@@ -61,13 +61,21 @@ class _InicioPageState extends State<InicioPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
 
-                    Padding(
-                      padding: EdgeInsets.only(top: 15, bottom: 25),
-                      child: CrearPortadas(pantalla:pantalla),
-                    ),
+                    SizedBox(height: 30),
+                    HeaderTitulo(titulo: 'Materias', paginaDestino: '',),
+                    SizedBox(height: 5),
+                    _listaRamos(),
+                    SizedBox(height: 20),
+                    // Padding(
+                    //   padding: EdgeInsets.only(top: 15, bottom: 25),
+                    //   child: CrearPortadas(pantalla:pantalla),
+                    // ),
                     _listViewUsuarios(),
                     SizedBox(height: 15),
 
+                    HeaderTitulo(titulo: 'Sugeridos Para Ti', paginaDestino: '',),
+                    SizedBox(height: 8),
+                    _listaCursos(),
                     HeaderTitulo(titulo: 'Sugeridos Para Ti', paginaDestino: '',),
                     SizedBox(height: 8),
                     _listaCursos(),
@@ -165,6 +173,60 @@ class _InicioPageState extends State<InicioPage> {
   //   );
   // }
   
+  Widget _listaRamos() {
+    var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
+    final imagen = [
+                    'assets/portadaMatematica.png',
+                    'assets/portadaFisica.png',
+                    'assets/portadaMatematica.png',
+                    'assets/portadaFisica.png'
+                    ];
+    final imagenNoche = [
+                    'assets/portadaMatematicaNoche.png',
+                    'assets/portadaFisicaNoche.png',
+                    'assets/portadaMatematicaNoche.png',
+                    'assets/portadaFisicaNoche.png'
+                    ];
+    final ruta = [
+                    'matematica',
+                    'fisica',
+                    'matematica',
+                    'fisica'
+                    ];
+    return Container(
+      height: 170,
+      child: ListView.builder(
+        padding: EdgeInsets.only(left: 25),
+        physics: BouncingScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        shrinkWrap: true,
+        // pageSnapping: false,
+        itemBuilder: (_, i) => portada(context, isDarkTheme? imagenNoche[i] :imagen[i] , ruta[i] ),
+        itemCount: imagen.length,
+        controller: _scrollController,
+      //   controller: PageController(
+      //     viewportFraction: 0.57 ), 
+      ),
+    );
+  }
+
+  Widget portada( BuildContext context, String img, String path ) {
+
+    return Container(
+      margin: EdgeInsets.only(right: 20),
+      width: 110,
+      child: GestureDetector(
+        onTap: (){
+          CursoService cursoService = Provider.of<CursoService>(context, listen: false );
+          cursoService.ramo = path;
+
+          Navigator.pushNamed(context, 'ramo'); 
+        },
+        child: Image.asset(img)
+      ),
+    );
+  }
+
   Widget _listaCursos() {
     return Container(
       height: 270,
@@ -188,6 +250,7 @@ class _InicioPageState extends State<InicioPage> {
     var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
 
     return SliverAppBar(
+      automaticallyImplyLeading: false,
       toolbarHeight: 60,
       elevation: 0,
       floating: true,

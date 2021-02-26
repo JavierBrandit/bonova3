@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bonova0002/src/global/environment.dart';
 import 'package:bonova0002/src/models/login_response.dart';
 import 'package:bonova0002/src/models/usuario.dart';
@@ -5,13 +7,22 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:mime_type/mime_type.dart';
 import 'package:provider/provider.dart';
+import 'package:http_parser/http_parser.dart';
 
 
 class AuthService with ChangeNotifier{
 
   Usuario usuario;
   bool _autenticando = false;
+
+  Usuario getUsuario() => usuario;
+  
+  Usuario setUsuario( Usuario u ) {
+    this.usuario = u;
+    notifyListeners();
+  }
 
   final _storage = new FlutterSecureStorage();
 
@@ -122,7 +133,7 @@ class AuthService with ChangeNotifier{
     }
   }
 
-  Future profesor( BuildContext context, bool profesor ) async {
+  Future editarProfesor( BuildContext context, bool profesor ) async {
 
     final auth = Provider.of<AuthService>(context, listen: false); 
     final id = auth.usuario.uid;
@@ -140,9 +151,177 @@ class AuthService with ChangeNotifier{
       }
     );
 
-    final respBody = jsonDecode(resp.body);
-    return print(respBody['usuario']['profesor']);
+    if ( resp.statusCode == 200 ) {
+        final editResponse = editResponseFromJson(resp.body);
+        this.setUsuario(editResponse.usuario);
+        this.usuario = editResponse.usuario;      
+      return true;
+    } else {
+        final respBody = jsonDecode(resp.body);
+      return respBody['msg'];
+    }
   }
+
+  
+
+  Future editarNombre( BuildContext context, String nombre ) async {
+    this._autenticando = true;
+
+    final auth = Provider.of<AuthService>(context, listen: false); 
+    final id = auth.usuario.uid;
+    final token = await this._storage.read(key: 'token');
+
+    final data = {
+      'nombre' : nombre
+    };
+
+    final resp = await http.put('${ Environment.apiUrl }/usuarios/$id',
+      body: jsonEncode(data),
+      headers: {
+        'Content-Type': 'application/json',
+        'x-token': token
+      }
+    );
+
+    this._autenticando = false;
+
+    if ( resp.statusCode == 200 ) {
+      final editResponse = editResponseFromJson(resp.body);
+      this.setUsuario(editResponse.usuario);
+      this.usuario = editResponse.usuario;      
+      return true;
+    } else {
+      final respBody = jsonDecode(resp.body);
+      return respBody['msg'];
+    }
+  }
+
+  Future editarColegio( BuildContext context, String colegio ) async {
+
+    final auth = Provider.of<AuthService>(context, listen: false); 
+    final id = auth.usuario.uid;
+    final token = await this._storage.read(key: 'token');
+
+    final data = {
+      'colegio' : colegio
+    };
+
+    final resp = await http.put('${ Environment.apiUrl }/usuarios/$id',
+      body: jsonEncode(data),
+      headers: {
+        'Content-Type': 'application/json',
+        'x-token': token
+      }
+    );
+
+    this._autenticando = false;
+
+    if ( resp.statusCode == 200 ) {
+      final editResponse = loginResponseFromJson(resp.body);
+      this.usuario = editResponse.usuario;      
+      return true;
+    } else {
+      final respBody = jsonDecode(resp.body);
+      return respBody['msg'];
+    }
+  }
+
+  Future editarCurso( BuildContext context, String curso ) async {
+
+    final auth = Provider.of<AuthService>(context, listen: false); 
+    final id = auth.usuario.uid;
+    final token = await this._storage.read(key: 'token');
+
+    final data = {
+      'curso' : curso
+    };
+
+    final resp = await http.put('${ Environment.apiUrl }/usuarios/$id',
+      body: jsonEncode(data),
+      headers: {
+        'Content-Type': 'application/json',
+        'x-token': token
+      }
+    );
+
+    this._autenticando = false;
+
+    if ( resp.statusCode == 200 ) {
+      final editResponse = loginResponseFromJson(resp.body);
+      this.usuario = editResponse.usuario;      
+      return true;
+    } else {
+      final respBody = jsonDecode(resp.body);
+      return respBody['msg'];
+    }
+  }
+  
+  Future editarFoto( BuildContext context, File imagen ) async {
+
+    //                           SUBIR IMAGEN
+
+    final url = Uri.parse('https://api.cloudinary.com/v1_1/dmgwmydtk/image/upload?upload_preset=ddrwai3n');
+    final mimeType = mime(imagen.path).split('/'); //image/jpeg
+
+    final imageUploadRequest = http.MultipartRequest(
+      'POST',
+      url
+    );
+
+    final file = await http.MultipartFile.fromPath(
+      'file', 
+      imagen.path,
+      contentType: MediaType( mimeType[0], mimeType[1] )
+    );
+    imageUploadRequest.files.add(file);
+
+    final streamResponse = await imageUploadRequest.send();
+    final resp = await http.Response.fromStream(streamResponse);
+
+      if ( resp.statusCode != 200 && resp.statusCode != 201 ) {
+        print('Algo salio mal');
+        print( resp.body );
+        return null;
+      }
+
+    final respData = json.decode(resp.body);
+    final String urlImagen = respData['secure_url'];
+      print( respData);
+      print( urlImagen);
+    // ___________________________________________________
+    //                           ACTUALIZAR BASE DE DATOS
+    this._autenticando = true;
+
+    final auth = Provider.of<AuthService>(context, listen: false); 
+    final id = auth.usuario.uid;
+    final token = await this._storage.read(key: 'token');
+
+    final data = {
+      'foto' : urlImagen
+    };
+
+    final respBD = await http.put('${ Environment.apiUrl }/usuarios/$id',
+      body: jsonEncode(data),
+      headers: {
+        'Content-Type': 'application/json',
+        'x-token': token
+      }
+    );
+
+    this._autenticando = false;
+
+    if ( respBD.statusCode == 200 ) {
+      final editResponse = editResponseFromJson(respBD.body);
+      this.setUsuario(editResponse.usuario);
+      this.usuario = editResponse.usuario;      
+      return true;
+    } else {
+      final respBody = jsonDecode(respBD.body);
+      return respBody['msg'];
+    }
+
+  }
+
 
   Future editarInfo( BuildContext context, String nombre, String email, String password,
                      String comuna, String colegio, String curso,
@@ -180,6 +359,7 @@ class AuthService with ChangeNotifier{
   Future logout() async {
     return await _storage.delete(key: 'token');
   }
+
 
 
 }

@@ -22,8 +22,10 @@ class AppTheme {
       accentIconTheme: IconThemeData(color: Colors.black),
       fontFamily: 'MontserratAlternates',
 
-      bottomNavigationBarTheme: BottomNavigationBarThemeData( backgroundColor: Colors.white )
-
+      bottomNavigationBarTheme: BottomNavigationBarThemeData( 
+        backgroundColor: Colors.grey[50], selectedItemColor: Colors.teal[600], unselectedItemColor: Colors.grey[800],
+        type: BottomNavigationBarType.fixed ),
+      // pageTransitionsTheme: PageTransitionsTheme(builders: )
       );
 
 
@@ -53,7 +55,8 @@ class AppTheme {
 
       backgroundColor: Colors.green,
       dialogBackgroundColor: Colors.green,
-      bottomNavigationBarTheme: BottomNavigationBarThemeData( backgroundColor: BonovaColors.azulNoche[750] )
+      bottomNavigationBarTheme: BottomNavigationBarThemeData( unselectedItemColor: Colors.teal[50], selectedItemColor: Colors.teal[300],
+        backgroundColor: BonovaColors.azulNoche[800], type: BottomNavigationBarType.fixed )
 
 
       );

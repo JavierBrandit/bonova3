@@ -29,3 +29,27 @@ class LoginResponse {
     };
 }
 
+EditResponse editResponseFromJson(String str) => EditResponse.fromJson(json.decode(str));
+
+String editResponseToJson(EditResponse data) => json.encode(data.toJson());
+
+class EditResponse {
+    EditResponse({
+        this.ok,
+        this.usuario,
+    });
+
+    bool ok;
+    Usuario usuario;
+
+    factory EditResponse.fromJson(Map<String, dynamic> json) => EditResponse(
+        ok: json["ok"],
+        usuario: Usuario.fromJson(json["usuario"]),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "ok": ok,
+        "usuario": usuario.toJson(),
+    };
+}
+

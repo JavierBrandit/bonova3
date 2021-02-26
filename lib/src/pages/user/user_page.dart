@@ -30,6 +30,7 @@ class _UserPageState extends State<UserPage> {
     
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         toolbarHeight: 60,
         title: Text(''),
         elevation: 0,
@@ -49,11 +50,11 @@ class _UserPageState extends State<UserPage> {
                 
               },
               child: Padding(
-                padding: EdgeInsets.all(8),
+                padding: EdgeInsets.only(left: 20, right:15),
                 child: Hero(
                   tag: 'foto',
                   child: GestureDetector(
-                    child: CircleAvatar(backgroundImage: NetworkImage(usuario.foto), radius: 55 ),
+                    child: CircleAvatar(backgroundImage: NetworkImage(usuario.foto), radius: 57 ),
                     onTap: () => Navigator.pushNamed(context, 'foto', arguments: usuario)
                     
                   ),
@@ -112,32 +113,37 @@ class _UserPageState extends State<UserPage> {
     var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
 
     return GestureDetector(
-      child: Container(
-        decoration: BoxDecoration( 
-          boxShadow: [BoxShadow(
-            color: isDarkTheme? Colors.black.withOpacity(0.01) : Colors.grey[100],
-            offset: Offset.fromDirection(-10),
-            blurRadius: 10
-            )]),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(15),
+      // child: Container(
+      //   // decoration: BoxDecoration( 
+      //   //   boxShadow: [BoxShadow(
+      //   //     color: isDarkTheme? Colors.black.withOpacity(0.01) : Colors.grey[100],
+      //   //     offset: Offset.fromDirection(-10),
+      //   //     blurRadius: 10
+      //   //     )]),
+      //   child: ClipRRect(
+      //     borderRadius: BorderRadius.circular(15),
           child: Container(
-            color: isDarkTheme? BonovaColors.azulNoche[700] : Colors.white,
-            width: size.width * 0.54,
-            height: 160,
-            padding: EdgeInsets.all(18),
+            width: size.width * 0.55,
+            // height: 160,
+            decoration: BoxDecoration( 
+                border: Border.all( width: 2, color: isDarkTheme? Colors.grey[800] : Colors.grey[300] ),
+                // color: isDarkTheme? BonovaColors.azulNoche[700] : Colors.white,
+                borderRadius: BorderRadius.circular(15)
+            ),
+            padding: EdgeInsets.all(20),
+            margin: EdgeInsets.only(right: 25, left: 5),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Text(usuario.profesor?'Profesor' :'Alumno', style: TextStyle( fontSize: 12, fontWeight: FontWeight.w500, color: isDarkTheme? Colors.grey[400] : Colors.grey[700], ) ),
-                Text(usuario.nombre, style: TextStyle( fontSize: 21, fontWeight: FontWeight.w500, letterSpacing: 0.2, color: isDarkTheme? Colors.white : Colors.grey[800] ) ),
-                SizedBox( height: 5 ),
-                Text('Curso', style: TextStyle( fontSize: 12, fontWeight: FontWeight.w600, color: isDarkTheme? Colors.grey[400] : Colors.grey[700], ) ),
+                Text(usuario.nombre, style: TextStyle( fontSize: 26, fontWeight: FontWeight.w500, letterSpacing: -.3, color: isDarkTheme? Colors.white : Colors.grey[800] ) ),
+                SizedBox( height: 10 ),
+                Text('Curso', style: TextStyle( fontSize: 12, fontWeight: FontWeight.w500, color: isDarkTheme? Colors.grey[400] : Colors.grey[700], ) ),
                 Text('${usuario.curso} · ${usuario.colegio}', style: TextStyle( fontSize: 14, fontWeight: FontWeight.w400, letterSpacing: 0.2, color: isDarkTheme? Colors.grey[50] : Colors.grey[850] ) ),
-                SizedBox( height: 15 ),
+                SizedBox( height: 20 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  // mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     GestureDetector(
@@ -157,8 +163,8 @@ class _UserPageState extends State<UserPage> {
                
               ],
             ),
-          ),
-        ),
+          // ),
+        // ),
       ),
       onTap: (){
         Navigator.pushNamed( c, 'perfil', arguments: usuario);
@@ -227,16 +233,16 @@ class _UserPageState extends State<UserPage> {
 
     return GestureDetector(
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 25),
+        padding: EdgeInsets.symmetric(horizontal: 30),
         // color: isDarkTheme? BonovaColors.azulNoche[750] : Colors.white,
         height: 60,
         child: Row(
           children: [
-            SizedBox( width: 10 ),
+            // SizedBox( width: 10 ),
             icon,
             //SvgPicture.asset( svg, height: 19 ),
-            SizedBox( width: 29 ),
-            Text( text , style: TextStyle( fontSize: 17, fontWeight: FontWeight.w500, ) ),
+            SizedBox( width: 20 ),
+            Text( text , style: TextStyle( fontSize: 17, fontWeight: FontWeight.w500, letterSpacing: -.4 ) ),
           ],
         ),
       ),

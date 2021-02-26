@@ -40,8 +40,8 @@ class CrearPortadas extends StatelessWidget {
   Widget portada( BuildContext context, String img, String path ) {
 
     return Container(
-      margin: EdgeInsets.only(right: 25, left: 25, top: 7, bottom: 10),
-      width: 115,
+      margin: EdgeInsets.only(right: 0, left: 25, top: 7, bottom: 10),
+      width: 110,
       child: GestureDetector(
         onTap: (){
           CursoService cursoService = Provider.of<CursoService>(context, listen: false );
