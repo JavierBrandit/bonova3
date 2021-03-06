@@ -1,5 +1,4 @@
 import 'package:bonova0002/home_page.dart';
-import 'package:bonova0002/src/widgets/reproductor_video.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';

@@ -15,6 +15,7 @@ class VideoService with ChangeNotifier {
   Curso _curso;
   Video _video;
   int _indexVideo = 0; 
+  // bool _guardado = false; 
 
   int getIndex() => _indexVideo;
   
@@ -29,6 +30,8 @@ class VideoService with ChangeNotifier {
     this._video = v;
     notifyListeners();
   }
+
+
 
   Curso getCurso() => _curso;
   
@@ -66,7 +69,29 @@ class CursoService with ChangeNotifier {
   String nivel = '';
 
   
+
   
+  Future<List<Curso>> searchCursos( String query ) async {
+    
+    try {
+
+      final resp = await http.get('${ Environment.apiUrl }/usuarios/search?t=$query',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-token' : await AuthService.getToken()
+        }
+      );
+
+      final cursosResponse = cursosFromJson( resp.body );
+      return cursosResponse.cursos;
+    
+    } catch (e) {
+      print(e);
+      return [];
+    }
+   
+  }
+
   Future<List<Curso>> getCursos( String ramox, String nivelx ) async {
     
     try {

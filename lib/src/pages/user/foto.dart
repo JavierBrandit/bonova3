@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:bonova0002/src/models/usuario.dart';
 import 'package:bonova0002/src/services/auth_services.dart';
-import 'package:bonova0002/src/services/foto_service.dart';
 import 'package:bonova0002/theme.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';

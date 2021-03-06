@@ -1,16 +1,16 @@
 import 'package:bonova0002/src/models/video_modelo.dart';
+import 'package:bonova0002/src/pages/explore/busqueda.dart';
 import 'package:bonova0002/src/pages/inicio/chat_page.dart';
 import 'package:bonova0002/src/services/videos_service.dart';
 import 'package:bonova0002/theme.dart';
 import 'package:flutter/material.dart';
-// import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:provider/provider.dart';
 import 'src/pages/explore/explore_page.dart';
 import 'src/pages/inicio/inicio_page.dart';
+import 'src/pages/player/mis_cursos.dart';
 import 'src/pages/user/actividad.dart';
 import 'src/pages/user/user_page.dart';
-import 'src/widgets/reproductor_video.dart';
 
   int currentIndex = 0;
   VideoService vservice;
@@ -33,7 +33,16 @@ class _HomePageState extends State<HomePage> {
     return Stack(
         alignment: AlignmentDirectional.bottomCenter,
         children: [
-          _callPage(currentIndex),
+          IndexedStack( 
+            index: currentIndex,
+            children: [
+              InicioPage(),
+              Busqueda(),
+              MisCursos(),
+              Actividad(),
+              UserPage(),
+              // _callPage(currentIndex)
+          ]),
           _crearBNBar(isDarkTheme)
         ]
       // bottomNavigationBar: _crearBNBar(),
@@ -43,9 +52,9 @@ class _HomePageState extends State<HomePage> {
   Widget _callPage( int paginaActual ) {
     switch( paginaActual ) {
       case 0: return InicioPage();
-      case 1: return ExplorePage();
+      case 1: return Busqueda();
       // case 2: return PlayPage(clips: videos);
-      case 2: return Actividad();
+      case 2: return MisCursos();
       case 3: return Actividad();
       case 4: return UserPage();
       default: return InicioPage();

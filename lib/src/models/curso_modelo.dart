@@ -1,8 +1,16 @@
 import 'dart:convert';
+
 import 'package:bonova0002/src/models/video_modelo.dart';
 
-Curso cursoFromJson(String str) => Curso.fromJson(json.decode(str));
-String cursoToJson(Curso data) => json.encode(data.toJson());
+
+List<Curso> cursoFromJson(String str) => List<Curso>.from(json.decode(str).map((x) => Curso.fromJson(x)));
+
+String cursoToJson(List<Curso> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
+
+// Curso cursoFromJson(String str) => Curso.fromJson(json.decode(str));
+
+// String cursosToJson(Curso data) => json.encode(data.toJson());
 
 class Curso {
     Curso({
@@ -23,6 +31,7 @@ class Curso {
         this.precio,
         this.createdAt,
         this.updatedAt,
+        this.cid,
     });
 
     bool guardado;
@@ -42,6 +51,7 @@ class Curso {
     String precio;
     DateTime createdAt;
     DateTime updatedAt;
+    String cid;
 
     factory Curso.fromJson(Map<String, dynamic> json) => Curso(
         guardado: json["guardado"],
@@ -61,6 +71,7 @@ class Curso {
         precio: json["precio"],
         createdAt: DateTime.parse(json["createdAt"]),
         updatedAt: DateTime.parse(json["updatedAt"]),
+        cid: json["cid"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -81,5 +92,8 @@ class Curso {
         "precio": precio,
         "createdAt": createdAt.toIso8601String(),
         "updatedAt": updatedAt.toIso8601String(),
+        "cid": cid,
     };
 }
+
+

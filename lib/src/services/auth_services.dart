@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:bonova0002/src/global/environment.dart';
+import 'package:bonova0002/src/models/curso_modelo.dart';
 import 'package:bonova0002/src/models/login_response.dart';
 import 'package:bonova0002/src/models/usuario.dart';
 import 'package:flutter/material.dart';
@@ -16,12 +17,31 @@ class AuthService with ChangeNotifier{
 
   Usuario usuario;
   bool _autenticando = false;
+  bool guardado;
 
   Usuario getUsuario() => usuario;
   
   Usuario setUsuario( Usuario u ) {
     this.usuario = u;
     notifyListeners();
+  }
+  
+  bool getGg() => guardado;
+  
+  bool setGuardado( bool b, Curso curso) {
+    curso.guardado = b;
+  }
+  
+  bool getGuardado( Usuario u, Curso c ) {
+    this.usuario = u;
+    if (usuario.guardados.contains(c.cid)){
+      guardado = true;
+      notifyListeners();
+      return guardado;
+    }
+      guardado = false;
+      notifyListeners();
+      return guardado;
   }
 
   final _storage = new FlutterSecureStorage();
@@ -190,6 +210,75 @@ class AuthService with ChangeNotifier{
       this.setUsuario(editResponse.usuario);
       this.usuario = editResponse.usuario;      
       return true;
+    } else {
+      final respBody = jsonDecode(resp.body);
+      return respBody['msg'];
+    }
+  }
+
+  Future<bool> agregarGuardado(BuildContext context, Curso curso ) async {
+
+    final token = await this._storage.read(key: 'token');
+    usuario = Provider.of<AuthService>(context, listen: false).usuario;
+
+    final resp = await http.put('${ Environment.apiUrl }/usuarios/miscursos/${ curso.cid }',
+      // body: jsonEncode(data),
+      headers: {
+        'Content-Type': 'application/json',
+        'x-token': token
+      }
+    );
+
+    if ( resp.statusCode == 200 ) {
+      final editResponse = cursoFromJson(resp.body); //jsonDecode(resp.body);
+      // print(editResponse);
+      return true;
+    } else {
+      final respBody = jsonDecode(resp.body);
+      return respBody['msg'];
+    }
+  }
+
+  Future<bool> borrarGuardado(BuildContext context, Curso curso ) async {
+
+    final token = await this._storage.read(key: 'token');
+    usuario = Provider.of<AuthService>(context, listen: false).usuario;
+
+    final resp = await http.delete('${ Environment.apiUrl }/usuarios/miscursos/${ curso.cid }',
+      // body: jsonEncode(data),
+      headers: {
+        'Content-Type': 'application/json',
+        'x-token': token
+      }
+    );
+
+    if ( resp.statusCode == 200 ) {
+      final editResponse = cursoFromJson(resp.body); //jsonDecode(resp.body);
+      // print(editResponse);
+      return true;
+    } else {
+      final respBody = jsonDecode(resp.body);
+      return respBody['msg'];
+    }
+  }
+
+  Future<List<Curso>> verGuardados() async {
+
+    final token = await this._storage.read(key: 'token');
+
+
+    final resp = await http.get('${ Environment.apiUrl }/usuarios/miscursos',
+      // body: jsonEncode(data),
+      headers: {
+        'Content-Type': 'application/json',
+        'x-token': token
+      }
+    );
+
+    if ( resp.statusCode == 200 ) {
+      final editResponse = cursoFromJson(resp.body); //jsonDecode(resp.body);
+      // print(editResponse);  
+      return editResponse;
     } else {
       final respBody = jsonDecode(resp.body);
       return respBody['msg'];

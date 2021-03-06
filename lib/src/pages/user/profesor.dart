@@ -39,9 +39,10 @@ class _ProfesorState extends State<Profesor> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(usuario.profesor? 'Profesor' : 'Alumno'),
+              Text(usuario.profesor? 'Profesor' : 'Alumno', style: TextStyle( fontSize: 18, letterSpacing: -0.7, fontWeight: FontWeight.w400 )),
               FlutterSwitch(
                 value: usuario.profesor,
+                activeColor: Colors.tealAccent[700],
                 onToggle: (val) async {
                   print('onTap');
                   // val == true

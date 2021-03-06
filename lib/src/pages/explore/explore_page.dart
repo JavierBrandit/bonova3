@@ -1,14 +1,13 @@
 import 'package:bonova0002/src/models/curso_modelo.dart';
 import 'package:bonova0002/src/pages/explore/busqueda.dart';
+import 'package:bonova0002/src/pages/player/reproductor_video.dart';
 import 'package:bonova0002/src/services/videos_service.dart';
-import 'package:bonova0002/src/widgets/carrusel_horizontal.dart';
-import 'package:bonova0002/src/widgets/header_titulo.dart';
-import 'package:bonova0002/src/widgets/reproductor_video.dart';
 import 'package:bonova0002/theme.dart';
-// import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flappy_search_bar/flappy_search_bar.dart';
+
 
 class ExplorePage extends StatefulWidget {
   @override
@@ -19,11 +18,17 @@ class _ExplorePageState extends State<ExplorePage> {
   Curso cursoSeleccionado;
   List<Curso> historial = [];
   final cursoService = CursoService();
-  List<Curso> cursosMate = [];
+  List<Curso> cursosMate;
+  TextEditingController query;
+  final chipList = [
+    'matematica', 'fisica', 'quimica', 
+    'fracciones', 'potencias',
+    'psu', 'pdt'
+  ];
 
   @override
   void initState() { 
-    _cargarPrimero();
+    // _cargarPrimero();
     // getPermissions();
     super.initState();
   }
@@ -108,22 +113,135 @@ class _ExplorePageState extends State<ExplorePage> {
     final pantalla = MediaQuery.of(context).size; 
     
     return Scaffold(
-      body: CustomScrollView(
-        slivers: <Widget> [
+      body: SafeArea(
+             child: Column(
+               children: [
+                input('¿Que vamos a aprender hoy?', FluentIcons.search_20_regular, TextInputType.text, query),
+                // Container(
+                //   height: 60,
+                //   child: ListView.builder(
+                //     padding: EdgeInsets.symmetric(horizontal: 25),
+                //     itemCount: chipList.length,
+                //     scrollDirection: Axis.horizontal,
+                //     itemBuilder: (_,i) => chips(chipList[i])
+                //   ),
+                // ),
+                // query != null
+                //   ? Container( child: Text('estas buscando'))
+                //   : Container(
+                //   height: pantalla.height,
+                //   child: Scaffold(
+                //     body: Column(
+                //       children: [
+                //         Text('HOLAAAAAAAAAA!!!!!!!'),
 
-         _appBar(isDarkTheme, pantalla),
-         SliverToBoxAdapter(
-           child: Wrap(
-             children: [
-              Container(height: 15),
+                //         cursosMate == null || cursosMate == []
+                //           ? Center(child: CircularProgressIndicator(strokeWidth: .6,))
+                //           : 
 
-              cajaListaRamo(cursosMate, 'Matematica'),
-              cajaListaRamo(cursosMate, 'Fisica'),
+                //         cajaListaRamo(cursosMate, 'Matematica'),
+                //         // cajaListaRamo(cursosMate, 'Fisica'),
+                //       ],
+                //     ),
+                // )),
+                
+                // SearchBar(
+                //   onSearch: (s) => cursoService.searchCursos( s ), 
+                //   onItemFound: (curso, i) => Text('holaaa hola holamnxcz')
+                // )
+                // categorias()
+                // Text('Más Buscados'),
+                // Container(height: 15),
+                
 
-              Container(height: 100)
-             ],
-    ))]));
+               ],
+    ),
+           ));
 
+  }
+
+  categorias(){
+    return SearchBar<Curso>(
+          searchBarPadding: EdgeInsets.symmetric(horizontal: 10),
+          headerPadding: EdgeInsets.symmetric(horizontal: 10),
+          listPadding: EdgeInsets.symmetric(horizontal: 10),
+          onSearch: (s) => cursoService.searchCursos( s ),
+          onItemFound: (curso, i) => Text('holaaa hola holamnxcz'),
+          placeHolder: Text("placeholder"),
+          cancellationWidget: Text("Cancel"),
+          emptyWidget: Text("empty"),
+          // indexedScaledTileBuilder: (int index) => ScaledTile.count(1, index.isEven ? 2 : 1),
+          header: Row(
+            children: <Widget>[
+              RaisedButton(
+                child: Text("sort"),
+                onPressed: () {
+                  // _searchBarController.sortList((Curso a, Curso b) {
+                  //   return a.body.compareTo(b.body);
+                  // });
+                },
+              ),
+              RaisedButton(
+                child: Text("Desort"),
+                onPressed: () {
+                  // _searchBarController.removeSort();
+                },
+              ),
+              RaisedButton(
+                child: Text("Replay"),
+                onPressed: () {
+                  // isReplay = !isReplay;
+                  // _searchBarController.replayLastSearch();
+                },
+              ),
+            ],
+          ),
+          onCancelled: () {
+            print("Cancelled triggered");
+          },
+          mainAxisSpacing: 10,
+          crossAxisSpacing: 10,
+          crossAxisCount: 2,
+          // onItemFound: (Curso curso, int index) {
+          //   return Container(
+          //     color: Colors.lightBlue,
+          //     child: ListTile(
+          //       title: Text(curso.titulo),
+          //       isThreeLine: true,
+          //       subtitle: Text(curso.descripcion),
+          //       onTap: () {
+          //         //Navigator.of(context).push(MaterialPageRoute(builder: (context) => Detail()));
+          //       },
+          //     ),
+          //   );
+          // },
+    );
+  }
+
+
+
+  chips(String s){
+
+    var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
+
+    return GestureDetector(
+      child: Padding(
+        padding: const EdgeInsets.only(right: 4),
+        child: Chip(
+          label: Text( s , style: TextStyle( fontSize: 11, letterSpacing: -.3, color: isDarkTheme? Colors.grey[400] : Colors.grey[800]),),
+          padding: EdgeInsets.symmetric(vertical: 0, horizontal: 2),
+          backgroundColor: isDarkTheme? BonovaColors.azulNoche[800] : Colors.grey[50],
+          side: BorderSide(width: .5, color: isDarkTheme? Colors.teal : Colors.tealAccent[400]),
+          autofocus: true,
+        ),
+      ),
+      onTap: () async{
+        this.query.text = s;
+        print(query.text);
+        // cursosMate = await cursoService.searchCursos(s);
+        setState(() {});
+      },
+    );
   }
 
   cajaListaRamo(List<Curso> cursos, String logo){
@@ -148,57 +266,90 @@ class _ExplorePageState extends State<ExplorePage> {
               ]);
   }
 
-  SliverAppBar _appBar(bool dark, Size pantalla){
-    return SliverAppBar(
-          //  toolbarHeight: 90,
-           pinned: true,
-           flexibleSpace: FlexibleSpaceBar(
-             centerTitle: true,
-             title: Container(
-                  padding: EdgeInsets.symmetric( horizontal: 20 ),
-                  height: 40,
-                  width: 320,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30),
-                    border: Border.all(width: 1.8, color: dark ? Colors.tealAccent[700] : Colors.tealAccent[400]),
-                    // color: BonovaColors.azulNoche[800],
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
+  // SliverAppBar _appBar(bool dark, Size pantalla){
+  //   return SliverAppBar(
+  //         //  toolbarHeight: 90,
+  //         automaticallyImplyLeading: false,
+  //          pinned: true,
+  //          flexibleSpace: FlexibleSpaceBar(
+  //            centerTitle: true,
+  //            title: Container(
+  //                 padding: EdgeInsets.symmetric( horizontal: 20 ),
+  //                 height: 40,
+  //                 width: 320,
+  //                 decoration: BoxDecoration(
+  //                   borderRadius: BorderRadius.circular(30),
+  //                   border: Border.all(width: 1.8, color: dark ? Colors.tealAccent[700] : Colors.tealAccent[400]),
+  //                   // color: BonovaColors.azulNoche[800],
+  //                 ),
+  //                 child: Row(
+  //                   mainAxisAlignment: MainAxisAlignment.center,
+  //                   mainAxisSize: MainAxisSize.min,
+  //                   children: [
 
-                    Icon( FluentIcons.search_24_filled, size: 17, ),
-                    SizedBox(width: 15),
-                    Expanded(child: 
-                    Text('¿Qué aprendemos hoy?', 
-                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: dark ? Colors.teal.withOpacity(0.5) : Colors.grey[400] ))
-                    )
-                  ]),
-                ),
-             ),
-          actions: [
-            Container(
-              width: pantalla.width,
-              child: GestureDetector(
-                onTap: () async {
-                  final curso = await showSearch(
-                    context: context, 
-                    delegate: CursosSearchDelegate('', historial )
-                  );
-                  setState(() {
-                    this.cursoSeleccionado = curso;
-                    this.historial.insert(0, curso);
-                  });
-                }
-              ),
-            )
-          ],
-         );
+  //                   Icon( FluentIcons.search_24_filled, size: 17, ),
+  //                   SizedBox(width: 15),
+  //                   Expanded(child: 
+  //                   Text('¿Qué aprendemos hoy?', 
+  //                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: dark ? Colors.teal.withOpacity(0.5) : Colors.grey[400] ))
+  //                   )
+  //                 ]),
+  //               ),
+  //            ),
+  //         actions: [
+  //           // input('¿Que vamos a aprender hoy', FluentIcons.search_20_regular, TextInputType.text, query)
+  //           // Container(
+  //           //   width: pantalla.width,
+  //           //   child: GestureDetector(
+  //           //     onTap: () async {
+  //           //       final curso = await showSearch(
+  //           //         context: context, 
+  //           //         delegate: CursosSearchDelegate('', historial )
+  //           //       );
+  //           //       setState(() {
+  //           //         this.cursoSeleccionado = curso;
+  //           //         this.historial.insert(0, curso);
+  //           //       });
+  //           //     }
+  //           //   ),
+  //           // )
+  //         ],
+  //        );
+  // }
+
+  input( String hint, IconData icon, TextInputType keyboardType, TextEditingController ctrl, ){
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
+      padding: EdgeInsets.symmetric(horizontal: 10),
+      height: 45,
+      decoration: BoxDecoration(
+        //  color: Colors.white, 
+        borderRadius: BorderRadius.circular(30),
+        border: Border.all(width: 1, color: Colors.tealAccent[700] )
+      ),
+      child: TextFormField(
+        controller: ctrl,
+        keyboardType: keyboardType,
+        textAlignVertical: TextAlignVertical.center,
+        onChanged: (text) async {
+          text = query.text;
+          setState(() {
+                      
+                    });
+          // this.cursosMate = await cursoService.searchCursos(text);
+        },
+        decoration: InputDecoration(
+          prefixIcon: Icon( icon, size: 20 ),
+          contentPadding: EdgeInsets.only(bottom: 6),
+          focusedBorder: InputBorder.none,
+          border: InputBorder.none,
+          hintText: hint,
+          hintStyle: TextStyle( fontSize: 15, fontWeight: FontWeight.w400, letterSpacing: -.4,)
+    )));
   }
 
   _cargarPrimero() async {
-    this.cursosMate = await cursoService.getCursos('matematica', '1');
+    this.cursosMate = await cursoService.getAllCursos();
     setState((){});
   }
 
@@ -265,7 +416,7 @@ class _ExplorePageState extends State<ExplorePage> {
         Navigator.pushNamed(context, 'ramo');
       }
     );
-;
+
   }
 
 }

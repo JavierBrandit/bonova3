@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:bonova0002/src/models/curso_modelo.dart';
+import 'package:bonova0002/src/services/auth_services.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/svg.dart';
@@ -242,25 +244,29 @@ class _PlayPageState extends State<PlayPage> {
     final Size pantalla = MediaQuery.of(context).size;
 
     return Scaffold(
+      backgroundColor: _isFullScreen? BonovaColors.azulNoche[900] : null,
       appBar: _isFullScreen? null
           : AppBar(
+              toolbarHeight: 40,
               elevation: 0.0,
               title: Text('${curso.titulo}  ·  ${curso.nivel}º medio', style: TextStyle( fontSize: 19, letterSpacing: -1, fontWeight: FontWeight.w400 ))              
             ),
       body: _isFullScreen
-          ? Container(
-            child: Center(child: _playView(context)),
-            height: double.infinity,
-            width: double.infinity,
-            decoration: BoxDecoration(color: Colors.black),
+          ? Center(
+            child: Container(
+              child: Expanded(child: _playView(context)),
+              // height: double.infinity,
+              // width: double.infinity,
+              color: BonovaColors.azulNoche[900],
+            ),
           )
           : Column(children: <Widget>[
               Container(
                 child: Center(child: _playView(context)),
-                decoration: BoxDecoration(color: Colors.black),
+                // decoration: BoxDecoration(color: Colors.black),
               ),
               Expanded(
-                child: ListVideos(clips: _clips),
+                child: metodo(curso) //ListVideos(clips: _clips),
               ),
             ]),
     );
@@ -271,6 +277,7 @@ class _PlayPageState extends State<PlayPage> {
     // _isFullScreen;
     final controller = _controller;
     if (controller != null && controller.value.initialized) {
+      
       return AspectRatio(
         aspectRatio: 16 / 9,
         child: Stack(
@@ -285,13 +292,13 @@ class _PlayPageState extends State<PlayPage> {
                     duration: Duration(milliseconds: 250),
                     child: _controlView(context),
                   )
-                : Container( height: 800 ),
+                : Container(  ),
           ],
         ),
       );
     } else {
       return AspectRatio(
-        aspectRatio: 16.0 / 9.0,
+        aspectRatio: 16 / 9,
         child: Center(
             child: CircularProgressIndicator( strokeWidth: 1.5, valueColor: AlwaysStoppedAnimation<Color>(Colors.white),)
         ),
@@ -301,10 +308,11 @@ class _PlayPageState extends State<PlayPage> {
 
   Widget _controlView(BuildContext context) {
     return Container(
+      // width: double.infinity,
       color: Colors.black26,
       child: Expanded(
         child: Column(
-          children: <Widget>[
+          children: [
             _topUI(),
             Expanded(
               child: _centerUI(),
@@ -553,5 +561,391 @@ class _PlayPageState extends State<PlayPage> {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  Widget metodo(Curso curso){
+
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: AppBar(
+          toolbarHeight: 107,
+          automaticallyImplyLeading: false,
+          // flexibleSpace: _reaccionar(),
+          title: Padding(
+            padding: EdgeInsets.all(4),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 3),
+                Text(_playingIndex==-1
+                  ? ''
+                  : 'Clase '+(_playingIndex+1).toString()+':  '+ curso.videos[_playingIndex].titulo, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, letterSpacing: -.2)),
+                SizedBox(height: 3),
+                Text(curso.profesor, style: TextStyle(fontSize: 11, fontWeight: FontWeight.w400, letterSpacing: -.2)),
+              ],
+            ),
+          ),
+          // actions: [
+          //   SizedBox(width: 40),
+          //   Expanded(child: botonReaccion(Icon(FluentIcons.bookmark_24_regular), (){}, 'Guardar')),        
+          //   Expanded(child: botonReaccion(Icon(FluentIcons.share_android_24_regular), (){}, 'Compartir')),       
+          //   Expanded(child: botonReaccion(Icon(FluentIcons.more_horizontal_24_filled),(){}, 'Opciones')),
+          //   SizedBox(width: 40),
+          // ],
+          bottom: TabBar(
+            tabs: [
+              Tab(text: 'clases'),
+              Tab(text: 'documentos'),
+              Tab(text: 'informacion'),
+            ]),
+          
+          ),
+        body: TabBarView(
+          physics: BouncingScrollPhysics(),
+          children: [
+            pageBody(0),
+            pageBody(1),
+            pageBody(2),
+          ],
+        ),
+        // PageView.builder(
+        //   itemCount: 3,
+        //   itemBuilder: (_,i) => pageBody(i)
+        // )
+        
+        
+        // CustomScrollView(
+        //   slivers: [
+        //     SliverAppBar(
+        //       automaticallyImplyLeading: false,
+        //       toolbarHeight: 80,
+        //       floating: true,
+        //       elevation: 0,
+        //       title: Expanded(child: _reaccionar()),
+        //     ),
+        //     SliverToBoxAdapter(
+        //     child: Column(
+        //       children: [
+        //         _listView(),
+        //         Container(
+        //           height: 800,
+        //           width: 2,
+        //           color: Colors.black
+        //         ),
+        //         // Container(
+        //         //   height: 400,
+        //         //   color: Colors.red
+        //         // ),
+
+        //       ],
+        //     ),
+        //   ),
+        //   ]),
+      ),
+    );
+  }
+  pageBody(int i){
+    videoService = Provider.of<VideoService>(context);
+    final curso = videoService.getCurso();
+    return CustomScrollView(
+          slivers: [
+            // i==0 ? 
+            // SliverAppBar(
+            //   automaticallyImplyLeading: false,
+            //   toolbarHeight: 80,
+            //   // snap: true,
+            //   // snap: true,
+            //   floating: true,
+            //   elevation: 0,
+            //   actions: 
+            //    [
+            //     SizedBox(width: 40),
+            //     Expanded(child: botonReaccion(Icon(FluentIcons.bookmark_24_regular), (){}, 'Guardar')),        
+            //     Expanded(child: botonReaccion(Icon(FluentIcons.share_android_24_regular), (){}, 'Compartir')),       
+            //     Expanded(child: botonReaccion(Icon(FluentIcons.more_horizontal_24_filled),(){}, 'Opciones')),
+            //     SizedBox(width: 40),
+            //   ],
+            //   bottom: TabBar(
+            //     tabs: [
+            //         Tab(text: 'clases'),
+            //         Tab(text: 'documentos'),
+            //         Tab(text: 'informacion'),
+            //     ]),
+            //   // title: Expanded(child: _reaccionar()),
+            // ), //: SliverToBoxAdapter(child: Text('')),
+            
+            SliverToBoxAdapter(
+            child: Column(
+              children: [
+
+               
+                
+                if (i == 0)
+                _tabList(),
+                if (i == 1)
+                _tabSocial(curso),
+                if (i == 2)
+                _tabInfo(curso),
+                // Container(
+                //   height: 800,
+                //   width: 2,
+                //   color: Colors.black
+                // ),
+                // Container(
+                //   height: 400,
+                //   color: Colors.red
+                // ),
+
+              ],
+            ),
+          ),
+          ]
+    );
+  }
+
+
+
+  _tabSocial(Curso curso){
+    return Padding(
+      padding: EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: EdgeInsets.only(top:15, bottom: 12),
+            child: Text('Acerca del profesor', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, letterSpacing: -.4)),
+          ),
+          Row(
+            children: [
+              CircleAvatar(
+                  radius: 35,
+                ),
+              SizedBox(width: 10),
+              Column( 
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                Text(curso.profesor, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500, letterSpacing: -.4)),
+                SizedBox(height: 4),
+                Text('5', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w500, letterSpacing: -.4)),
+
+              ])
+            ],
+          ),
+          Padding(
+            padding: EdgeInsets.only(top:15, bottom: 12),
+            child: Text('Valoración del curso', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, letterSpacing: -.4)),
+          ),
+          Text('5.0', style: TextStyle(fontSize: 35
+          
+          ),),
+          
+          Padding(
+            padding: EdgeInsets.only(top:15, bottom: 12),
+            child: Text('¿Qué encontrarás en este curso?', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, letterSpacing: -.4)),
+          ),
+          listTileInfo('Dificultad', Icons.bar_chart, 'baja'),
+          listTileInfo('Duración total', Icons.bar_chart, 'baja'),
+          listTileInfo('Estudiantes', Icons.bar_chart, 'baja'),
+          listTileInfo('Audio', Icons.bar_chart, 'baja'),
+          listTileInfo('Ultima Actualización', Icons.bar_chart, 'baja'),
+
+          
+
+        ],
+      ),
+    );
+  }
+  _tabInfo(Curso curso){
+    final auth = Provider.of<AuthService>(context);
+    final usuario = auth.usuario;
+
+    var guardado = auth.getGuardado(usuario, curso);
+    // final gg = auth.getGg();
+
+    return Column(
+      children: [
+
+        (guardado == null)
+          ? CircularProgressIndicator()
+          : Center(child: IconButton(
+          icon: Icon( curso.guardado || guardado ? FluentIcons.bookmark_16_filled : FluentIcons.bookmark_16_regular),
+          onPressed: () async {
+            if (curso.guardado || guardado) {
+              await auth.borrarGuardado(context, curso);
+              final gg = auth.setGuardado(false, curso);
+
+              setState(() {});
+              return gg;
+
+            } else {
+              await auth.agregarGuardado(context, curso);
+              final gg = auth.setGuardado(true, curso);
+
+              setState(() {});
+              return gg;
+            }
+          },
+
+        ))
+      ],
+    );
+  }
+
+  Widget _tabList() {
+    // final _clips = Provider.of<VideoService>(context).getCurso().videos;
+    return ListView.builder(
+      physics: BouncingScrollPhysics(),
+      controller: ScrollController(),
+      padding: EdgeInsets.symmetric(vertical: 0),
+      itemCount: _clips.length,
+      shrinkWrap: true,
+      itemBuilder: (BuildContext context, int index) {
+        return InkWell(
+          borderRadius: BorderRadius.all(Radius.circular(6)),
+          splashColor: Colors.blue[100],
+          onTap: () {
+            _onTapCard(index);
+          },
+          child: _buildCard(index),
+        );
+      },
+    ).build(context);
+  }
+
+  void _onTapCard(int index) {
+    _initializeAndPlay(index);
+  }
+
+  Widget _reaccionar(){
+    var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
+    
+    return Container(
+       color: isDarkTheme? BonovaColors.azulNoche[800] : Colors.white,
+      padding: EdgeInsets.symmetric(vertical: 7),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly, 
+        children: [
+          
+          botonReaccion(Icon(FluentIcons.bookmark_24_regular), (){}, 'Guardar'),        
+          botonReaccion(Icon(FluentIcons.share_android_24_regular), (){}, 'Compartir'),       
+          botonReaccion(Icon(FluentIcons.more_horizontal_24_filled),(){}, 'Opciones'),        
+
+
+        ]),
+    );
+  }
+
+  Widget botonReaccion(Widget icon, Function onTap, String label){
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        IconButton( icon: icon, onPressed: onTap, iconSize: 20),
+        Text( label, style: TextStyle( fontSize: 10, fontWeight: FontWeight.w600)),
+        SizedBox( height: 10 )
+      ]);          
+  }
+
+  Widget _buildCard(int index) {
+    var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
+    final clip = _clips[index];
+    final playing = index == _playingIndex;
+    return Container(
+        color: colorTira(playing),
+        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 22),
+        margin: EdgeInsets.only(top: 3),
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+
+            Padding(
+              padding: EdgeInsets.only(right: 35, left: 10),
+              child: Text( (index + 1).toString(), style: TextStyle( fontSize: 14, fontWeight: FontWeight.w700 ), )
+            ),
+            Expanded(
+              child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text( clip.titulo, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, letterSpacing: -.5)),
+                    Padding(
+                      child: Text("${clip.tituloMod}", style: TextStyle(fontSize: 13, color: Colors.grey[500], letterSpacing: -.5)),
+                      padding: EdgeInsets.only(top: 3),
+                    )
+                  ]),
+            ),
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: playing
+                  ? Icon(FluentIcons.arrow_download_16_regular, size: 20)
+                  : Icon(
+                      FluentIcons.arrow_download_16_regular,
+                      color: Colors.grey.withOpacity(0.5),
+                      size: 20,
+                    ),
+            ),
+          ],
+        ),
+    );
+  }
+
+  Color colorTira(bool playing) {
+    var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
+
+    if (playing) {
+      return isDarkTheme
+      ? Colors.blueGrey[900].withOpacity(0.5)
+      : Colors.tealAccent.withOpacity(.1);
+    } else {
+      return isDarkTheme
+      ? BonovaColors.azulNoche[800]
+      : Colors.grey[100];
+    }
+
+  }
+
+  listTileInfo(String titulo, IconData icon, String descripcion){
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        children: [
+
+          Padding(
+            padding: EdgeInsets.only(right: 23),
+            child: Icon(icon, size: 18),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(titulo, style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15, letterSpacing: -.3)),
+              Text(descripcion, style: TextStyle(fontSize: 11, fontWeight: FontWeight.w500, letterSpacing: -.3),),
+            ],
+          )
+
+      ]),
+    );
+  }
+
+
+
+
 }
+
+
 

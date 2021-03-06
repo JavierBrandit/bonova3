@@ -226,9 +226,10 @@ class _PerfilPageState extends State<PerfilPage> {
   _cargarProfesor() async {
     // final yo = Provider.of<AuthService>(context, listen: false).usuario;
     // yo.profesor = await auth.profesor(context, yo.profesor);
-    auth.getUsuario();
-    setState(() {});
+    // auth.getUsuario();
+    // setState(() {});
     _refreshController.refreshCompleted();
+    Navigator.pushReplacementNamed(context, 'home');
   }
 
   cajaBorde(bool dark, List<Widget> children){

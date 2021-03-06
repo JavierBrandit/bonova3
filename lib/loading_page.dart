@@ -14,7 +14,14 @@ class LoadingPage extends StatelessWidget {
           future: checkLoginState(context),
           builder: (context, AsyncSnapshot<dynamic> snapshot) {
             return Center(
-                child: Image.asset('assets/bv_login.png', height: 130),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset('assets/bv_login.png', height: 130),
+                    SizedBox(height: 30),
+                    CircularProgressIndicator(strokeWidth: 1)
+                  ],
+                ),
             );
           },
       )

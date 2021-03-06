@@ -1,42 +1,22 @@
-// import 'package:flutter/material.dart';
-
-// class Biblioteca extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Biblioteca', style: TextStyle( fontSize: 22, letterSpacing: -0.7, fontWeight: FontWeight.w400 )),
-//         elevation: 0,
-//       ),
-//       body: Center(
-//         child: Container(
-//           child: Text('Hello World'),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
 import 'package:bonova0002/src/models/curso_modelo.dart';
-import 'package:bonova0002/src/services/auth_services.dart';
 import 'package:bonova0002/src/services/videos_service.dart';
 import 'package:bonova0002/src/widgets/carrusel_horizontal.dart';
 import 'package:flutter/material.dart';
   
-class Biblioteca extends StatefulWidget {
+class MisCursos extends StatefulWidget {
 
   @override
-  _BibliotecaState createState() => _BibliotecaState();
+  _MisCursosState createState() => _MisCursosState();
 }
 
-class _BibliotecaState extends State<Biblioteca> {
+class _MisCursosState extends State<MisCursos> {
   List<Curso> misCursos;
   ScrollController _scrollController;
-  final authService = AuthService();
+  final cursoService = CursoService();
 
   @override
   void initState() {
-    this._cargarGuardados();
+    this._cargarMisCursos();
     super.initState();
   }
 
@@ -44,7 +24,7 @@ class _BibliotecaState extends State<Biblioteca> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Biblioteca', style: TextStyle( letterSpacing: -.5 )),
+        title: Text('Continuar Viendo', style: TextStyle( letterSpacing: -.5 )),
       ),
       body: misCursos != null
               ? _listaCursos()
@@ -52,8 +32,8 @@ class _BibliotecaState extends State<Biblioteca> {
     );
   }
 
-  _cargarGuardados() async {
-    this.misCursos = await authService.verGuardados();
+  _cargarMisCursos() async {
+    this.misCursos = await cursoService.getAllCursos();
     setState((){});
   }
 

@@ -3,12 +3,12 @@ import 'dart:async';
 import 'package:bonova0002/src/models/curso_modelo.dart';
 import 'package:bonova0002/src/models/video_modelo.dart';
 import 'package:bonova0002/src/services/videos_service.dart';
+import 'package:bonova0002/theme.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
-import '../../theme.dart';
 
 class ListVideos extends StatefulWidget {
   const ListVideos({Key key, @required this.clips}) : super(key: key);
@@ -195,6 +195,7 @@ class _ListVideosState extends State<ListVideos> {
     var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
     videoService = Provider.of<VideoService>(context);
     final curso = videoService.getCurso();
+    
     return DefaultTabController(
       length: 3,
       child: Scaffold(

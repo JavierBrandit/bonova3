@@ -47,11 +47,20 @@ class _InicioPageState extends State<InicioPage> {
     var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-        //backgroundColor: Colors.grey[50],
-        extendBodyBehindAppBar: true,
-        appBar: AppBar( toolbarHeight: 0, elevation: 0,),
-        body: SafeArea(
-          child: CustomScrollView(
+      //backgroundColor: Colors.grey[50],
+      extendBodyBehindAppBar: true,
+      appBar: AppBar( toolbarHeight: 0, elevation: 0,),
+      body: SafeArea(
+        child: SmartRefresher(
+        controller: _refreshController,
+        enablePullDown: true,
+        onRefresh: _actualizar,
+        header: WaterDropHeader(
+          complete: CircleAvatar(backgroundColor: Colors.teal[200].withOpacity(.2), radius: 20 ,child: Icon(FluentIcons.checkmark_circle_24_regular, color: Colors.tealAccent[700], )),
+          idleIcon: CircleAvatar(backgroundColor: Colors.teal[200].withOpacity(.2), radius: 20, child: Icon(FluentIcons.arrow_clockwise_24_regular, color: isDarkTheme? Colors.blueGrey[50] : Colors.grey[700], )),
+          waterDropColor: Colors.transparent,
+        ),
+        child: CustomScrollView(
             controller: _scrollController,
             slivers: <Widget>[
 
@@ -70,23 +79,28 @@ class _InicioPageState extends State<InicioPage> {
                     //   padding: EdgeInsets.only(top: 15, bottom: 25),
                     //   child: CrearPortadas(pantalla:pantalla),
                     // ),
-                    _listViewUsuarios(),
+                    usuarios == [] || usuarios == null 
+                      ? Center(child: CircularProgressIndicator( strokeWidth: 1 ))
+                      : _listViewUsuarios(),
                     SizedBox(height: 15),
 
                     HeaderTitulo(titulo: 'Sugeridos Para Ti', paginaDestino: '',),
                     SizedBox(height: 8),
-                    _listaCursos(),
-                    HeaderTitulo(titulo: 'Sugeridos Para Ti', paginaDestino: '',),
-                    SizedBox(height: 8),
-                    _listaCursos(),
-                    SizedBox(height: 80),
+                    cursosUltimos == [] || cursosUltimos == null 
+                      ? Center(child: CircularProgressIndicator( strokeWidth: 1 ))
+                      : _listaCursos(),
+                    
+                    // HeaderTitulo(titulo: 'Sugeridos Para Ti', paginaDestino: '',),
+                    // SizedBox(height: 8),
+                    // _listaCursos(),
+                    // SizedBox(height: 80),
                   ],
                 ),
               ),
 
             ],
           ),
-        ),
+        ))
     );
 
   }
@@ -293,7 +307,14 @@ class _InicioPageState extends State<InicioPage> {
     );
   }
 
-
+  _actualizar() async {
+    // final yo = Provider.of<AuthService>(context, listen: false).usuario;
+    // yo.profesor = await auth.profesor(context, yo.profesor);
+    // auth.getUsuario();
+    // setState(() {});
+    _refreshController.refreshCompleted();
+    Navigator.pushReplacementNamed(context, 'home');
+  }
   // Widget _crearListadoPost() {
   //   return FutureBuilder(
   //       //future: Future,

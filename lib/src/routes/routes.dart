@@ -1,4 +1,4 @@
-import 'package:bonova0002/src/pages/inicio/upload.dart';
+import 'package:bonova0002/src/pages/player/mis_cursos.dart';
 import 'package:bonova0002/src/pages/user/about.dart';
 import 'package:bonova0002/src/pages/user/foto.dart';
 import 'package:bonova0002/src/pages/user/password.dart';
@@ -47,7 +47,8 @@ final Map<String, Widget Function(BuildContext)> appRoutes = {
         'about'         : (_) => About(),
         'preguntas'     : (_) => Preguntas(),
         'foto'          : (_) => Foto(),
-        'subir'         : (_) => SubirFoto(),
+  // Reproductor
+        'misCursos'         : (_) => MisCursos(),
 
 
 
