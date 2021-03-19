@@ -376,7 +376,7 @@ class _ExplorePageState extends State<ExplorePage> {
       onTap: (){
         final videoService = Provider.of<VideoService>(context, listen: false);
         videoService.setCurso(curso);
-        Navigator.push(context, MaterialPageRoute(builder: (_) => PlayPage( clips: curso.videos ) ));
+        Navigator.push(context, MaterialPageRoute(builder: (_) => PlayPage( curso: curso ) ));
       }
     );
   }

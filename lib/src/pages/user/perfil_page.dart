@@ -71,8 +71,8 @@ class _PerfilPageState extends State<PerfilPage> {
           slivers: [
             
             SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal:20),
+              // child: Padding(
+                // padding: const EdgeInsets.symmetric(horizontal:20),
                 child: Column(
             children: [
                 
@@ -146,7 +146,7 @@ class _PerfilPageState extends State<PerfilPage> {
                 ),
                 usuario.profesor
                     ? dashboard()
-                    : Divider(color: Colors.grey, indent: 15, endIndent: 15,),
+                    : Divider(color: Colors.grey, indent: 35, endIndent: 35,),
 
                 SizedBox( height: 5 ),
 
@@ -156,14 +156,14 @@ class _PerfilPageState extends State<PerfilPage> {
                   listTileInfo(usuario.comuna, FluentIcons.location_16_regular, 'comuna'),
                   listTileInfo('Matemática · Física', FluentIcons.book_number_16_regular, 'especialidad'),
                 // ]),
-                SizedBox( height: 15 ),
+                SizedBox( height: 25 ),
                 
                 usuario.profesor?
                 Column(
                   children: [
                     Row(
                       children: [
-                        SizedBox( width: 13 ),
+                        SizedBox( width: 35 ),
                         Text('Mis Cursos', style: TextStyle(fontSize: 14, letterSpacing: -.3, fontWeight: FontWeight.w600),),
                       ],
                     ),
@@ -172,7 +172,7 @@ class _PerfilPageState extends State<PerfilPage> {
                 ) : Container()
     
     
-    ])))])));
+    ]))])));
   }
 
 
@@ -186,7 +186,7 @@ class _PerfilPageState extends State<PerfilPage> {
         Text('Sobre mí', style: TextStyle(fontSize: 14, letterSpacing: -.3, fontWeight: FontWeight.w600),),
         Text('"'+usuario.descripcion+'"', style: TextStyle(fontSize: 13, letterSpacing: 0),),
         SizedBox( height: 20 ),
-        Divider(color: Colors.grey, indent: 15, endIndent: 15,),
+        Divider(color: Colors.grey, indent: 35, endIndent: 35,),
         Row( //DASHBOARD
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -195,7 +195,7 @@ class _PerfilPageState extends State<PerfilPage> {
             dashboardItem(FluentIcons.star_16_regular,'4.7/5', 'valoración promedio'),
           ],
         ),
-        Divider(color: Colors.grey, indent: 15, endIndent: 15,),
+        Divider(color: Colors.grey, indent: 35, endIndent: 35,),
       ],
     );
   }
@@ -258,7 +258,7 @@ class _PerfilPageState extends State<PerfilPage> {
         children: [
 
           Padding(
-            padding: EdgeInsets.only(right: 23),
+            padding: EdgeInsets.only(right: 23, left: 22),
             child: Icon(icon, size: 22),
           ),
           Column(
@@ -282,6 +282,7 @@ class _PerfilPageState extends State<PerfilPage> {
     return Container(
       height: 270,
       child: ListView.builder(
+        padding: EdgeInsets.only(left:22),
         physics: BouncingScrollPhysics(),
         scrollDirection: Axis.horizontal,
         shrinkWrap: true,

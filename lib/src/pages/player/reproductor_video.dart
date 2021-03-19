@@ -1,7 +1,10 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:bonova0002/home_page.dart';
 import 'package:bonova0002/src/models/curso_modelo.dart';
+import 'package:bonova0002/src/models/historial.dart';
 import 'package:bonova0002/src/services/auth_services.dart';
+import 'package:bonova0002/src/services/socket_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/svg.dart';
@@ -18,9 +21,12 @@ import 'package:video_player/video_player.dart';
 import 'list_videos.dart';
 
 class PlayPage extends StatefulWidget {
-  PlayPage({Key key, @required this.clips}) : super(key: key);
+  // PlayPage({Key key, @required this.clips}) : super(key: key);
+  PlayPage({Key key, @required this.curso, @required this.historial}) : super(key: key);
 
-  final List<Video> clips;
+  // final List<Video> clips;
+  final Curso curso;
+  final Historial historial;
 
   @override
   _PlayPageState createState() => _PlayPageState();
@@ -30,8 +36,15 @@ class _PlayPageState extends State<PlayPage> {
   VideoPlayerController _controller;
 
   List<Video> get _clips {
-    return widget.clips;
+    return widget.curso.videos;
   }
+  Curso get _curso {
+    return widget.curso;
+  }
+  // Historial get _historial {
+  //   return widget.historial;
+  // }
+
   VideoService videoService;
   
   var _playingIndex = -1;
@@ -46,10 +59,16 @@ class _PlayPageState extends State<PlayPage> {
   Duration _duration;
   Duration _position;
 
+  SocketService socketService;
+  AuthService auth;
+  bool guardado;
+
   var _playing = false;
   bool get _isPlaying {
     return _playing;
   }
+
+  Historial historial;
 
   set _isPlaying(bool value) {
     _playing = value;
@@ -86,9 +105,38 @@ class _PlayPageState extends State<PlayPage> {
     });
   }
 
+  // void _escucharHistorial( dynamic payload ) {
+    
+  //   // Historial historial = new Historial(
+
+  //   //   curso: payload.curso,
+  //   //   // usuario: payload.usuario,
+  //   //   progreso: payload?.progreso
+  //   // );
+  //   // setState(() {
+  //   // });
+  // }
+  
+
   @override
   void initState() {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
+    // final curso = _curso;
+    // final historial = _historial;
+    
+    // historial = Historial(
+    //   curso: curso.cid,
+    //   guardado: false,
+    //   // progreso: _position.inSeconds / _duration.inSeconds,
+    //   largo: curso.videos.length,
+    //   index: currentIndex,
+    //   prefs: []
+
+    // );
+    // _verGuardados();
+    // this.socketService = Provider.of<SocketService>(context, listen: false );
+    // this.socketService.socket.on('historial', _escucharHistorial );
+    
     _initializeAndPlay(0);
     super.initState();
   }
@@ -135,6 +183,7 @@ class _PlayPageState extends State<PlayPage> {
   }
 
   void _initializeAndPlay(int index) async {
+    // _historial.index = index;
     print("_initializeAndPlay ---------> $index");
     final clip = _clips[index];
 
@@ -192,7 +241,9 @@ class _PlayPageState extends State<PlayPage> {
       if (_disposed) return;
       setState(() {
         _progress = position.inMilliseconds.ceilToDouble() / duration.inMilliseconds.ceilToDouble();
+        // historial.progreso = _progress;
       });
+      // await auth.agregarHistorial(historial);
     }
 
     // handle clip end
@@ -239,8 +290,8 @@ class _PlayPageState extends State<PlayPage> {
   @override
   Widget build(BuildContext context) {
 
-    videoService = Provider.of<VideoService>(context);
-    final curso = videoService.getCurso();
+    // videoService = Provider.of<VideoService>(context, listen: false);
+    // final curso = videoService.getCurso();
     final Size pantalla = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -249,7 +300,7 @@ class _PlayPageState extends State<PlayPage> {
           : AppBar(
               toolbarHeight: 40,
               elevation: 0.0,
-              title: Text('${curso.titulo}  ·  ${curso.nivel}º medio', style: TextStyle( fontSize: 19, letterSpacing: -1, fontWeight: FontWeight.w400 ))              
+              title: Text('${_curso.titulo}  ·  ${_curso.nivel}º medio', style: TextStyle( fontSize: 19, letterSpacing: -1, fontWeight: FontWeight.w400 ))              
             ),
       body: _isFullScreen
           ? Center(
@@ -266,11 +317,15 @@ class _PlayPageState extends State<PlayPage> {
                 // decoration: BoxDecoration(color: Colors.black),
               ),
               Expanded(
-                child: metodo(curso) //ListVideos(clips: _clips),
+                child: metodo(_curso) //ListVideos(clips: _clips),
               ),
             ]),
     );
   }
+
+  // subirHistorial(Historial historial) async {
+  //   await auth.agregarHistorial(historial);
+  // }
 
 
   Widget _playView(BuildContext context) {
@@ -348,6 +403,7 @@ class _PlayPageState extends State<PlayPage> {
           
           onPressed: () async {
             if (_isPlaying) {
+              // subirHistorial(_historial);
               _controller?.pause();
               _isPlaying = false;
             } else {
@@ -357,6 +413,7 @@ class _PlayPageState extends State<PlayPage> {
                 final dur = _duration?.inSeconds ?? 0;
                 final isEnd = pos == dur - 1;
                 if (isEnd) {
+                  // subirHistorial(_historial);
                   _initializeAndPlay(_playingIndex);
                 } else {
                   controller.play();
@@ -414,13 +471,13 @@ class _PlayPageState extends State<PlayPage> {
     final min = convertTwo(remained ~/ 60.0);
     final sec = convertTwo(remained % 60);
     const _examplePlaybackRates = [
-    0.7,
-    1.0,
-    1.2,
-    1.5,
-    2.0,
-    2.2
-  ];
+      0.7,
+      1.0,
+      1.2,
+      1.5,
+      2.0,
+      2.2
+    ];
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -472,9 +529,24 @@ class _PlayPageState extends State<PlayPage> {
   
   Widget _bottomUI() {
 
+    final authService = Provider.of<AuthService>(context, listen: false);
+    socketService = Provider.of<SocketService>(context, listen: false);
+
     final duration = _duration?.inSeconds ?? 0;
     final durationMin = _duration.inMinutes ?? 0;
     final position = _position?.inSeconds ?? 0;
+    
+    print(position.toString());
+    print(_progress.toString());
+    // _progress != null
+    
+    socketService.emit('historial', {
+        'curso': _curso.cid,
+        'usuario': authService.usuario.uid,
+        'progreso': _progress,
+        'index': _playingIndex
+    });
+    
     final positionMin = _position?.inMinutes ?? 0;
     // final headMin = _position?.inMinutes ?? 0;
 
@@ -522,8 +594,12 @@ class _PlayPageState extends State<PlayPage> {
                         min: 0,
                         max: 100,
                         onChanged: (value) {
+                          // final pos = _controller?.value?.position;
+                          // print('value: $pos');
+                          // print('progress: '+ _progress.toString());
                           setState(() {
                             _progress = value * 0.01;
+                            // _historial.progreso = _progress;
                           });
                         },
                         onChangeStart: (value) {
@@ -770,11 +846,17 @@ class _PlayPageState extends State<PlayPage> {
       ),
     );
   }
-  _tabInfo(Curso curso){
+  _tabInfo(Curso curso) {
     final auth = Provider.of<AuthService>(context);
+    // this.socketService = Provider.of<SocketService>(context);
     final usuario = auth.usuario;
+    // final historial = new Historial(
+    //     curso: curso.cid,
+    //     progreso: 0.1,
+    //     );
 
-    var guardado = auth.getGuardado(usuario, curso);
+    
+    // var guardado = auth.getGuardado(usuario, _curso);
     // final gg = auth.getGg();
 
     return Column(
@@ -783,22 +865,29 @@ class _PlayPageState extends State<PlayPage> {
         (guardado == null)
           ? CircularProgressIndicator()
           : Center(child: IconButton(
-          icon: Icon( curso.guardado || guardado ? FluentIcons.bookmark_16_filled : FluentIcons.bookmark_16_regular),
+          icon: Icon( guardado ? FluentIcons.bookmark_16_filled : FluentIcons.bookmark_16_regular),
           onPressed: () async {
-            if (curso.guardado || guardado) {
-              await auth.borrarGuardado(context, curso);
-              final gg = auth.setGuardado(false, curso);
+            
+            // socketService.emit('historial', {
+            //   'curso': curso.cid,
+            //   // 'usuario': usuario.uid,
+            //   'progreso': _controller.value.position.inSeconds / _controller.value.duration.inSeconds
+            // });
 
-              setState(() {});
-              return gg;
+            // if (curso.guardado || guardado) {
+            //   await auth.borrarGuardado(context, curso);
+            //   final gg = auth.setGuardado(false, curso);
 
-            } else {
-              await auth.agregarGuardado(context, curso);
-              final gg = auth.setGuardado(true, curso);
+            //   setState(() {});
+            //   return gg;
 
-              setState(() {});
-              return gg;
-            }
+            // } else {
+            //   await auth.agregarGuardado(context, curso);
+            //   final gg = auth.setGuardado(true, curso);
+
+            //   setState(() {});
+            //   return gg;
+            // }
           },
 
         ))

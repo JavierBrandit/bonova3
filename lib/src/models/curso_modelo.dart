@@ -8,7 +8,7 @@ List<Curso> cursoFromJson(String str) => List<Curso>.from(json.decode(str).map((
 String cursoToJson(List<Curso> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 
-// Curso cursoFromJson(String str) => Curso.fromJson(json.decode(str));
+Curso curso1FromJson(String str) => Curso.fromJson(json.decode(str));
 
 // String cursosToJson(Curso data) => json.encode(data.toJson());
 

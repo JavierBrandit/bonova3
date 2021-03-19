@@ -1,8 +1,32 @@
+// To parse this JSON data, do
+//
+//     final usuarios = usuariosFromJson(jsonString);
+
 import 'dart:convert';
 
-Usuario usuarioFromJson(String str) => Usuario.fromJson(json.decode(str));
+Usuarios usuariosFromJson(String str) => Usuarios.fromJson(json.decode(str));
 
-String usuarioToJson(Usuario data) => json.encode(data.toJson());
+String usuariosToJson(Usuarios data) => json.encode(data.toJson());
+
+class Usuarios {
+    Usuarios({
+        this.ok,
+        this.usuarios,
+    });
+
+    bool ok;
+    List<Usuario> usuarios;
+
+    factory Usuarios.fromJson(Map<String, dynamic> json) => Usuarios(
+        ok: json["ok"],
+        usuarios: List<Usuario>.from(json["usuarios"].map((x) => Usuario.fromJson(x))),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "ok": ok,
+        "usuarios": List<dynamic>.from(usuarios.map((x) => x.toJson())),
+    };
+}
 
 class Usuario {
     Usuario({
@@ -10,6 +34,7 @@ class Usuario {
         this.profesor,
         this.cursos,
         this.contactos,
+        this.historial,
         this.guardados,
         this.recordatorio,
         this.nombre,
@@ -21,7 +46,6 @@ class Usuario {
         this.foto,
         this.descripcion,
         this.celular,
-        this.historial,
         this.uid,
     });
 
@@ -29,6 +53,7 @@ class Usuario {
     bool profesor;
     List<dynamic> cursos;
     List<dynamic> contactos;
+    List<dynamic> historial;
     List<dynamic> guardados;
     bool recordatorio;
     String nombre;
@@ -40,7 +65,6 @@ class Usuario {
     String foto;
     String descripcion;
     String celular;
-    List<dynamic> historial;
     String uid;
 
     factory Usuario.fromJson(Map<String, dynamic> json) => Usuario(
@@ -48,18 +72,18 @@ class Usuario {
         profesor: json["profesor"],
         cursos: List<dynamic>.from(json["cursos"].map((x) => x)),
         contactos: List<dynamic>.from(json["contactos"].map((x) => x)),
+        historial: List<dynamic>.from(json["historial"].map((x) => x)),
         guardados: List<dynamic>.from(json["guardados"].map((x) => x)),
         recordatorio: json["recordatorio"],
         nombre: json["nombre"],
         email: json["email"],
-        antiguedad: DateTime.parse(json["antiguedad"]),
-        comuna: json["comuna"],
-        colegio: json["colegio"],
-        curso: json["curso"],
-        foto: json["foto"],
-        descripcion: json["descripcion"],
-        celular: json["celular"],
-        historial: List<dynamic>.from(json["historial"].map((x) => x)),
+        antiguedad: json["antiguedad"] == null ? null : DateTime.parse(json["antiguedad"]),
+        comuna: json["comuna"] == null ? null : json["comuna"],
+        colegio: json["colegio"] == null ? null : json["colegio"],
+        curso: json["curso"] == null ? null : json["curso"],
+        foto: json["foto"] == null ? null : json["foto"],
+        descripcion: json["descripcion"] == null ? null : json["descripcion"],
+        celular: json["celular"] == null ? null : json["celular"],
         uid: json["uid"],
     );
 
@@ -68,18 +92,18 @@ class Usuario {
         "profesor": profesor,
         "cursos": List<dynamic>.from(cursos.map((x) => x)),
         "contactos": List<dynamic>.from(contactos.map((x) => x)),
+        "historial": List<dynamic>.from(historial.map((x) => x)),
         "guardados": List<dynamic>.from(guardados.map((x) => x)),
         "recordatorio": recordatorio,
         "nombre": nombre,
         "email": email,
-        "antiguedad": antiguedad.toIso8601String(),
-        "comuna": comuna,
-        "colegio": colegio,
-        "curso": curso,
-        "foto": foto,
-        "descripcion": descripcion,
-        "celular": celular,
-        "historial": List<dynamic>.from(historial.map((x) => x)),
+        "antiguedad": antiguedad == null ? null : antiguedad.toIso8601String(),
+        "comuna": comuna == null ? null : comuna,
+        "colegio": colegio == null ? null : colegio,
+        "curso": curso == null ? null : curso,
+        "foto": foto == null ? null : foto,
+        "descripcion": descripcion == null ? null : descripcion,
+        "celular": celular == null ? null : celular,
         "uid": uid,
     };
 }

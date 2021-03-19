@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:bonova0002/src/global/environment.dart';
 import 'package:bonova0002/src/models/curso_modelo.dart';
+import 'package:bonova0002/src/models/historial.dart';
 import 'package:bonova0002/src/models/login_response.dart';
 import 'package:bonova0002/src/models/usuario.dart';
 import 'package:flutter/material.dart';
@@ -28,21 +29,21 @@ class AuthService with ChangeNotifier{
   
   bool getGg() => guardado;
   
-  bool setGuardado( bool b, Curso curso) {
-    curso.guardado = b;
-  }
+  // bool setGuardado( bool b, Curso curso) {
+  //   curso.guardado = b;
+  // }
   
-  bool getGuardado( Usuario u, Curso c ) {
-    this.usuario = u;
-    if (usuario.guardados.contains(c.cid)){
-      guardado = true;
-      notifyListeners();
-      return guardado;
-    }
-      guardado = false;
-      notifyListeners();
-      return guardado;
-  }
+  // bool getGuardado( Usuario u, Curso c ) {
+  //   this.usuario = u;
+  //   if (usuario.guardados.contains(c.cid)){
+  //     guardado = true;
+  //     notifyListeners();
+  //     return guardado;
+  //   }
+  //     guardado = false;
+  //     notifyListeners();
+  //     return guardado;
+  // }
 
   final _storage = new FlutterSecureStorage();
 
@@ -88,6 +89,27 @@ class AuthService with ChangeNotifier{
       return true;
     } else {
       return false;
+    }
+  }
+
+  Future<List<Historial>> verHistorial() async {
+    this._autenticando = true;
+    final token = await this._storage.read(key: 'token');
+
+    final resp = await http.get('${ Environment.apiUrl }/usuarios/historial',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-token': token
+      }
+    );
+    this.autenticando = false;
+     
+    if ( resp.statusCode == 200 ) {
+      final loginResponse = historialesFromJson(resp.body).historial;
+
+      return loginResponse;
+    } else {
+      return [];
     }
   }
 
@@ -216,6 +238,33 @@ class AuthService with ChangeNotifier{
     }
   }
 
+  // Stream agregarGuardado2(BuildContext context, Curso curso ) async* {
+
+  //   final token = await this._storage.read(key: 'token');
+
+  //   final body = {
+  //     'curso': curso.,
+  //     'progreso'
+
+  //   }
+
+  //   final resp = await http.put('${ Environment.apiUrl }/usuarios/miscursos/${ curso.cid }',
+  //     // body: jsonEncode(data),
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       'x-token': token
+  //     }
+  //   );
+
+  //   // if ( resp.statusCode == 200 ) {
+  //   //   final editResponse = historialResponseFromJson(resp.body); //jsonDecode(resp.body);
+  //   //   // print(editResponse);
+  //   //   return true;
+  //   // } else {
+  //   //   final respBody = jsonDecode(resp.body);
+  //   //   return respBody['msg'];
+  //   }
+  // }
   Future<bool> agregarGuardado(BuildContext context, Curso curso ) async {
 
     final token = await this._storage.read(key: 'token');
@@ -262,13 +311,45 @@ class AuthService with ChangeNotifier{
     }
   }
 
-  Future<List<Curso>> verGuardados() async {
+  
+
+  // Future<List<Historial>> verGuardados() async {
+
+  //   final token = await this._storage.read(key: 'token');
+
+  
+  //   final resp = await http.get('${ Environment.apiUrl }/usuarios/historial',
+  //     // body: jsonEncode(data),
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       'x-token': token
+  //     }
+  //   );
+
+  //   if ( resp.statusCode == 200 ) {
+  //     final editResponse = historialsFromJson(resp.body).historial; //jsonDecode(resp.body);
+  //     // print(editResponse);  
+  //     return editResponse;
+  //   } else {
+  //     final respBody = jsonDecode(resp.body);
+  //     return respBody['msg'];
+  //   }
+  // }
+
+  Future agregarHistorial(Historial historial) async {
 
     final token = await this._storage.read(key: 'token');
 
-
-    final resp = await http.get('${ Environment.apiUrl }/usuarios/miscursos',
-      // body: jsonEncode(data),
+    final data = {
+      'curso': historial.curso,
+      'guardado': historial.guardado,
+      'largo': historial.largo,
+      'progeso': historial.progreso,
+      'prefs': historial.prefs
+    };
+  
+    final resp = await http.put('${ Environment.apiUrl }/usuarios/historial/${ historial.curso }',
+      body: jsonEncode(data),
       headers: {
         'Content-Type': 'application/json',
         'x-token': token
@@ -276,9 +357,9 @@ class AuthService with ChangeNotifier{
     );
 
     if ( resp.statusCode == 200 ) {
-      final editResponse = cursoFromJson(resp.body); //jsonDecode(resp.body);
+      final editResponse = historialesFromJson(resp.body).historial; //jsonDecode(resp.body);
       // print(editResponse);  
-      return editResponse;
+      return print(editResponse);
     } else {
       final respBody = jsonDecode(resp.body);
       return respBody['msg'];

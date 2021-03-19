@@ -193,24 +193,24 @@ class _InicioPageState extends State<InicioPage> {
                     'assets/portadaMatematica.png',
                     'assets/portadaFisica.png',
                     'assets/portadaMatematica.png',
-                    'assets/portadaFisica.png'
+                    // 'assets/portadaFisica.png'
                     ];
     final imagenNoche = [
                     'assets/portadaMatematicaNoche.png',
                     'assets/portadaFisicaNoche.png',
                     'assets/portadaMatematicaNoche.png',
-                    'assets/portadaFisicaNoche.png'
+                    // 'assets/portadaFisicaNoche.png'
                     ];
     final ruta = [
                     'matematica',
                     'fisica',
                     'matematica',
-                    'fisica'
+                    // 'fisica'
                     ];
     return Container(
       height: 170,
       child: ListView.builder(
-        padding: EdgeInsets.only(left: 25),
+        padding: EdgeInsets.only(left: 26),
         physics: BouncingScrollPhysics(),
         scrollDirection: Axis.horizontal,
         shrinkWrap: true,
@@ -227,7 +227,7 @@ class _InicioPageState extends State<InicioPage> {
   Widget portada( BuildContext context, String img, String path ) {
 
     return Container(
-      margin: EdgeInsets.only(right: 20),
+      margin: EdgeInsets.only(right: 10),
       width: 110,
       child: GestureDetector(
         onTap: (){
@@ -245,7 +245,7 @@ class _InicioPageState extends State<InicioPage> {
     return Container(
       height: 270,
       child: ListView.builder(
-        padding: EdgeInsets.only(left: 13),
+        padding: EdgeInsets.only(left: 26),
         physics: BouncingScrollPhysics(),
         scrollDirection: Axis.horizontal,
         shrinkWrap: true,

@@ -1,6 +1,5 @@
 import 'package:bonova0002/src/global/environment.dart';
 import 'package:bonova0002/src/models/usuario.dart';
-import 'package:bonova0002/src/models/usuarios_response.dart';
 
 import 'package:http/http.dart' as http;
 
@@ -20,7 +19,7 @@ class UsuarioService {
         }
       );
 
-      final usuariosResponse = usuariosResponseFromJson( resp.body );
+      final usuariosResponse = usuariosFromJson( resp.body );
       return usuariosResponse.usuarios;
     
     } catch (e) {

@@ -16,7 +16,7 @@ Widget carruselHorizontal(BuildContext context, Curso curso) {
   final videosLength = curso.videos.length.toString();
 
   return Container(
-    margin: EdgeInsets.all(14),
+    margin: EdgeInsets.only(right:15),
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.end,
@@ -83,11 +83,29 @@ Widget carruselHorizontal(BuildContext context, Curso curso) {
           ),   
         ]
       ),
-    onTap: () {
+    onTap: () async {
+
+      final historial = Historial(
+        curso: curso,
+        guardado: false,
+        // progreso: _position.inSeconds / _duration.inSeconds,
+        largo: curso.videos.length,
+        index: 0,
+        prefs: []
+      );
+      
       VideoService videoService = Provider.of<VideoService>(context, listen: false );
-      videoService.setCurso( curso );
-      // Navigator.pushNamed(context, 'curso', arguments: curso );
-      Navigator.push(context, MaterialPageRoute(builder: (_) => PlayPage( clips: curso.videos ) ));
+      AuthService authService = Provider.of<AuthService>(context, listen: false );
+      videoService.setCurso( historial.curso );
+      
+      final socketService = Provider.of<SocketService>(context, listen: false );
+
+      socketService.emit('historial', {
+        'curso': historial.curso.cid,
+        'usuario': authService.usuario.uid
+      });
+
+      Navigator.push(context, MaterialPageRoute(builder: (_) => PlayPage( curso: historial.curso, historial: historial ) ));
     },
    )
     ]
@@ -97,9 +115,9 @@ Widget carruselHorizontal(BuildContext context, Curso curso) {
 
 
 
-Widget carruselVertical(BuildContext context, Curso curso) {
+Widget carruselVertical(BuildContext context, Historial historial) {
 
-  final videosLength = curso.videos.length.toString();
+  final videosLength = historial.curso.videos.length.toString();
   final pantalla = MediaQuery.of(context).size;
 
   return Container(
@@ -113,13 +131,24 @@ Widget carruselVertical(BuildContext context, Curso curso) {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ClipRRect(
-          borderRadius: BorderRadius.circular(5),
-          child: Image.network(curso.portada,
-            fit: BoxFit.cover,
-            // height: 240,
-            width: 130
-            ),
+          Column(
+            children: [
+              ClipRRect(
+              borderRadius: BorderRadius.circular(5),
+              child: Image.network(historial.curso.portada,
+                fit: BoxFit.cover,
+                // height: 240,
+                width: 130
+                ),
+              ),
+              SizedBox( height: 10),
+              Container(
+                height: 3,
+                width: 130,
+                color: Colors.grey.withOpacity(.3),
+
+              )
+            ],
           ),
           Container(
             margin: EdgeInsets.only(left: 20),
@@ -131,14 +160,14 @@ Widget carruselVertical(BuildContext context, Curso curso) {
               //TITULO
                 Padding(
                   padding: EdgeInsets.only( bottom: 5),
-                  child: Text(curso.titulo, style: TextStyle( fontSize: 16, fontWeight: FontWeight.w500, letterSpacing: -.5 )),
+                  child: Text(historial.curso.titulo, style: TextStyle( fontSize: 16, fontWeight: FontWeight.w500, letterSpacing: -.5 )),
                 ),
 
               //VIDEOS
                 Row(
                   children: [
                     Text( videosLength == '1'? '1  video' :'$videosLength  videos', style: TextStyle( fontSize: 10, fontWeight: FontWeight.w500 )),
-                    Text('  ·  '+curso.ramo, style: TextStyle( fontSize: 10, fontWeight: FontWeight.w500 )),
+                    Text('  ·  '+historial.curso.ramo, style: TextStyle( fontSize: 10, fontWeight: FontWeight.w500 )),
                   ],
                 ),
                 
@@ -147,7 +176,7 @@ Widget carruselVertical(BuildContext context, Curso curso) {
                   margin: EdgeInsets.only(top: 5, bottom: 5),
                   height: 40,
                   width: pantalla.width * .52,
-                  child: Text(curso.descripcion,
+                  child: Text(historial.curso.descripcion,
                     style: TextStyle( fontSize: 11, fontWeight: FontWeight.w400, letterSpacing: -.2, height: 1.5),
                     overflow: TextOverflow.clip,
                     softWrap: true,
@@ -164,12 +193,13 @@ Widget carruselVertical(BuildContext context, Curso curso) {
                         children: [
                           Icon( FluentIcons.star_24_filled, size: 11, color: Colors.teal[300],),
                           SizedBox(width: 3),
-                          Text(curso.rate.toString(), style: TextStyle( fontSize: 12, fontWeight: FontWeight.w300) ),
+                          Text(historial.curso.rate.toString(), style: TextStyle( fontSize: 12, fontWeight: FontWeight.w300) ),
                         ],
                       ),
+                      Text(historial.progreso.toString()),
                       Padding(
                         padding: EdgeInsets.only(right: 10),
-                        child: Text(curso.profesor, style: TextStyle( fontSize: 10, fontWeight: FontWeight.w400) ),
+                        child: Text(historial.curso.profesor, style: TextStyle( fontSize: 10, fontWeight: FontWeight.w400) ),
                       ),
                       // SizedBox(width: 5),
                     ]
@@ -180,41 +210,29 @@ Widget carruselVertical(BuildContext context, Curso curso) {
           ),   
         ]
       ),
-    onTap: () {
+    onTap: () async {
+
+      final histor = Historial(
+        curso: historial.curso,
+        guardado: false,
+        // progreso: _position.inSeconds / _duration.inSeconds,
+        largo: historial.curso.videos.length,
+        index: 0,
+        prefs: []
+      );
+      
       VideoService videoService = Provider.of<VideoService>(context, listen: false );
       AuthService authService = Provider.of<AuthService>(context, listen: false );
-      SocketService socketService = Provider.of<SocketService>(context, listen: false );
-
-      videoService.setCurso( curso );
-      // Navigator.pushNamed(context, 'curso', arguments: curso );
+      videoService.setCurso( historial.curso );
       
-      
-      
-      
-      
-      final historial = new Historial(
-        curso: curso.cid,
-        usuario: authService.usuario.uid,
-        progreso: 0.1,
-        // uid: authService.usuario.uid, 
-        // texto: texto, 
-        // animationController: AnimationController( vsync: this, duration: Duration(milliseconds: 200))
-        );
-      // _messages.insert(0, newMessage);
-      // newMessage.animationController.forward(); 
-
-      // setState(() { _estaEscribiendo = false; });
+      final socketService = Provider.of<SocketService>(context, listen: false );
 
       socketService.emit('historial', {
-        'curso': curso.cid,
-        'usuario': authService.usuario.uid,
-        // 'progreso': 0.1
-        // 'de': authService.usuario.uid,
-        // 'para': this.chatService.usuarioPara.uid,
-        // 'mensaje': texto
+        'curso': historial.curso,
+        'usuario': authService.usuario.uid
       });
 
-      Navigator.push(context, MaterialPageRoute(builder: (_) => PlayPage( clips: curso.videos ) ));
+      Navigator.push(context, MaterialPageRoute(builder: (_) => PlayPage( curso: historial.curso, historial: historial ) ));
     },
    )
     //   ),

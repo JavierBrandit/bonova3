@@ -47,13 +47,13 @@ class _BibliotecaState extends State<Biblioteca> {
         title: Text('Biblioteca', style: TextStyle( letterSpacing: -.5 )),
       ),
       body: misCursos != null
-              ? _listaCursos()
+              ? Container()//_listaCursos()
               : Center(child: CircularProgressIndicator( strokeWidth: 1))
     );
   }
 
   _cargarGuardados() async {
-    this.misCursos = await authService.verGuardados();
+    // this.misCursos = await authService.verGuardados();
     setState((){});
   }
 
@@ -67,7 +67,7 @@ class _BibliotecaState extends State<Biblioteca> {
         // scrollDirection: Axis.horizontal,
         shrinkWrap: true,
         // pageSnapping: false,
-        itemBuilder: (_, i) => carruselVertical(context, misCursos[i]),
+        //itemBuilder: (_, i) => carruselVertical(context, misCursos[i]),
         itemCount: misCursos.length,
         controller: _scrollController, 
         separatorBuilder: (_, i) => Divider(color: Colors.grey, indent: 15, endIndent: 15),

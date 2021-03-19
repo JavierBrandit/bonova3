@@ -1,6 +1,7 @@
 import 'package:bonova0002/src/helpers/mostrar_alerta.dart';
 import 'package:bonova0002/src/models/usuario.dart';
 import 'package:bonova0002/src/services/auth_services.dart';
+import 'package:bonova0002/src/services/socket_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:provider/provider.dart';
@@ -49,12 +50,15 @@ class _ProfesorState extends State<Profesor> {
                   // ? mostrarAlerta(context, 'Estas a Punto de ser Profesor', 'Felicitaciones') //quiere ser profesor
                   // : mostrarAlerta(context, '¿Estas seguro?', 'No te vayas :('); //quiere dejar de ser profesor
 
+                  
+                  // final socketService = Provider.of<SocketService>(context, listen: false );
+
+                  // socketService.emit('editar', {
+                  //   'profesor': val
+                  // });
                   await authService.editarProfesor(context, val);
                   Navigator.pushReplacementNamed(context, 'home');
-                  // _cargarProfesor(val);
-                  // // val = usuario.profesor;
-                  // await auth.profesor(context, val);
-                  // setState(() {});
+
               }),
             ],
           ),
