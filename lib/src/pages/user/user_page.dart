@@ -126,7 +126,7 @@ class _UserPageState extends State<UserPage> {
             width: size.width * 0.55,
             // height: 160,
             decoration: BoxDecoration( 
-                border: Border.all( width: 2, color: isDarkTheme? Colors.grey[800] : Colors.grey[300] ),
+                border: Border.all( width: .3, color: isDarkTheme? Colors.grey[800] : Colors.grey[300] ),
                 // color: isDarkTheme? BonovaColors.azulNoche[700] : Colors.white,
                 borderRadius: BorderRadius.circular(15)
             ),
@@ -141,19 +141,32 @@ class _UserPageState extends State<UserPage> {
                 SizedBox( height: 10 ),
                 Text('Curso', style: TextStyle( fontSize: 12, fontWeight: FontWeight.w500, color: isDarkTheme? Colors.grey[400] : Colors.grey[700], ) ),
                 Text('${usuario.curso} · ${usuario.colegio}', style: TextStyle( fontSize: 14, fontWeight: FontWeight.w400, letterSpacing: 0.2, color: isDarkTheme? Colors.grey[50] : Colors.grey[850] ) ),
-                SizedBox( height: 20 ),
-                Row(
+                SizedBox( height: 15 ),
+                Column(
                   // mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                  // crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     GestureDetector(
                       child: Row(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 4),
-                            child: Icon(FluentIcons.info_16_regular, size: 16, color: Colors.tealAccent[700]),
+                            padding: EdgeInsets.only(right: 5),
+                            child: Icon(FluentIcons.person_16_regular, size: 16, color: Colors.tealAccent[700]),
                           ),
-                          Text('editar informacion', style: TextStyle( fontSize: 14, fontWeight: FontWeight.w500, letterSpacing: -0.3, color: Colors.tealAccent[700] ) ),
+                          Text('ver perfil', style: TextStyle( fontSize: 13, fontWeight: FontWeight.w500, letterSpacing: -0.3, color: Colors.tealAccent[700] ) ),
+                        ],
+                      ),
+                      onTap: () => Navigator.pushNamed(context, 'perfil', arguments: usuario),
+                    ),
+                    SizedBox( height: 6 ),
+                    GestureDetector(
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(right: 5),
+                            child: Icon(FluentIcons.leaf_one_16_regular, size: 16, color: Colors.amber[300]),
+                          ),
+                          Text('editar info', style: TextStyle( fontSize: 13, fontWeight: FontWeight.w500, letterSpacing: -0.3, color: Colors.amber[300] ) ),
                         ],
                       ),
                       onTap: () => Navigator.pushNamed(context, 'formulario'),

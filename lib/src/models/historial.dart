@@ -99,6 +99,12 @@ import 'dart:convert';
 
 import 'curso_modelo.dart';
 
+// To parse this JSON data, do
+//
+//     final historiales = historialesFromJson(jsonString);
+
+import 'dart:convert';
+
 Historiales historialesFromJson(String str) => Historiales.fromJson(json.decode(str));
 
 String historialesToJson(Historiales data) => json.encode(data.toJson());
@@ -126,10 +132,9 @@ class Historial {
         this.usuario,
         this.createdAt,
         this.updatedAt,
+        this.index,
         this.progreso,
         this.guardado,
-        this.largo,
-        this.index,
     });
 
     List<dynamic> prefs;
@@ -137,32 +142,100 @@ class Historial {
     String usuario;
     DateTime createdAt;
     DateTime updatedAt;
-    bool guardado;
-    double progreso;
-    int largo;
     int index;
+    dynamic progreso;
+    bool guardado;
 
     factory Historial.fromJson(Map<String, dynamic> json) => Historial(
-        prefs: List<dynamic>.from(json["prefs"].map((x) => x)),
+        prefs: json["prefs"] == null ? null : List<dynamic>.from(json["prefs"].map((x) => x)),
         curso: Curso.fromJson(json["curso"]),
         usuario: json["usuario"],
-        createdAt: DateTime.parse(json["createdAt"]),
-        updatedAt: DateTime.parse(json["updatedAt"]),
-        progreso: json["progreso"],
-        guardado: json["guardado"],
-        largo: json["largo"],
-        index: json["index"],
+        createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+        updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+        index: json["index"] == null ? null : json["index"],
+        progreso: json["progreso"] == null ? null : json["progreso"],
+        guardado: json["guardado"] == null ? null : json["guardado"],
     );
 
     Map<String, dynamic> toJson() => {
-        "prefs": List<dynamic>.from(prefs.map((x) => x)),
+        "prefs": prefs == null ? null : List<dynamic>.from(prefs.map((x) => x)),
         "curso": curso.toJson(),
         "usuario": usuario,
-        "createdAt": createdAt.toIso8601String(),
-        "updatedAt": updatedAt.toIso8601String(),
-        "progreso": progreso,
-        "guardado": guardado,
-        "largo": largo,
-        "index": index,
+        "createdAt": createdAt == null ? null : createdAt.toIso8601String(),
+        "updatedAt": updatedAt == null ? null : updatedAt.toIso8601String(),
+        "index": index == null ? null : index,
+        "progreso": progreso == null ? null : progreso,
+        "guardado": guardado == null ? null : guardado,
     };
 }
+
+
+
+
+// Historiales historialesFromJson(String str) => Historiales.fromJson(json.decode(str));
+
+// String historialesToJson(Historiales data) => json.encode(data.toJson());
+
+// class Historiales {
+//     Historiales({
+//         this.historial,
+//     });
+
+//     List<Historial> historial;
+
+//     factory Historiales.fromJson(Map<String, dynamic> json) => Historiales(
+//         historial: List<Historial>.from(json["historial"].map((x) => Historial.fromJson(x))),
+//     );
+
+//     Map<String, dynamic> toJson() => {
+//         "historial": List<dynamic>.from(historial.map((x) => x.toJson())),
+//     };
+// }
+
+// class Historial {
+//     Historial({
+//         this.prefs,
+//         this.curso,
+//         this.usuario,
+//         this.createdAt,
+//         this.updatedAt,
+//         this.progreso,
+//         this.guardado,
+//         this.largo,
+//         this.index,
+//     });
+
+//     List<dynamic> prefs;
+//     Curso curso;
+//     String usuario;
+//     DateTime createdAt;
+//     DateTime updatedAt;
+//     bool guardado;
+//     dynamic progreso;
+//     int largo;
+//     int index;
+
+//     factory Historial.fromJson(Map<String, dynamic> json) => Historial(
+//         prefs: List<dynamic>.from(json["prefs"].map((x) => x)),
+//         curso: Curso.fromJson(json["curso"]),
+//         usuario: json["usuario"],
+//         createdAt: DateTime.parse(json["createdAt"]),
+//         updatedAt: DateTime.parse(json["updatedAt"]),
+//         progreso: json["progreso"],
+//         guardado: json["guardado"],
+//         largo: json["largo"],
+//         index: json["index"],
+//     );
+
+//     Map<String, dynamic> toJson() => {
+//         "prefs": List<dynamic>.from(prefs.map((x) => x)),
+//         "curso": curso.toJson(),
+//         "usuario": usuario,
+//         "createdAt": createdAt.toIso8601String(),
+//         "updatedAt": updatedAt.toIso8601String(),
+//         "progreso": progreso,
+//         "guardado": guardado,
+//         "largo": largo,
+//         "index": index,
+//     };
+// }

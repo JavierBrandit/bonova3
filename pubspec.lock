@@ -147,7 +147,7 @@ packages:
     source: hosted
     version: "0.3.4"
   flutter_svg:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: flutter_svg
       url: "https://pub.dartlang.org"
@@ -170,13 +170,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_xlider:
-    dependency: "direct main"
-    description:
-      name: flutter_xlider
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.4.0"
   full_screen_image:
     dependency: "direct main"
     description:
@@ -233,13 +226,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.3-nullsafety.3"
-  lite_rolling_switch:
-    dependency: "direct main"
-    description:
-      name: lite_rolling_switch
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.1"
   logging:
     dependency: transitive
     description:
@@ -511,6 +497,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.4+1"
+  websafe_svg:
+    dependency: "direct main"
+    description:
+      name: websafe_svg
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.4+2"
   win32:
     dependency: transitive
     description:

@@ -16,9 +16,9 @@ class MisCursos extends StatefulWidget {
 
 class _MisCursosState extends State<MisCursos> {
   List<Curso> misCursos;
-  List<Historial> historial;
+  List historial;
   SocketService socketService;
-  final RefreshController _refreshController = RefreshController(initialRefresh: true);
+  final RefreshController _refreshController = RefreshController(initialRefresh: false);
 
   ScrollController _scrollController;
   final cursoService = CursoService();
@@ -27,44 +27,82 @@ class _MisCursosState extends State<MisCursos> {
   @override
   void initState() {
     // this.socketService = Provider.of<SocketService>(context, listen: false );
-    // this.socketService.socket.on('historial', _escucharCursos );
+    
+    // // historial != null 
+
+    // // ? 
+    // this.socketService.socket.on('ver-historial', (payload){
+    //   this.historial = ( payload?? '' as List)
+    //       .map( (h) => Historial.fromJson( h ) )
+    //       .toList();
+    //       setState(() {});
+    //   });
+    // : 
+    this.socketService = Provider.of<SocketService>(context, listen: false );
+    // historial != null
+
+    // ? 
+    this.socketService.socket.on('ver-historial', (payload){
+      this.historial = ( payload?? '' as List )
+          .map( (h) => Historial.fromJson( h ) )
+          .toList();
+          // print('payload  '+ payload.toString());
+          setState(() {});
+      });
     this._cargarMisCursos();
-    // _cargarHistorial();
+
     super.initState();
   }
 
-  void _escucharCursos( dynamic payload ) {
-    Historial h = new Historial(
-        curso: payload['curso'],
-        // usuario: ,
-        // guardado: payload['guardado'],
-        // progreso: _position.inSeconds / _duration.inSeconds,
-        // largo: curso.videos.length,
-        // index: 0,
-        // prefs: []
-    );
-    setState(() {
-      historial.insert(0, h);
-    });
-    // message.animationController.forward();
+  @override
+  void dispose() { 
+    this.socketService.socket.off('ver-historial');
+    super.dispose();
   }
 
-  void _cargarHistorial() async {
+  // @override
+  //   void dispose() {
+  //   this.socketService = Provider.of<SocketService>(context, listen: false );
+  //   this.socketService.socket.off('historial');
+  //     // TODO: implement dispose
+  //     super.dispose();
+  //   }
 
-    List<Historial> hists = await this.authService.verHistorial();
+  // void _escucharCursos( dynamic payload ) {
+  //   Historial h = new Historial(
+  //       curso: payload['curso'],
+  //       // usuario: ,
+  //       // guardado: payload['guardado'],
+  //       // progreso: _position.inSeconds / _duration.inSeconds,
+  //       // largo: curso.videos.length,
+  //       // index: 0,
+  //       // prefs: []
+  //   );
+  //   setState(() {
+  //     historial.insert(0, h);
+  //   });
+  //   // message.animationController.forward();
+  // }
 
-    final history = hists.map((m) => Historial(
-      curso: m.curso,
-      progreso: m.progreso,
-    ));
+  // void _cargarHistorial() async {
 
-    setState(() {
-      historial.insertAll(0, history);
-    });
-  }
+  //   List<Historial> hists = await this.authService.verHistorial();
+
+  //   final history = hists.map((m) => Historial(
+  //     curso: m.curso,
+  //     progreso: m.progreso,
+  //   ));
+
+  //   setState(() {
+  //     historial.insertAll(0, history);
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
+
+    socketService = Provider.of<SocketService>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Continuar Viendo', style: TextStyle( letterSpacing: -.5 )),
@@ -78,13 +116,13 @@ class _MisCursosState extends State<MisCursos> {
   _cargarMisCursos() async {
     this.historial = await authService.verHistorial();
     // this.misCursos = historial;
-    // setState((){});
+    setState((){});
   }
 
   Widget _listaCursos() {
     return SmartRefresher(
         controller: _refreshController,
-        enablePullDown: false,
+        enablePullDown: true,
         onRefresh: _actualizar,
         header: WaterDropHeader(
           // complete: CircleAvatar(backgroundColor: Colors.teal[200].withOpacity(.2), radius: 20 ,child: Icon(FluentIcons.checkmark_circle_24_regular, color: Colors.tealAccent[700], )),
@@ -117,7 +155,11 @@ class _MisCursosState extends State<MisCursos> {
     );
   }
   _actualizar() async {
+    this.historial = await authService.verHistorial();
+    setState(() {
+          
+        });
     _refreshController.refreshCompleted();
-    Navigator.pushReplacementNamed(context, 'home');
+    // Navigator.pushReplacementNamed(context, 'home');
   }
 }

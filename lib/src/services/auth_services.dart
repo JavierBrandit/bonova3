@@ -343,7 +343,7 @@ class AuthService with ChangeNotifier{
     final data = {
       'curso': historial.curso,
       'guardado': historial.guardado,
-      'largo': historial.largo,
+      'largo': historial.curso.videos.length,
       'progeso': historial.progreso,
       'prefs': historial.prefs
     };

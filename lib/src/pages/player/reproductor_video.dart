@@ -17,6 +17,7 @@ import 'package:bonova0002/src/services/videos_service.dart';
 
 import 'package:bonova0002/src/models/video_modelo.dart';
 import 'package:video_player/video_player.dart';
+import 'package:websafe_svg/websafe_svg.dart';
 
 import 'list_videos.dart';
 
@@ -41,11 +42,12 @@ class _PlayPageState extends State<PlayPage> {
   Curso get _curso {
     return widget.curso;
   }
-  // Historial get _historial {
-  //   return widget.historial;
-  // }
+  Historial get _historial {
+    return widget.historial;
+  }
 
-  VideoService videoService;
+  // VideoService videoService;
+  CursoService cursoService;
   
   var _playingIndex = -1;
   var _disposed = false;
@@ -61,14 +63,14 @@ class _PlayPageState extends State<PlayPage> {
 
   SocketService socketService;
   AuthService auth;
-  bool guardado;
+  var guardado = false;
 
   var _playing = false;
   bool get _isPlaying {
     return _playing;
   }
 
-  Historial historial;
+  // Historial historial;
 
   set _isPlaying(bool value) {
     _playing = value;
@@ -123,21 +125,23 @@ class _PlayPageState extends State<PlayPage> {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
     // final curso = _curso;
     // final historial = _historial;
-    
-    // historial = Historial(
-    //   curso: curso.cid,
-    //   guardado: false,
-    //   // progreso: _position.inSeconds / _duration.inSeconds,
-    //   largo: curso.videos.length,
-    //   index: currentIndex,
-    //   prefs: []
 
-    // );
-    // _verGuardados();
     // this.socketService = Provider.of<SocketService>(context, listen: false );
-    // this.socketService.socket.on('historial', _escucharHistorial );
+    // this.socketService.socket.on('historial', (payload){
+    //   _historial = Historial(
+    //     usuario: payload['usuario'],
+    //     curso: payload['usuario'],
+    //     progreso: payload['usuario'],
+    //     index: payload['usuario']
+    //   );
+    //       setState(() {});
+    //   // print('payload ' + payload.toString());
+    // });
+
+    this.cursoService = Provider.of<CursoService>(context, listen: false );
     
-    _initializeAndPlay(0);
+    _initializeAndPlay( _historial.index!= null?  _historial.index  :0 );
+    cursoService.setDisposed(false);
     super.initState();
   }
 
@@ -183,6 +187,10 @@ class _PlayPageState extends State<PlayPage> {
   }
 
   void _initializeAndPlay(int index) async {
+
+    // final duration = _controller?.value?.duration ?? 0;
+    // final progresx = _historial?.progreso ?? 0;
+    // final posicion = Duration( seconds: (progresx * duration) .toInt() );
     // _historial.index = index;
     print("_initializeAndPlay ---------> $index");
     final clip = _clips[index];
@@ -209,6 +217,7 @@ class _PlayPageState extends State<PlayPage> {
         _position = null;
         controller.addListener(_onControllerUpdated);
         controller.play();
+        // controller.seekTo(posicion);
         setState(() {});
       });
   }
@@ -290,36 +299,43 @@ class _PlayPageState extends State<PlayPage> {
   @override
   Widget build(BuildContext context) {
 
-    // videoService = Provider.of<VideoService>(context, listen: false);
+    cursoService = Provider.of<CursoService>(context);
     // final curso = videoService.getCurso();
     final Size pantalla = MediaQuery.of(context).size;
 
-    return Scaffold(
-      backgroundColor: _isFullScreen? BonovaColors.azulNoche[900] : null,
-      appBar: _isFullScreen? null
-          : AppBar(
-              toolbarHeight: 40,
-              elevation: 0.0,
-              title: Text('${_curso.titulo}  ·  ${_curso.nivel}º medio', style: TextStyle( fontSize: 19, letterSpacing: -1, fontWeight: FontWeight.w400 ))              
-            ),
-      body: _isFullScreen
-          ? Center(
-            child: Container(
-              child: Expanded(child: _playView(context)),
-              // height: double.infinity,
-              // width: double.infinity,
-              color: BonovaColors.azulNoche[900],
-            ),
-          )
-          : Column(children: <Widget>[
-              Container(
-                child: Center(child: _playView(context)),
-                // decoration: BoxDecoration(color: Colors.black),
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: _isFullScreen? BonovaColors.azulNoche[900] : null,
+        // appBar: _isFullScreen? null
+        //     : AppBar(
+        //         toolbarHeight: 40,
+        //         elevation: 0.0,
+        //         title: Text('${_curso.titulo}  ·  ${_curso.nivel}º medio', style: TextStyle( fontSize: 19, letterSpacing: -1, fontWeight: FontWeight.w400 ))              
+        //       ),
+        body: _isFullScreen || MediaQuery.of(context).orientation == Orientation.landscape
+            ? Center(
+              child: Container(
+                child: Expanded(child: _playView(context)),
+                // height: double.infinity,
+                // width: double.infinity,
+                color: BonovaColors.azulNoche[900],
               ),
-              Expanded(
-                child: metodo(_curso) //ListVideos(clips: _clips),
-              ),
-            ]),
+            )
+            : Column(children: <Widget>[
+                // Container(
+                //   child:
+                  //  Hero(
+                  //    tag: 'player',
+                  //    child: 
+                     Center(child: _playView(context)),
+                  //  ),
+                  // decoration: BoxDecoration(color: Colors.black),
+                // ),
+                Expanded(
+                  child: metodo(_curso) //ListVideos(clips: _clips),
+                ),
+              ]),
+      ),
     );
   }
 
@@ -362,10 +378,11 @@ class _PlayPageState extends State<PlayPage> {
   }
 
   Widget _controlView(BuildContext context) {
-    return Container(
-      // width: double.infinity,
-      color: Colors.black26,
-      child: Expanded(
+    return Hero(
+      tag: 'player',
+      child: Container(
+        // width: double.infinity,
+        color: Colors.black26,
         child: Column(
           children: [
             _topUI(),
@@ -375,6 +392,7 @@ class _PlayPageState extends State<PlayPage> {
             _bottomUI(),
             // _bottomUI2(),
           ],
+
         ),
       ),
     );
@@ -424,7 +442,7 @@ class _PlayPageState extends State<PlayPage> {
           },
           child: _isPlaying 
           ? Icon( FluentIcons.pause_20_filled, size: 40, color: Colors.white )
-          : Container(height: 35, width: 35, child: SvgPicture.asset('assets/bvPlay.svg', fit: BoxFit.contain, alignment: Alignment.center, color: Colors.white)),
+          : Container(height: 35, width: 35, child: WebsafeSvg.asset('assets/bvPlay.svg', fit: BoxFit.contain, alignment: Alignment.center, color: Colors.white)),
         ),
         FlatButton(
           padding: EdgeInsets.all(10),
@@ -480,8 +498,16 @@ class _PlayPageState extends State<PlayPage> {
     ];
 
     return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
+
+        IconButton(
+          icon: Icon( FluentIcons.chevron_down_12_regular, color: Colors.white,), 
+          onPressed: (){
+          //  cursoService.setReproduciendo(false);
+           Navigator.pop(context);
+          }
+        ),
         
         PopupMenuButton(
             color: isDarkTheme? Colors.blueGrey[900].withOpacity(.55) : Colors.white.withOpacity(.85),
@@ -530,7 +556,7 @@ class _PlayPageState extends State<PlayPage> {
   Widget _bottomUI() {
 
     final authService = Provider.of<AuthService>(context, listen: false);
-    socketService = Provider.of<SocketService>(context, listen: false);
+    final socketService = Provider.of<SocketService>(context, listen: false);
 
     final duration = _duration?.inSeconds ?? 0;
     final durationMin = _duration.inMinutes ?? 0;
@@ -655,7 +681,7 @@ class _PlayPageState extends State<PlayPage> {
   Widget metodo(Curso curso){
 
     return DefaultTabController(
-      length: 3,
+      length: 2,
       child: Scaffold(
         appBar: AppBar(
           toolbarHeight: 107,
@@ -670,24 +696,29 @@ class _PlayPageState extends State<PlayPage> {
                 SizedBox(height: 3),
                 Text(_playingIndex==-1
                   ? ''
-                  : 'Clase '+(_playingIndex+1).toString()+':  '+ curso.videos[_playingIndex].titulo, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, letterSpacing: -.2)),
+                  : curso.titulo, style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500, letterSpacing: -.2)),
                 SizedBox(height: 3),
-                Text(curso.profesor, style: TextStyle(fontSize: 11, fontWeight: FontWeight.w400, letterSpacing: -.2)),
+                Text(_playingIndex==-1
+                  ? ''
+                  : 'Clase '+(_playingIndex+1).toString()+':  '+ curso.videos[_playingIndex].titulo, style: TextStyle(fontSize: 11, fontWeight: FontWeight.w500, letterSpacing: -.2)),
+                SizedBox(height: 3),
+                // Text(curso.profesor.nombre, style: TextStyle(fontSize: 11, fontWeight: FontWeight.w400, letterSpacing: -.2)),
               ],
             ),
           ),
-          // actions: [
-          //   SizedBox(width: 40),
-          //   Expanded(child: botonReaccion(Icon(FluentIcons.bookmark_24_regular), (){}, 'Guardar')),        
-          //   Expanded(child: botonReaccion(Icon(FluentIcons.share_android_24_regular), (){}, 'Compartir')),       
-          //   Expanded(child: botonReaccion(Icon(FluentIcons.more_horizontal_24_filled),(){}, 'Opciones')),
-          //   SizedBox(width: 40),
-          // ],
+          actions: [
+            IconButton(
+              icon: Icon(FluentIcons.more_vertical_16_regular), 
+              onPressed: (){
+                menuMore();
+              },
+            )
+          ],
           bottom: TabBar(
             tabs: [
               Tab(text: 'clases'),
-              Tab(text: 'documentos'),
               Tab(text: 'informacion'),
+              // Tab(text: 'documentos'),
             ]),
           
           ),
@@ -696,7 +727,7 @@ class _PlayPageState extends State<PlayPage> {
           children: [
             pageBody(0),
             pageBody(1),
-            pageBody(2),
+            // pageBody(2),
           ],
         ),
         // PageView.builder(
@@ -736,8 +767,8 @@ class _PlayPageState extends State<PlayPage> {
     );
   }
   pageBody(int i){
-    videoService = Provider.of<VideoService>(context);
-    final curso = videoService.getCurso();
+    cursoService = Provider.of<CursoService>(context, listen: false);
+    final historial = cursoService.getHistorial();
     return CustomScrollView(
           slivers: [
             // i==0 ? 
@@ -774,9 +805,9 @@ class _PlayPageState extends State<PlayPage> {
                 if (i == 0)
                 _tabList(),
                 if (i == 1)
-                _tabSocial(curso),
-                if (i == 2)
-                _tabInfo(curso),
+                _tabSocial(historial.curso),
+                // if (i == 2)
+                // _tabInfo(historial.curso),
                 // Container(
                 //   height: 800,
                 //   width: 2,
@@ -804,41 +835,50 @@ class _PlayPageState extends State<PlayPage> {
         children: [
           Padding(
             padding: EdgeInsets.only(top:15, bottom: 12),
-            child: Text('Acerca del profesor', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, letterSpacing: -.4)),
+            child: Text('Acerca del profesor', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, letterSpacing: -.4)),
           ),
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CircleAvatar(
                   radius: 35,
+                  backgroundImage: NetworkImage(curso.profesor.foto),
                 ),
-              SizedBox(width: 10),
+              SizedBox(width: 20),
               Column( 
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                Text(curso.profesor, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500, letterSpacing: -.4)),
-                SizedBox(height: 4),
-                Text('5', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w500, letterSpacing: -.4)),
+
+                SizedBox(height: 10),
+                Text(curso.profesor.nombre, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500, letterSpacing: -.3)),
+                SizedBox(height: 5),
+                Text('"'+curso.profesor.descripcion+'"', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w400, letterSpacing: -.2)),
+                SizedBox(height: 8),
+                Text('Contactar', style: TextStyle(color: Colors.tealAccent[700], fontSize: 12, fontWeight: FontWeight.w600, letterSpacing: -.4)),
 
               ])
             ],
           ),
+          SizedBox( height: 20),
           Padding(
             padding: EdgeInsets.only(top:15, bottom: 12),
-            child: Text('Valoración del curso', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, letterSpacing: -.4)),
+            child: Text('Valoración del curso', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, letterSpacing: -.4)),
           ),
-          Text('5.0', style: TextStyle(fontSize: 35
+          Text('4.8 /5', style: TextStyle(fontSize: 35, fontWeight: FontWeight.w300
           
           ),),
           
+          SizedBox( height: 20),
+          
           Padding(
             padding: EdgeInsets.only(top:15, bottom: 12),
-            child: Text('¿Qué encontrarás en este curso?', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, letterSpacing: -.4)),
+            child: Text('¿Qué encontrarás en este curso?', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, letterSpacing: -.4)),
           ),
-          listTileInfo('Dificultad', Icons.bar_chart, 'baja'),
-          listTileInfo('Duración total', Icons.bar_chart, 'baja'),
-          listTileInfo('Estudiantes', Icons.bar_chart, 'baja'),
-          listTileInfo('Audio', Icons.bar_chart, 'baja'),
-          listTileInfo('Ultima Actualización', Icons.bar_chart, 'baja'),
+          listTileInfo('Dificultad', FluentIcons.data_line_24_regular, 'baja'),
+          listTileInfo('Duración total', FluentIcons.timer_16_regular, '2 h 41 min' ),
+          listTileInfo('Estudiantes', FluentIcons.hat_graduation_16_regular, '27k'),
+          listTileInfo('Audio', FluentIcons.speaker_2_16_regular, 'español'),
+          listTileInfo('Ultima Actualización', FluentIcons.calendar_ltr_24_regular, curso.updatedAt.day.toString() +' - '+ curso.updatedAt.month.toString() +' - '+ curso.updatedAt.year.toString()  )
 
           
 
@@ -846,9 +886,50 @@ class _PlayPageState extends State<PlayPage> {
       ),
     );
   }
+
+  menuMore(){
+    var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
+    final names = [
+      'Consultar al profesor',
+      'Conectar',
+      'Compartir',
+      'Calificar',
+      'Cómo podemos ayudarte'
+    ];
+
+    final icons = [
+      FluentIcons.chat_16_regular,
+      FluentIcons.person_add_24_regular,
+      FluentIcons.arrow_reply_16_regular,
+      FluentIcons.star_16_regular,
+      FluentIcons.chat_help_24_regular,
+
+    ];
+
+
+    showModalBottomSheet(
+      backgroundColor: isDarkTheme? BonovaColors.azulNoche[800] : Colors.blueGrey[50],
+      context: context, 
+      builder: (_){
+        return ListView.builder(
+          padding: EdgeInsets.only( top: 20, left: 5),
+          itemCount: names.length,
+          itemBuilder: (_,i){
+            return ListTile(
+              // contentPadding: EdgeInsets.only( left: 10),
+              title: Text(names[i], style: TextStyle( fontWeight: FontWeight.w500 ),),
+              leading: Icon(icons[i], color: isDarkTheme? Colors.grey[50] : Colors.grey[900]),
+            );
+          },
+        );
+      }
+    );
+  }
+
   _tabInfo(Curso curso) {
-    final auth = Provider.of<AuthService>(context);
-    // this.socketService = Provider.of<SocketService>(context);
+    final auth = Provider.of<AuthService>(context, listen: false);
+    this.socketService = Provider.of<SocketService>(context, listen: false);
+    final cursoService = Provider.of<CursoService>(context);
     final usuario = auth.usuario;
     // final historial = new Historial(
     //     curso: curso.cid,
@@ -859,26 +940,53 @@ class _PlayPageState extends State<PlayPage> {
     // var guardado = auth.getGuardado(usuario, _curso);
     // final gg = auth.getGg();
 
+    guardado = _historial?.guardado?? false;
+
     return Column(
       children: [
 
         (guardado == null)
           ? CircularProgressIndicator()
-          : Center(child: IconButton(
-          icon: Icon( guardado ? FluentIcons.bookmark_16_filled : FluentIcons.bookmark_16_regular),
-          onPressed: () async {
+          : 
+          Center(child: IconButton(
+          icon: 
+          // _historial.guardado != null 
+          //   ? 
+          //   guardado? Icon( FluentIcons.bookmark_16_filled) : Icon( FluentIcons.bookmark_16_regular)
+          //   : 
+            cursoService.getGuardado()? Icon( FluentIcons.bookmark_16_filled) : Icon( FluentIcons.bookmark_16_regular),
+          
+          onPressed: () {
+
+            print('onTap');
+            if (guardado == true) {
+              
+              cursoService.setGuardado(false);
+              socketService.emit('historial', {
+                'curso': curso.cid,
+                'usuario': usuario.uid,
+                'guardado': false
+              });
+              setState(() {});
+              
+            } else {
+
+              cursoService.setGuardado(true);
+              socketService.emit('historial', {
+                'curso': curso.cid,
+                'usuario': usuario.uid,
+                'guardado': true
+              });
+
+              setState(() {});
+
+            }
             
-            // socketService.emit('historial', {
-            //   'curso': curso.cid,
-            //   // 'usuario': usuario.uid,
-            //   'progreso': _controller.value.position.inSeconds / _controller.value.duration.inSeconds
-            // });
 
             // if (curso.guardado || guardado) {
             //   await auth.borrarGuardado(context, curso);
-            //   final gg = auth.setGuardado(false, curso);
+              // final gg = auth.setGuardado(false, curso);
 
-            //   setState(() {});
             //   return gg;
 
             // } else {
@@ -999,12 +1107,12 @@ class _PlayPageState extends State<PlayPage> {
 
     if (playing) {
       return isDarkTheme
-      ? Colors.blueGrey[900].withOpacity(0.5)
-      : Colors.tealAccent.withOpacity(.1);
+      ? Colors.blueGrey[900].withOpacity(.5)
+      : Colors.blueGrey[50].withOpacity(.3);
     } else {
       return isDarkTheme
       ? BonovaColors.azulNoche[800]
-      : Colors.grey[100];
+      : Colors.grey[50];
     }
 
   }

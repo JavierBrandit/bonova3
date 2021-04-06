@@ -1,4 +1,5 @@
 import 'package:bonova0002/src/models/curso_modelo.dart';
+import 'package:bonova0002/src/models/historial.dart';
 import 'package:bonova0002/src/widgets/carrusel_horizontal.dart';
 import 'package:bonova0002/src/widgets/header_titulo.dart';
 import 'package:flutter/material.dart';
@@ -16,19 +17,19 @@ class _RamoPageState extends State<RamoPage> {
   ScrollController _scrollController;
   CursoService cursoService;
   String ramo;
-  List<Curso> cursos1 = [];
-  List<Curso> cursos2 = [];
-  List<Curso> cursos3 = [];
-  List<Curso> cursos4 = [];
+  List<Historial> cursos1 = [];
+  List<Historial> cursos2 = [];
+  List<Historial> cursos3 = [];
+  List<Historial> cursos4 = [];
 
   @override
     void initState() { 
       super.initState();
       this.cursoService = Provider.of<CursoService>(context, listen: false);
-      this._cargarPrimero(cursoService.ramo, '1');
-      this._cargarSegundo(cursoService.ramo, '2');
-      this._cargarTercero(cursoService.ramo, '3');
-      this._cargarCuarto( cursoService.ramo, '4');
+      this._cargarPrimero(cursoService.ramo);
+      // this._cargarSegundo(cursoService.ramo, '2');
+      // this._cargarTercero(cursoService.ramo, '3');
+      // this._cargarCuarto( cursoService.ramo, '4');
     }
     
   @override
@@ -43,8 +44,9 @@ class _RamoPageState extends State<RamoPage> {
         slivers: <Widget>[
           _switchAppBar(ramo),
           SliverToBoxAdapter( child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              SizedBox( height: 17),
+              SizedBox( height: 30),
               HeaderTitulo(titulo: 'Primero Medio', paginaDestino: '',),
               _listaNivel(cursos1),
               HeaderTitulo(titulo: 'Segundo Medio', paginaDestino: '',),
@@ -84,7 +86,7 @@ class _RamoPageState extends State<RamoPage> {
         elevation: 0.0,
         collapsedHeight: 57,
         //backgroundColor: Colors.white,
-        expandedHeight: 65,
+        expandedHeight: 66,
         //snap: true,
         floating: true,
         pinned: true,
@@ -97,33 +99,37 @@ class _RamoPageState extends State<RamoPage> {
         );
 }
   
-  _cargarPrimero( String ramox, String nivelx ) async {
-    this.cursos1 = await cursoService.getCursos(ramox, nivelx);
+  _cargarPrimero(String ramo) async {
+    final cursosA = await cursoService.getAllCursos();
+    this.cursos1 = cursosA.where((historial) => historial.curso.ramo == ramo && historial.curso.nivel == '1').toList();
+    this.cursos2 = cursosA.where((historial) => historial.curso.ramo == ramo && historial.curso.nivel == '2').toList();
+    this.cursos3 = cursosA.where((historial) => historial.curso.ramo == ramo && historial.curso.nivel == '3').toList();
+    this.cursos4 = cursosA.where((historial) => historial.curso.ramo == ramo && historial.curso.nivel == '4').toList();
     setState((){});
   }
-  _cargarSegundo( String ramox, String nivelx ) async {
-    this.cursos2 = await cursoService.getCursos(ramox, nivelx);
-    setState((){});
-  }
-  _cargarTercero( String ramox, String nivelx ) async {
-    this.cursos3 = await cursoService.getCursos(ramox, nivelx);
-    setState((){});
-  }
-  _cargarCuarto(  String ramox, String nivelx ) async {
-    this.cursos4 = await cursoService.getCursos(ramox, nivelx);
-    setState((){});
-  }
+  // _cargarSegundo( String ramox, String nivelx ) async {
+  //   // this.cursos2 = await cursoService.getCursos(ramox, nivelx);
+  //   setState((){});
+  // }
+  // _cargarTercero( String ramox, String nivelx ) async {
+  //   // this.cursos3 = await cursoService.getCursos(ramox, nivelx);
+  //   setState((){});
+  // }
+  // _cargarCuarto(  String ramox, String nivelx ) async {
+  //   // this.cursos4 = await cursoService.getCursos(ramox, nivelx);
+  //   setState((){});
+  // }
 
-  Widget _listaNivel( List<Curso> cursosx ) {
+  Widget _listaNivel( List<Historial> cursosx ) {
     return Container(
-      height: 270,
+      height: 275,
       child: ListView.builder(
-        padding: EdgeInsets.only(left: 13),
+        padding: EdgeInsets.only(left: 25),
         physics: BouncingScrollPhysics(),
         scrollDirection: Axis.horizontal,
         shrinkWrap: true,
         // pageSnapping: false,
-        itemBuilder: (_, i) => carruselHorizontal(context, cursosx[i]),
+        itemBuilder: (_, i) => carruselHorizontal(context, cursosx.reversed.toList()[i]),
         itemCount: cursosx.length,
         controller: _scrollController,
       //   controller: PageController(

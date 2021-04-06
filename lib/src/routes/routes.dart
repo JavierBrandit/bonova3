@@ -32,7 +32,7 @@ final Map<String, Widget Function(BuildContext)> appRoutes = {
         'register'      : (_) => RegisterPage(),
         'home'          : (_) => HomePage(),
   // Explore      
-        'explore'       : (_) => ExplorePage(),
+        // 'explore'       : (_) => ExplorePage(),
   // Usuario      
         'user'          : (_) => UserPage(),
         'perfil'        : (_) => PerfilPage(),
@@ -56,7 +56,7 @@ final Map<String, Widget Function(BuildContext)> appRoutes = {
   // Inicio      
         'inicio'        : (_) => InicioPage(),
         'ramo'          : (_) => RamoPage(),
-        'curso'         : (_) => CursoPage(),
+        // 'curso'         : (_) => CursoPage(),
         'usuarios-chat' : (_) => UsuariosChatPage(),
         'chat'          : (_) => ChatPage(),
 

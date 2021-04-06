@@ -15,7 +15,11 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = new PreferenciasUsuario();
   await prefs.initPrefs();
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle( statusBarColor: Colors.transparent ));
+  // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+  //   statusBarColor: Colors.transparent,
+  //   systemNavigationBarColor: prefs.colorSecundario? BonovaColors.azulNoche[800] :Colors.grey[50],
+  //   systemNavigationBarDividerColor: prefs.colorSecundario? BonovaColors.azulNoche[800] :Colors.grey[50],
+  //   ));
   runApp(MyApp());
 }
 
@@ -39,7 +43,14 @@ class AppWithTheme extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    // var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
+
     final tema = Provider.of<ThemeChanger>(context);
+    //   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    //       systemNavigationBarColor: isDarkTheme? BonovaColors.azulNoche[800] :Colors.grey[50],
+    //       systemNavigationBarDividerColor: isDarkTheme? BonovaColors.azulNoche[800] :Colors.grey[50],
+    //       s
+    // ));
 
     return MultiProvider(
       providers: [

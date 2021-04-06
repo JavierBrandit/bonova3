@@ -1,4 +1,5 @@
 import 'package:bonova0002/src/models/curso_modelo.dart';
+import 'package:bonova0002/src/models/historial.dart';
 import 'package:bonova0002/src/models/usuario.dart';
 import 'package:bonova0002/src/services/auth_services.dart';
 import 'package:bonova0002/src/services/chat_service.dart';
@@ -9,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:websafe_svg/websafe_svg.dart';
  
 class PerfilPage extends StatefulWidget {
 
@@ -19,7 +21,7 @@ class PerfilPage extends StatefulWidget {
 class _PerfilPageState extends State<PerfilPage> {
   Usuario usuario;
   ScrollController _scrollController;
-  List<Curso> misCursos = [];
+  List<Historial> misCursos = [];
   final cursoService = CursoService();
   final auth = AuthService();
   final RefreshController _refreshController = RefreshController(initialRefresh: false);
@@ -49,7 +51,7 @@ class _PerfilPageState extends State<PerfilPage> {
           Padding(
             padding: const EdgeInsets.only(bottom:5, right: 10),
             child: IconButton(
-              icon: SvgPicture.asset('assets/sendd.svg', height: 21, width: 21, color: isDarkTheme? Colors.tealAccent : Colors.teal[700],),
+              icon: WebsafeSvg.asset('assets/sendd.svg', height: 21, width: 21, color: isDarkTheme? Colors.tealAccent : Colors.teal[700],),
               onPressed: () {                
                 chatService.usuarioPara = usuario;
                 Navigator.pushNamed(context, 'chat');
@@ -113,7 +115,7 @@ class _PerfilPageState extends State<PerfilPage> {
                       padding: EdgeInsets.symmetric(horizontal: 4),
                       child:
                        usuario.profesor
-                        ? Container(height: 19, width: 19, child: SvgPicture.asset('assets/manzana.svg', color: Colors.redAccent.withOpacity(.8)))
+                        ? Container(height: 19, width: 19, child: WebsafeSvg.asset('assets/manzana.svg', color: Colors.redAccent.withOpacity(.8)))
                         : Icon(FluentIcons.hat_graduation_24_regular, size: 19, color: Colors.teal)),
 
                     Text(usuario.profesor? 'Profesor' :'Alumno' , 

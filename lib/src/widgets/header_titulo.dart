@@ -21,15 +21,20 @@ class HeaderTitulo extends StatelessWidget {
 
     return GestureDetector(
       child: Container(
+        decoration: BoxDecoration( border: Border(
+                                              bottom: BorderSide(width: .07, color: Colors.grey[500]),
+                                              // top: BorderSide(width: .05, color: Colors.white ),
+                                               ),
         // color: isDarkTheme? BonovaColors.azulNoche[900].withOpacity(0.25) : Colors.white,
-        padding: EdgeInsets.symmetric(horizontal:25),
+        ),
+        padding: EdgeInsets.only(right: 25, left: 25, bottom: 12),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             
-            Text(titulo,
-              style: TextStyle(fontSize: 13.5,
-                fontWeight: FontWeight.w500, letterSpacing: -.2,
+            Text( titulo,
+                  style: TextStyle(fontSize: 15,
+                                  fontWeight: FontWeight.w500, letterSpacing: 0,
                 // color: isDarkTheme? Colors.white : Colors.grey[850]
             )),
             Icon(FluentIcons.chevron_right_24_regular, size: 17,),

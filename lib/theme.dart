@@ -23,7 +23,7 @@ class AppTheme {
       fontFamily: 'MontserratAlternates',
 
       bottomNavigationBarTheme: BottomNavigationBarThemeData( 
-        backgroundColor: Colors.grey[50], selectedItemColor: Colors.teal[600], unselectedItemColor: Colors.grey[800],
+        backgroundColor: Colors.grey[50], selectedItemColor: Colors.teal[700], unselectedItemColor: Colors.grey[800],
         type: BottomNavigationBarType.fixed ),
       // pageTransitionsTheme: PageTransitionsTheme(builders: )
       );
@@ -34,6 +34,8 @@ class AppTheme {
       // ),
 
   ThemeData get darkTheme => ThemeData(
+
+      
         
       primarySwatch: Colors.teal,
       scaffoldBackgroundColor: BonovaColors.azulNoche[800],
@@ -55,7 +57,7 @@ class AppTheme {
 
       backgroundColor: Colors.green,
       dialogBackgroundColor: Colors.green,
-      bottomNavigationBarTheme: BottomNavigationBarThemeData( unselectedItemColor: Colors.teal[50], selectedItemColor: Colors.teal[300],
+      bottomNavigationBarTheme: BottomNavigationBarThemeData( unselectedItemColor: Colors.teal[50], selectedItemColor: Colors.tealAccent,
         backgroundColor: BonovaColors.azulNoche[800], type: BottomNavigationBarType.fixed )
 
 
