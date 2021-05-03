@@ -17,7 +17,7 @@ class BtnAzul extends StatelessWidget {
     return RaisedButton(
        elevation: 0.0,
        highlightElevation: 5,
-       color: isDarkTheme ? Colors.teal[800] : Colors.tealAccent[400],
+       color: isDarkTheme ? Colors.teal[800] : Colors.teal[400],
        shape: StadiumBorder(),
        onPressed: 
           this.callBack

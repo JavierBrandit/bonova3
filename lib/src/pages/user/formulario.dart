@@ -35,7 +35,6 @@ class _FormularioState extends State<Formulario> {
     final usuario = authService.usuario;
 
     return Scaffold(
-      // backgroundColor: Colors.grey[100],
       appBar: AppBar(
         title: Text('Editar Información', style: TextStyle( fontSize: 22, letterSpacing: -0.7, fontWeight: FontWeight.w400 )),
         elevation: 0,
@@ -63,16 +62,9 @@ class _FormularioState extends State<Formulario> {
                       )),
                     ],
                   ),
-                  // nombre('Nombre'),
-                  // input(usuario.nombre, FluentIcons.text_font_16_regular, TextInputType.name, nameCtrl),
-                  // nombre('Cumpleaños'),
-                  // input('', FluentIcons.food_cake_20_regular, TextInputType.datetime, TextEditingController()),
-                  // nombre('Curso'),
-                  // input('', FluentIcons.backpack_20_regular, TextInputType.number, cursoCtrl),
-                  // nombre('Colegio'),
-                  // input('', FluentIcons.hat_graduation_20_regular, TextInputType.name, colegioCtrl),
 
                   formulario(usuario),
+                  
                   Padding(
                     padding: EdgeInsets.all(20),
                     child: RaisedButton(
@@ -88,11 +80,11 @@ class _FormularioState extends State<Formulario> {
                           }
                           if (colegioCtrl.text != ''.trim() && colegioCtrl.text != null ){
                             print("Colegio ${colegioCtrl.text}");
-                            await authService.editarColegio(context, colegioCtrl.text);               
+                            // await authService.editarColegio(context, colegioCtrl.text);               
                           }
                           if (cursoCtrl.text != ''.trim() && cursoCtrl.text != null ){
                             print("Curso ${cursoCtrl.text}");
-                            await authService.editarCurso(context, cursoCtrl.text);               
+                            // await authService.editarCurso(context, cursoCtrl.text);               
                           }
                           Navigator.pushReplacementNamed(context, 'home');
                           // // print("Telefono ${mobileCtrl.text}");

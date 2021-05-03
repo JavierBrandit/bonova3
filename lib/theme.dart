@@ -7,7 +7,7 @@ class AppTheme {
       primarySwatch: Colors.teal,
       scaffoldBackgroundColor: Colors.grey[50],
       brightness: Brightness.light,
-      sliderTheme: SliderThemeData(trackHeight: 1.7, activeTrackColor: Colors.teal[400], thumbColor: Colors.white, minThumbSeparation: 0  ),
+      sliderTheme: SliderThemeData(trackHeight: 5, activeTrackColor: Colors.white.withOpacity(.9), inactiveTrackColor: Colors.white10, thumbColor: Colors.grey[50] ),
 
       appBarTheme: AppBarTheme( brightness: Brightness.light, color: Colors.grey[50], elevation: 0 ),
       inputDecorationTheme: InputDecorationTheme(
@@ -40,7 +40,7 @@ class AppTheme {
       primarySwatch: Colors.teal,
       scaffoldBackgroundColor: BonovaColors.azulNoche[800],
       brightness: Brightness.dark,
-      sliderTheme: SliderThemeData(trackHeight: 1.7, activeTrackColor: Colors.teal[400], thumbColor: Colors.white ),
+      sliderTheme: SliderThemeData(trackHeight: 5, activeTrackColor: Colors.white.withOpacity(.9), inactiveTrackColor: Colors.white10, thumbColor: Colors.grey[50] ),
 
       appBarTheme: AppBarTheme( brightness: Brightness.dark, color: BonovaColors.azulNoche[800], elevation: 0 ),
       inputDecorationTheme: InputDecorationTheme(

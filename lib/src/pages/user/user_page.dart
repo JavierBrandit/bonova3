@@ -67,18 +67,22 @@ class _UserPageState extends State<UserPage> {
 
           ]),
 
-          SizedBox( height: 50 ),
+          SizedBox( height: 20 ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10 ),
+            child: Divider(),
+          ),
 
           tiraDiaNoche(),
           
           // Divider( color: Colors.transparent, height: 8),
-          tira( 'Configuracion', Icon( FluentIcons.settings_24_regular, color: isDarkTheme? Colors.blue[700] : Colors.blue[300]), 'config' ),
+          tira( 'Configuracion', Icon( FluentIcons.settings_24_regular, color: isDarkTheme? Colors.blue[300] : Colors.blue[600], size: 25 ), 'config' ),
           // Divider( color: Colors.transparent, height: 8),
-          tira( 'Biblioteca', Icon( FluentIcons.bookmark_16_regular, color: isDarkTheme? Colors.yellow[700] : Colors.yellow[600]), 'biblioteca'),
+          tira( 'Biblioteca', Icon( FluentIcons.bookmark_24_regular, color: isDarkTheme? Colors.yellow[300] : Colors.yellow[700], size: 25), 'biblioteca'),
           // Divider( color: Colors.transparent, height: 8),
-          tira( 'Actividad', Icon( FluentIcons.alert_16_regular, color: isDarkTheme? Colors.red[700] : Colors.redAccent[100]), 'actividad'),
+          tira( 'Actividad', Icon( FluentIcons.alert_24_regular, color: isDarkTheme? Colors.red[300] : Colors.redAccent[700], size: 25), 'actividad'),
           // Divider( color: Colors.transparent, height: 8),
-          tira( 'Ayuda', Icon( FluentIcons.chat_help_24_regular, color: isDarkTheme? Colors.grey[500] : Colors.grey[400]), 'ayuda'),
+          tira( 'Ayuda', Icon( FluentIcons.chat_help_24_regular, color: isDarkTheme? Colors.grey[300] : Colors.grey[600], size: 25), 'ayuda'),
           // Divider( color: Colors.transparent, height: 8),
           
 
@@ -126,8 +130,8 @@ class _UserPageState extends State<UserPage> {
             width: size.width * 0.55,
             // height: 160,
             decoration: BoxDecoration( 
-                border: Border.all( width: .3, color: isDarkTheme? Colors.grey[800] : Colors.grey[300] ),
-                // color: isDarkTheme? BonovaColors.azulNoche[700] : Colors.white,
+                border: Border.all( width: .3, color: isDarkTheme? Colors.transparent : Colors.grey[300] ),
+                color: isDarkTheme? Colors.blueGrey[900].withOpacity(.6) : Colors.blueGrey[50].withOpacity(.6),
                 borderRadius: BorderRadius.circular(15)
             ),
             padding: EdgeInsets.all(20),
@@ -191,27 +195,28 @@ class _UserPageState extends State<UserPage> {
 
     return GestureDetector(
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 29),
+        padding: EdgeInsets.symmetric(horizontal: 25),
         // color: isDarkTheme? BonovaColors.azulNoche[750] : Colors.white,
         height: 60,
         child: Row(
           children: [
 
             FlutterSwitch(        
-              width: 45,
-              height: 33,
+              width: 50,
+              height: 35,
               valueFontSize: 25.0,
-              toggleSize: 25.0,
+              toggleSize: 29.0,
               value: isDarkTheme,
               borderRadius: 30.0,
+              switchBorder: Border.all( width: .3, color: isDarkTheme? Colors.transparent : Colors.blueGrey[100]),
               padding: 4,
               
-              activeIcon: Icon(FluentIcons.weather_moon_16_regular, color: Colors.teal[50]),
-              activeColor: Colors.black26,
+              activeIcon: Icon(FluentIcons.weather_moon_16_regular, color: Colors.teal[50], size: 28,),
+              activeColor: Colors.blueGrey[900].withOpacity(.8),
               activeToggleColor: Colors.transparent,
 
-              inactiveIcon: Icon(FluentIcons.weather_sunny_24_regular, color: Colors.tealAccent[700], size: 28,),
-              inactiveColor: Colors.grey[100],
+              inactiveIcon: Icon(FluentIcons.weather_sunny_24_regular, color: Colors.teal[600], size: 28,),
+              inactiveColor: Colors.blueGrey[50],
               inactiveToggleColor: Colors.transparent,
 
               onToggle: (val) {

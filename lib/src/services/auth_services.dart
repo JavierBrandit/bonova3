@@ -28,22 +28,6 @@ class AuthService with ChangeNotifier{
   }
   
   bool getGg() => guardado;
-  
-  // bool setGuardado( bool b, Curso curso) {
-  //   curso.guardado = b;
-  // }
-  
-  // bool getGuardado( Usuario u, Curso c ) {
-  //   this.usuario = u;
-  //   if (usuario.guardados.contains(c.cid)){
-  //     guardado = true;
-  //     notifyListeners();
-  //     return guardado;
-  //   }
-  //     guardado = false;
-  //     notifyListeners();
-  //     return guardado;
-  // }
 
   final _storage = new FlutterSecureStorage();
 
@@ -202,9 +186,7 @@ class AuthService with ChangeNotifier{
         final respBody = jsonDecode(resp.body);
       return respBody['msg'];
     }
-  }
-
-  
+  }  
 
   Future editarNombre( BuildContext context, String nombre ) async {
     this._autenticando = true;
@@ -238,104 +220,6 @@ class AuthService with ChangeNotifier{
     }
   }
 
-  // Stream agregarGuardado2(BuildContext context, Curso curso ) async* {
-
-  //   final token = await this._storage.read(key: 'token');
-
-  //   final body = {
-  //     'curso': curso.,
-  //     'progreso'
-
-  //   }
-
-  //   final resp = await http.put('${ Environment.apiUrl }/usuarios/miscursos/${ curso.cid }',
-  //     // body: jsonEncode(data),
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       'x-token': token
-  //     }
-  //   );
-
-  //   // if ( resp.statusCode == 200 ) {
-  //   //   final editResponse = historialResponseFromJson(resp.body); //jsonDecode(resp.body);
-  //   //   // print(editResponse);
-  //   //   return true;
-  //   // } else {
-  //   //   final respBody = jsonDecode(resp.body);
-  //   //   return respBody['msg'];
-  //   }
-  // }
-  Future<bool> agregarGuardado(BuildContext context, Curso curso ) async {
-
-    final token = await this._storage.read(key: 'token');
-    usuario = Provider.of<AuthService>(context, listen: false).usuario;
-
-    final resp = await http.put('${ Environment.apiUrl }/usuarios/miscursos/${ curso.cid }',
-      // body: jsonEncode(data),
-      headers: {
-        'Content-Type': 'application/json',
-        'x-token': token
-      }
-    );
-
-    if ( resp.statusCode == 200 ) {
-      final editResponse = cursoFromJson(resp.body); //jsonDecode(resp.body);
-      // print(editResponse);
-      return true;
-    } else {
-      final respBody = jsonDecode(resp.body);
-      return respBody['msg'];
-    }
-  }
-
-  Future<bool> borrarGuardado(BuildContext context, Curso curso ) async {
-
-    final token = await this._storage.read(key: 'token');
-    usuario = Provider.of<AuthService>(context, listen: false).usuario;
-
-    final resp = await http.delete('${ Environment.apiUrl }/usuarios/miscursos/${ curso.cid }',
-      // body: jsonEncode(data),
-      headers: {
-        'Content-Type': 'application/json',
-        'x-token': token
-      }
-    );
-
-    if ( resp.statusCode == 200 ) {
-      final editResponse = cursoFromJson(resp.body); //jsonDecode(resp.body);
-      // print(editResponse);
-      return true;
-    } else {
-      final respBody = jsonDecode(resp.body);
-      return respBody['msg'];
-    }
-  }
-
-  
-
-  // Future<List<Historial>> verGuardados() async {
-
-  //   final token = await this._storage.read(key: 'token');
-
-  
-  //   final resp = await http.get('${ Environment.apiUrl }/usuarios/historial',
-  //     // body: jsonEncode(data),
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       'x-token': token
-  //     }
-  //   );
-
-  //   if ( resp.statusCode == 200 ) {
-  //     final editResponse = historialsFromJson(resp.body).historial; //jsonDecode(resp.body);
-  //     // print(editResponse);  
-  //     return editResponse;
-  //   } else {
-  //     final respBody = jsonDecode(resp.body);
-  //     return respBody['msg'];
-  //   }
-  // }
-
   Future agregarHistorial(Historial historial) async {
 
     final token = await this._storage.read(key: 'token');
@@ -366,66 +250,6 @@ class AuthService with ChangeNotifier{
     }
   }
 
-  Future editarColegio( BuildContext context, String colegio ) async {
-
-    final auth = Provider.of<AuthService>(context, listen: false); 
-    final id = auth.usuario.uid;
-    final token = await this._storage.read(key: 'token');
-
-    final data = {
-      'colegio' : colegio
-    };
-
-    final resp = await http.put('${ Environment.apiUrl }/usuarios/$id',
-      body: jsonEncode(data),
-      headers: {
-        'Content-Type': 'application/json',
-        'x-token': token
-      }
-    );
-
-    this._autenticando = false;
-
-    if ( resp.statusCode == 200 ) {
-      final editResponse = loginResponseFromJson(resp.body);
-      this.usuario = editResponse.usuario;      
-      return true;
-    } else {
-      final respBody = jsonDecode(resp.body);
-      return respBody['msg'];
-    }
-  }
-
-  Future editarCurso( BuildContext context, String curso ) async {
-
-    final auth = Provider.of<AuthService>(context, listen: false); 
-    final id = auth.usuario.uid;
-    final token = await this._storage.read(key: 'token');
-
-    final data = {
-      'curso' : curso
-    };
-
-    final resp = await http.put('${ Environment.apiUrl }/usuarios/$id',
-      body: jsonEncode(data),
-      headers: {
-        'Content-Type': 'application/json',
-        'x-token': token
-      }
-    );
-
-    this._autenticando = false;
-
-    if ( resp.statusCode == 200 ) {
-      final editResponse = loginResponseFromJson(resp.body);
-      this.usuario = editResponse.usuario;      
-      return true;
-    } else {
-      final respBody = jsonDecode(resp.body);
-      return respBody['msg'];
-    }
-  }
-  
   Future editarFoto( BuildContext context, File imagen ) async {
 
     //                           SUBIR IMAGEN
@@ -493,34 +317,35 @@ class AuthService with ChangeNotifier{
   }
 
 
-  Future editarInfo( BuildContext context, String nombre, String email, String password,
-                     String comuna, String colegio, String curso,
-                     String foto, String descripcion, String celular,
-   ) async {
 
-    final auth = Provider.of<AuthService>(context);
-    final id = auth.usuario.uid;
+  // Future editarInfo( BuildContext context, String nombre, String email, String password,
+  //                    String comuna, String colegio, String curso,
+  //                    String foto, String descripcion, String celular,
+  //  ) async {
 
-    final data = {
-      'nombre': nombre,
-      'email': email,
-      'password': password,
-      'antiguedad': DateTime.now().toIso8601String(),
-      'comuna': comuna,
-      'colegio': colegio,
-      'curso': curso,
-      'foto': foto,
-      'descripcion': descripcion,
-      'celular': celular
-    };
+  //   final auth = Provider.of<AuthService>(context);
+  //   final id = auth.usuario.uid;
 
-    final resp = await http.put('${ Environment.apiUrl }/usuarios/$id',
-      body: jsonEncode(data),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    );
-  }
+  //   final data = {
+  //     'nombre': nombre,
+  //     'email': email,
+  //     'password': password,
+  //     'antiguedad': DateTime.now().toIso8601String(),
+  //     'comuna': comuna,
+  //     'colegio': colegio,
+  //     'curso': curso,
+  //     'foto': foto,
+  //     'descripcion': descripcion,
+  //     'celular': celular
+  //   };
+
+  //   final resp = await http.put('${ Environment.apiUrl }/usuarios/$id',
+  //     body: jsonEncode(data),
+  //     headers: {
+  //       'Content-Type': 'application/json'
+  //     }
+  //   );
+  // }
 
   Future _guardarToken( String token ) async {
     return await _storage.write( key: 'token', value: token );

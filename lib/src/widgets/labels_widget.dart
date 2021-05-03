@@ -18,7 +18,7 @@ const Labels({
 
     return Container(
       child: Column( children: <Widget>[
-        Text(this.titulo, style: TextStyle( fontSize: 12, fontWeight: FontWeight.w300, fontFamily: 'Montserrat'),),
+        Text(this.titulo, style: TextStyle( fontSize: 12, fontWeight: FontWeight.w300 ),),
         SizedBox(height: 10,),
         GestureDetector( 
           child: Text( this.subtitulo , style: TextStyle(color: Colors.teal[400], fontSize: 14, fontWeight: FontWeight.w500, letterSpacing: 0.3 ),),

@@ -28,7 +28,7 @@ class CustomInput extends StatelessWidget {
      margin: EdgeInsets.only(bottom: 30,),
      padding: EdgeInsets.only( top: 5, left: 5 ,bottom: 5, right: 20 ),
      decoration: BoxDecoration(
-       color: isDarkTheme ? BonovaColors.azulNoche[600] : Colors.white, 
+       color: isDarkTheme ? Colors.blueGrey[900] : Colors.teal[50].withOpacity(.7), 
        borderRadius: BorderRadius.circular(30),
       //  boxShadow: <BoxShadow>[
       //    BoxShadow(

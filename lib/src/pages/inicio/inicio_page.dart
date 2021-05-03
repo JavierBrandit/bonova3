@@ -55,10 +55,10 @@ class _InicioPageState extends State<InicioPage> {
       this.historial = ( payload?? '' as List)
           .map( (h) => Historial.fromJson( h ) )
           .toList();
+      // this._cargarHistorial();
       this._cargarUltimosCursos();
-          // print('payload  '+ payload.toString());
+          print('payload  '+ payload.toString());
           setState(() {});
-          
       });
 
     super.initState();
@@ -123,9 +123,16 @@ class _InicioPageState extends State<InicioPage> {
                       : _listViewUsuarios(),
                     // SizedBox(height: 15),
                     
-                    HeaderTitulo(titulo: 'continuar viendo', paginaDestino: '',),
-                    _listaHistorial(),
-                    SizedBox(height: 13),
+                    historial != null && historial.length != 0
+                    ? Column(
+                        children: [
+                          HeaderTitulo(titulo: 'continuar viendo', paginaDestino: '',),
+                          _listaHistorial(),
+                          SizedBox(height: 13),
+                        ],
+                      )
+                    : Center(),
+                    
                     HeaderTitulo(titulo: 'sugeridos para ti', paginaDestino: '',),
                     SizedBox(height: 8),
                     cursosUltimos == [] || cursosUltimos == null 
@@ -291,15 +298,9 @@ class _InicioPageState extends State<InicioPage> {
 
    _listaHistorial() {
     var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
-
-    // return FutureBuilder(
-    //   future: authService.verHistorial(),
-    //   builder: (_, AsyncSnapshot<List<Historial>> s) {
-
-    //     if (s.hasData) {
           
           return Container(
-            color: isDarkTheme? BonovaColors.azulNoche[750].withOpacity(.9) :Colors.grey[100],
+            color: isDarkTheme? Colors.blueGrey[900].withOpacity(.3) :Colors.blueGrey[50].withOpacity(.6),
             height: 160,
             child: PageView.builder(
               // padding: EdgeInsets.only(left: 26, bottom: 5),
@@ -315,12 +316,6 @@ class _InicioPageState extends State<InicioPage> {
             ),
           );
 
-    //     } else {
-    //       return CircularProgressIndicator();
-    //     }
-
-    //   },
-    // );
 
   }
 

@@ -1,6 +1,7 @@
 import 'package:bonova0002/src/models/video_modelo.dart';
 import 'package:bonova0002/src/pages/explore/busqueda.dart';
 import 'package:bonova0002/src/pages/inicio/chat_page.dart';
+import 'package:bonova0002/src/pages/user/profesor.dart';
 import 'package:bonova0002/src/services/videos_service.dart';
 import 'package:bonova0002/theme.dart';
 import 'package:flutter/material.dart';
@@ -67,14 +68,14 @@ class _HomePageState extends State<HomePage> {
                     InicioPage(),
                     Busqueda(),
                     MisCursos(),
-                    Actividad(),
+                    Profesor(),
                     UserPage(),
                 ]),
                 
                 FutureBuilder(
                   future: auth.verHistorial(),
                   builder: ( _, AsyncSnapshot<List<Historial>> s){
-                    if (s.hasData) {
+                    if (s.hasData && s.data.length != 0) {
                       historial = s.data[0];
                       return 
                         !cservice.getDisposed()?
@@ -114,7 +115,7 @@ class _HomePageState extends State<HomePage> {
                         width: double.infinity,
                         height:  52,
                         decoration: BoxDecoration(
-                          color: isDarkTheme? BonovaColors.azulNoche[750].withOpacity(.96) : Colors.grey[100].withOpacity(.96), 
+                          color: isDarkTheme? Colors.blueGrey[900].withOpacity(.94) : Colors.blueGrey[50].withOpacity(.96), 
                         ),
                         // color: Colors.tealAccent,
                         child: Hero(
@@ -186,7 +187,7 @@ class _HomePageState extends State<HomePage> {
                               GestureDetector(
                                 child: Padding(
                                   padding: EdgeInsets.only( right: 0),
-                                  child: Icon(FluentIcons.play_24_regular, size: 18),
+                                  child: Icon(FluentIcons.play_24_regular, size: 21),
                                 ),
                                 onTap: (){
                                   cservice.setDisposed(false);
@@ -196,7 +197,7 @@ class _HomePageState extends State<HomePage> {
                               GestureDetector(
                                 child: Padding(
                                   padding: EdgeInsets.only( right: 20),
-                                  child: Icon(FluentIcons.dismiss_24_regular, size: 18),
+                                  child: Icon(FluentIcons.dismiss_24_regular, size: 21),
                                 ),
                                 onTap: (){
                                   cservice.setDisposed(true);

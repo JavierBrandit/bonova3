@@ -26,27 +26,13 @@ class _MisCursosState extends State<MisCursos> {
 
   @override
   void initState() {
-    // this.socketService = Provider.of<SocketService>(context, listen: false );
-    
-    // // historial != null 
 
-    // // ? 
-    // this.socketService.socket.on('ver-historial', (payload){
-    //   this.historial = ( payload?? '' as List)
-    //       .map( (h) => Historial.fromJson( h ) )
-    //       .toList();
-    //       setState(() {});
-    //   });
-    // : 
     this.socketService = Provider.of<SocketService>(context, listen: false );
-    // historial != null
 
-    // ? 
     this.socketService.socket.on('ver-historial', (payload){
       this.historial = ( payload?? '' as List )
           .map( (h) => Historial.fromJson( h ) )
           .toList();
-          // print('payload  '+ payload.toString());
           setState(() {});
       });
     this._cargarMisCursos();
@@ -60,62 +46,46 @@ class _MisCursosState extends State<MisCursos> {
     super.dispose();
   }
 
-  // @override
-  //   void dispose() {
-  //   this.socketService = Provider.of<SocketService>(context, listen: false );
-  //   this.socketService.socket.off('historial');
-  //     // TODO: implement dispose
-  //     super.dispose();
-  //   }
-
-  // void _escucharCursos( dynamic payload ) {
-  //   Historial h = new Historial(
-  //       curso: payload['curso'],
-  //       // usuario: ,
-  //       // guardado: payload['guardado'],
-  //       // progreso: _position.inSeconds / _duration.inSeconds,
-  //       // largo: curso.videos.length,
-  //       // index: 0,
-  //       // prefs: []
-  //   );
-  //   setState(() {
-  //     historial.insert(0, h);
-  //   });
-  //   // message.animationController.forward();
-  // }
-
-  // void _cargarHistorial() async {
-
-  //   List<Historial> hists = await this.authService.verHistorial();
-
-  //   final history = hists.map((m) => Historial(
-  //     curso: m.curso,
-  //     progreso: m.progreso,
-  //   ));
-
-  //   setState(() {
-  //     historial.insertAll(0, history);
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
-
     socketService = Provider.of<SocketService>(context);
 
     return Scaffold(
       appBar: AppBar(
         title: Text('Continuar Viendo', style: TextStyle( letterSpacing: -.5 )),
       ),
-      body: historial != null
-              ? _listaCursos()
-              : Center(child: CircularProgressIndicator( strokeWidth: 1))
+      body:  
+ 
+            (historial != null)? 
+                       
+              historial.length != 0
+                ? _listaCursos()
+                : Center(child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Aqui se guardarán todos tus cursos', style: TextStyle( fontSize: 11)),
+                      FlatButton(
+                        onPressed: (){},
+                        color: Colors.teal[900],
+                        shape: StadiumBorder(),
+                        child: Text('Comenzar uno', style: TextStyle( fontSize: 16))),
+                    ],
+                  )) 
+              
+            : Center(child: CircularProgressIndicator( strokeWidth: 1))
+            
+                    
+                    
+              
+              
+              
+              
     );
   }
 
   _cargarMisCursos() async {
     this.historial = await authService.verHistorial();
-    // this.misCursos = historial;
     setState((){});
   }
 
@@ -160,6 +130,5 @@ class _MisCursosState extends State<MisCursos> {
           
         });
     _refreshController.refreshCompleted();
-    // Navigator.pushReplacementNamed(context, 'home');
   }
 }

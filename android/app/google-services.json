@@ -1,34 +1,41 @@
 {
   "project_info": {
-    "project_number": "412001334509",
-    "firebase_url": "https://bonova-f70c8.firebaseio.com",
-    "project_id": "bonova-f70c8",
-    "storage_bucket": "bonova-f70c8.appspot.com"
+    "project_number": "1034710890619",
+    "project_id": "bonova-ad8a5",
+    "storage_bucket": "bonova-ad8a5.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:412001334509:android:4f662ee8d6362a744d48e4",
+        "mobilesdk_app_id": "1:1034710890619:android:4ecd0dd6ae9ea36fb68ade",
         "android_client_info": {
-          "package_name": "com.example.bonova0002"
+          "package_name": "com.bonova.app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "412001334509-tfsggth9d13941jsoav11neu6gi2chfu.apps.googleusercontent.com",
+          "client_id": "1034710890619-u6849tchecqqvpesq7o51n18krs27lpi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bonova.app",
+            "certificate_hash": "a5d0e6860de06586148a0508c8c5ab6118c29df4"
+          }
+        },
+        {
+          "client_id": "1034710890619-n7qk14gf0s1qd3kub21rpvtgmb5tu7qr.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBas3HdjDvBORfd0JJ1RonC66N_UI8D0rU"
+          "current_key": "AIzaSyA0geS_tqGM8mh6vxbt8MIOeIxd0y8zPJY"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "412001334509-tfsggth9d13941jsoav11neu6gi2chfu.apps.googleusercontent.com",
+              "client_id": "1034710890619-n7qk14gf0s1qd3kub21rpvtgmb5tu7qr.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

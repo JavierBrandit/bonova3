@@ -143,6 +143,7 @@ Widget carruselHorizontal(BuildContext context, Historial historial) {
 
 Widget carruselVertical(BuildContext context, Historial historial) {
 
+  final socketService = Provider.of<SocketService>(context, listen: false );
   final videosLength = historial.curso.videos.length.toString();
   final pantalla = MediaQuery.of(context).size;
   final duracion = historial.curso.videos.length;
@@ -151,150 +152,160 @@ Widget carruselVertical(BuildContext context, Historial historial) {
   // final progresoCurso = ((historial.index) *historial.progreso/ historial.curso.videos.length) + historial.progreso;
   var isDarkTheme = Theme.of(context).brightness == Brightness.dark;
 
-  return Container(
-    margin: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: <Widget>[
+  return Dismissible(
+    key: Key('mis-cursos'),
+    background: Container(color: Colors.red[300], height: 110,),
+    onDismissed: (d){
+      socketService.emit('borrar-historial', {
+        'curso': historial.curso.cid,
+      });
+      Navigator.pushReplacementNamed(context, 'home');
+    },
+    child: Container(
+      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: <Widget>[
 
-    GestureDetector(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Column(
-            // crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ClipRRect(
-              borderRadius: BorderRadius.circular(5),
-              child: Image.network(historial.curso.portada,
-                fit: BoxFit.cover,
-                // height: 240,
-                width: 130
-                ),
-              ),
-              SizedBox( height: 10),
-              Stack(
-                children: [
-                  Container(
-                    height: 2,
-                    width: 110,
-                    color: isDarkTheme? Colors.white10 :Colors.grey[200],
-
-                  ),
-                  Container(
-                    height: 2,
-                    width: historial.progreso != null
-                            ? 110 * progreso
-                            : 0,
-                    color: isDarkTheme? Colors.tealAccent[400] : Colors.teal[400],
-
-                  ),
-                ],
-              ),
-              SizedBox(height: 7),
-              Text(
-              historial.index != null
-                ?  'Clase nº ${historial.index + 1}   ·   Progreso: ${(progreso*100).toStringAsFixed(1)} %'
-                :  'Comenzar Curso',
-              style: TextStyle( fontSize: 9, letterSpacing: -.3, fontWeight: FontWeight.w500)
-              ),
-            ],
-          ),
-          Container(
-            margin: EdgeInsets.only(left: 20),
-            width: pantalla.width * .53,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+      GestureDetector(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Column(
+              // crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
-              //TITULO
-                Padding(
-                  padding: EdgeInsets.only( bottom: 5),
-                  child: Text(historial.curso.titulo, style: TextStyle( fontSize: 16, fontWeight: FontWeight.w500, letterSpacing: -.5 )),
+                ClipRRect(
+                borderRadius: BorderRadius.circular(5),
+                child: Image.network(historial.curso.portada,
+                  fit: BoxFit.cover,
+                  // height: 240,
+                  width: 130
+                  ),
                 ),
-
-              //VIDEOS
-                Row(
+                SizedBox( height: 10),
+                Stack(
                   children: [
-                    Text( videosLength == '1'? '1  video' :'$videosLength  videos', style: TextStyle( fontSize: 10, fontWeight: FontWeight.w500 )),
-                    Text('  ·  '+historial.curso.ramo, style: TextStyle( fontSize: 10, fontWeight: FontWeight.w500 )),
+                    Container(
+                      height: 2,
+                      width: 110,
+                      color: isDarkTheme? Colors.white10 :Colors.grey[200],
+
+                    ),
+                    Container(
+                      height: 2,
+                      width: historial.progreso != null
+                              ? 110 * progreso
+                              : 0,
+                      color: isDarkTheme? Colors.tealAccent[400] : Colors.teal[400],
+
+                    ),
                   ],
                 ),
-                
-              //DESCRIPCION
-                Container(
-                  margin: EdgeInsets.only(top: 5, bottom: 5),
-                  height: 40,
-                  width: pantalla.width * .52,
-                  child: Text(historial.curso.descripcion,
-                    style: TextStyle( fontSize: 11, fontWeight: FontWeight.w400, letterSpacing: -.2, height: 1.5),
-                    overflow: TextOverflow.clip,
-                    softWrap: true,
-                  ),
-                ),
-                
-              //RATE Y PROFESOR
-                Padding(
-                  padding: const EdgeInsets.only( top: 5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Icon( FluentIcons.star_24_filled, size: 11, color: Colors.teal[300],),
-                          SizedBox(width: 3),
-                          Text(historial.curso.rate.toString(), style: TextStyle( fontSize: 12, fontWeight: FontWeight.w300) ),
-                        ],
-                      ),
-                      // Text(historial.progreso.toString()),
-                      Padding(
-                        padding: EdgeInsets.only(right: 10),
-                        child: Text(historial.curso.profesor.nombre, style: TextStyle( fontSize: 10, fontWeight: FontWeight.w400) ),
-                      ),
-                      // SizedBox(width: 5),
-                    ]
-                  ),
+                SizedBox(height: 7),
+                Text(
+                historial.index != null
+                  ?  'Clase nº ${historial.index + 1}   ·   Progreso: ${(progreso*100).toStringAsFixed(1)} %'
+                  :  'Comenzar Curso',
+                style: TextStyle( fontSize: 9, letterSpacing: -.3, fontWeight: FontWeight.w500)
                 ),
               ],
             ),
-          ),   
-        ]
+            Container(
+              margin: EdgeInsets.only(left: 20),
+              width: pantalla.width * .53,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+
+                //TITULO
+                  Padding(
+                    padding: EdgeInsets.only( bottom: 5),
+                    child: Text(historial.curso.titulo, style: TextStyle( fontSize: 16, fontWeight: FontWeight.w500, letterSpacing: -.5 )),
+                  ),
+
+                //VIDEOS
+                  Row(
+                    children: [
+                      Text( videosLength == '1'? '1  video' :'$videosLength  videos', style: TextStyle( fontSize: 10, fontWeight: FontWeight.w500 )),
+                      Text('  ·  '+historial.curso.ramo, style: TextStyle( fontSize: 10, fontWeight: FontWeight.w500 )),
+                    ],
+                  ),
+                  
+                //DESCRIPCION
+                  Container(
+                    margin: EdgeInsets.only(top: 5, bottom: 5),
+                    height: 40,
+                    width: pantalla.width * .52,
+                    child: Text(historial.curso.descripcion,
+                      style: TextStyle( fontSize: 11, fontWeight: FontWeight.w400, letterSpacing: -.2, height: 1.5),
+                      overflow: TextOverflow.clip,
+                      softWrap: true,
+                    ),
+                  ),
+                  
+                //RATE Y PROFESOR
+                  Padding(
+                    padding: const EdgeInsets.only( top: 5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Icon( FluentIcons.star_24_filled, size: 11, color: Colors.teal[300],),
+                            SizedBox(width: 3),
+                            Text(historial.curso.rate.toString(), style: TextStyle( fontSize: 12, fontWeight: FontWeight.w300) ),
+                          ],
+                        ),
+                        // Text(historial.progreso.toString()),
+                        Padding(
+                          padding: EdgeInsets.only(right: 10),
+                          child: Text(historial.curso.profesor.nombre, style: TextStyle( fontSize: 10, fontWeight: FontWeight.w400) ),
+                        ),
+                        // SizedBox(width: 5),
+                      ]
+                    ),
+                  ),
+                ],
+              ),
+            ),   
+          ]
+        ),
+      onTap: () {
+
+        CursoService cursoService = Provider.of<CursoService>(context, listen: false );
+        AuthService authService = Provider.of<AuthService>(context, listen: false );
+        // viService.setCurso( historial.curso );
+        
+        final socketService = Provider.of<SocketService>(context, listen: false );
+        
+        // final historialx = Historial(
+        //   curso: historial.curso,
+        //   usuario: authService.usuario.uid,
+        //   // guardado: false,
+        //   // progreso: _position.inSeconds / _duration.inSeconds,
+        //   largo: historial.curso.videos.length,
+        //   // index: 0,
+        //   // prefs: []
+        // );
+        // cursoService.setReproduciendo(true);
+        cursoService.setHistorial(historial);
+        // cursoService.setDisposed(false);
+
+        socketService.emit('historial', {
+          'curso': historial.curso.cid,
+          'usuario': authService.usuario.uid
+        });
+
+        Navigator.push(context, MaterialPageRoute(builder: (_) => PlayPage( curso: historial.curso, historial: historial ) ));
+      },
+     )
+      //   ),
+      //  ),
+          
+          
+      ]
       ),
-    onTap: () {
-
-      CursoService cursoService = Provider.of<CursoService>(context, listen: false );
-      AuthService authService = Provider.of<AuthService>(context, listen: false );
-      // viService.setCurso( historial.curso );
-      
-      final socketService = Provider.of<SocketService>(context, listen: false );
-      
-      // final historialx = Historial(
-      //   curso: historial.curso,
-      //   usuario: authService.usuario.uid,
-      //   // guardado: false,
-      //   // progreso: _position.inSeconds / _duration.inSeconds,
-      //   largo: historial.curso.videos.length,
-      //   // index: 0,
-      //   // prefs: []
-      // );
-      // cursoService.setReproduciendo(true);
-      cursoService.setHistorial(historial);
-      // cursoService.setDisposed(false);
-
-      socketService.emit('historial', {
-        'curso': historial.curso.cid,
-        'usuario': authService.usuario.uid
-      });
-
-      Navigator.push(context, MaterialPageRoute(builder: (_) => PlayPage( curso: historial.curso, historial: historial ) ));
-    },
-   )
-    //   ),
-    //  ),
-        
-        
-    ]
     ),
   );
 }

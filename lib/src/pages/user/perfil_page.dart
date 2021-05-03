@@ -5,6 +5,7 @@ import 'package:bonova0002/src/services/auth_services.dart';
 import 'package:bonova0002/src/services/chat_service.dart';
 import 'package:bonova0002/src/services/videos_service.dart';
 import 'package:bonova0002/src/widgets/carrusel_horizontal.dart';
+import 'package:bonova0002/theme.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -42,7 +43,9 @@ class _PerfilPageState extends State<PerfilPage> {
     final yo = authService.usuario;
     
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
         toolbarHeight: 40,
         elevation: 0.0,
         actions: [
@@ -77,14 +80,52 @@ class _PerfilPageState extends State<PerfilPage> {
                 // padding: const EdgeInsets.symmetric(horizontal:20),
                 child: Column(
             children: [
+
+              Stack(
+                alignment: AlignmentDirectional.topCenter,
+                children: [
+
+
+                  Container(
+                    height: 160,
+                    width: MediaQuery.of(context).size.width,
+                    // color: Colors.tealAccent,
+                    child: Opacity(
+                      opacity: .8,
+                      child: FadeInImage(
+                        fit: BoxFit.cover,
+                        placeholder: AssetImage('assets/placeholder.png'), 
+                        image: NetworkImage(usuario.foto)
+                      ),
+                    ),
+                  ),
+                  Column(
+                    children: [
+                      Container(
+                        height: 85,
+                        width: MediaQuery.of(context).size.width,
+                        color: Colors.transparent,
+                      ),
+                      Hero(
+                        tag: 'foto',
+                        child: Center(
+                          child: GestureDetector(
+                            child: Stack(
+                              alignment: AlignmentDirectional.center,
+                              children: [
+                                CircleAvatar(backgroundColor: isDarkTheme? BonovaColors.azulNoche[800] : Colors.grey[50], radius: 70 ),
+                                CircleAvatar(backgroundImage: NetworkImage(usuario.foto), radius: 65 ),
+                              ],
+                            ),
+                          onTap: () => Navigator.pushNamed(context, 'foto', arguments: usuario),
+                        )),
+                      ),
+                    ],
+                  ),
+
+                ],
+              ),
                 
-                Hero(
-                  tag: 'foto',
-                  child: Center(child: GestureDetector( child: 
-                    CircleAvatar(backgroundImage: NetworkImage(usuario.foto), radius: 55 ),
-                    onTap: () => Navigator.pushNamed(context, 'foto', arguments: usuario),
-                  )),
-                ),
                 SizedBox( height: 5 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

@@ -79,7 +79,7 @@ class LoadingPage extends StatelessWidget {
         context, 
         PageRouteBuilder(
           pageBuilder: (_,__,___) => HomePage(),
-          // transitionDuration: Duration(milliseconds: 200)
+          transitionDuration: Duration(milliseconds: 200)
         )
       
       );

@@ -1,4 +1,4 @@
-package com.example.bonova0002
+package com.bonova.app
 
 import io.flutter.embedding.android.FlutterActivity
 

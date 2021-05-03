@@ -294,7 +294,7 @@ class _BusquedaState extends State<Busqueda> {
                 Container(
                   // color: Colors.redAccent,
                   padding: EdgeInsets.only(bottom: 5),
-                  // width: MediaQuery.of(context).size.width * .68,
+                  width: MediaQuery.of(context).size.width * .6,
                   child: Text(historial.curso.titulo, style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.w500, letterSpacing: -.4))
                 ),
                 Text(historial.curso.nivel+'º medio  ·  '+historial.curso.videos.length.toString()+' videos', style: TextStyle(fontSize: 8.5, fontWeight: FontWeight.w600) ),
